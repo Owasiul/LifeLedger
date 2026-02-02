@@ -1,0 +1,16 @@
+@import url("https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Urbanist:ital,wght@0,100..900;1,100..900&display=swap");
+@import "tailwindcss";
+@plugin "daisyui";
+@plugin "daisyui/theme" {
+  name: "light";
+  default: true;
+  --primary: #4f46e5;
+  --secondary: #1e293b;
+  --accent: #facc15;
+  --base-100: #f8fafc;
+  --base-content: #0f172a;
+}
+
+* {
+  font-family: "Inter", sans-serif;
+}
