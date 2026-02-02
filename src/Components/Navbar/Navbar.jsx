@@ -1,6 +1,6 @@
 import { Moon, Sun } from "lucide-react";
 import React, { useEffect, useState } from "react";
-import { NavLink } from "react-router";
+import { Link, NavLink } from "react-router";
 import "./Navbar.css";
 import Logo from "../../assets/Logo.png";
 
@@ -82,12 +82,15 @@ const Navbar = () => {
             </svg>
           </label>
 
-          <button className="btn bg-[#4F46E5] hover:bg-[#4338CA] text-white">
+          <Link
+            to="/auth/login"
+            className="btn bg-[#4F46E5] hover:bg-[#4338CA] text-white"
+          >
             Sign In
-          </button>
-          <button className="btn bg-none border-2 border-[#CBD5E1] text-[#1E293B] hover:border-[#F1F5F9]">
+          </Link>
+          <Link className="btn bg-none border-2 border-[#CBD5E1] text-[#1E293B] hover:border-[#F1F5F9]">
             Sign Up
-          </button>
+          </Link>
         </div>
       </div>
     </div>
