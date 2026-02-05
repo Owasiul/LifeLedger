@@ -1,0 +1,26 @@
+[
+  {
+    "id": "benefit-1",
+    "title": "Preserve Your Life Lessons",
+    "description": "Life teaches us valuable lessons through experiences. Writing them down helps you remember, reflect, and apply those insights when you need them most.",
+    "icon": "notebook"
+  },
+  {
+    "id": "benefit-2",
+    "title": "Learn From Real Stories",
+    "description": "Go beyond quotes and theories. Discover lessons shared by real people based on their successes, failures, and personal journeys.",
+    "icon": "people"
+  },
+  {
+    "id": "benefit-3",
+    "title": "Turn Reflection Into Growth",
+    "description": "Reflection builds self-awareness. Revisiting life lessons helps you make better decisions and grow emotionally and mentally over time.",
+    "icon": "growth"
+  },
+  {
+    "id": "benefit-4",
+    "title": "Grow Together as a Community",
+    "description": "Sharing life lessons creates meaningful connections and helps build a supportive community focused on learning and personal growth.",
+    "icon": "community"
+  }
+]

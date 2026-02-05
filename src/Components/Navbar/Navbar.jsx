@@ -3,8 +3,11 @@ import React, { useEffect, useState } from "react";
 import { Link, NavLink } from "react-router";
 import "./Navbar.css";
 import Logo from "../../assets/Logo.png";
+import AvatarDropdown from "./AvatarDropdown/AvatarDropdown";
+import useAuth from "../../Hooks/useAuth";
 
 const Navbar = () => {
+  const { user } = useAuth();
   const [theme, setTheme] = useState(localStorage.getItem("theme") || "light");
 
   useEffect(() => {
@@ -17,17 +20,26 @@ const Navbar = () => {
   const navItems = (
     <div className="flex lg:flex-row flex-col">
       <li className="text-lg text-content font-medium hover:text-violet-400">
-        <NavLink to="/dashboard/add-lesson">Add Lesson</NavLink>
+        <NavLink to={user ? `/dashboard/add-lesson` : "/auth/login"}>
+          Add Lesson
+        </NavLink>
       </li>
       <li className="text-lg text-content font-medium hover:text-violet-400">
-        <NavLink to="/dashboard/my-lessons">My Lessons</NavLink>
+        <NavLink to={user ? `/dashboard/my-lessons` : "/auth/login"}>
+          My Lessons
+        </NavLink>
       </li>
       <li className="text-lg text-content font-medium hover:text-violet-400">
         <NavLink to="/lessons">Public Lessons</NavLink>
       </li>
-      <li className="text-lg text-content font-medium hover:text-violet-400">
-        <NavLink to="/pricing">Pricing</NavLink>
-      </li>
+      {user && (
+        <>
+          {" "}
+          <li className="text-lg text-content font-medium hover:text-violet-400">
+            <NavLink to="/pricing">Pricing</NavLink>
+          </li>{" "}
+        </>
+      )}
     </div>
   );
   return (
@@ -81,16 +93,24 @@ const Navbar = () => {
               <Sun></Sun>
             </svg>
           </label>
-
-          <Link
-            to="/auth/login"
-            className="btn bg-[#4F46E5] hover:bg-[#4338CA] text-white"
-          >
-            Sign In
-          </Link>
-          <Link className="btn bg-none border-2 border-[#CBD5E1] text-[#1E293B] hover:border-[#F1F5F9]">
-            Sign Up
-          </Link>
+          {user ? (
+            <AvatarDropdown></AvatarDropdown>
+          ) : (
+            <>
+              <Link
+                to="/auth/login"
+                className="btn bg-[#4F46E5] hover:bg-[#4338CA] text-white"
+              >
+                Sign In
+              </Link>
+              <Link
+                to="/auth/register"
+                className="btn bg-accent hover:bg-sky-600 text-white"
+              >
+                Sign Up
+              </Link>
+            </>
+          )}
         </div>
       </div>
     </div>
