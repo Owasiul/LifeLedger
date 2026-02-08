@@ -1,7 +1,7 @@
 import { Bookmark, Share2 } from "lucide-react";
 import React from "react";
 import { Link } from "react-router";
-
+// todo: Have to create fake lessions
 const FeaturedLessons = () => {
   return (
     <div className="w-[90%] mx-auto">

@@ -4,7 +4,10 @@ import AuthLayout from "../Layout/Auth/AuthLayout";
 import Login from "../Components/AuthRoutes/Login";
 import Register from "../Components/AuthRoutes/Register";
 import Home from "../Pages/Home/Home";
+import PaymentSuccess from "../Pages/Payment/PaymentSuccess/PaymentSuccess";
+import Pricing from "../Pages/Payment/Pricing";
 import Payment from "../Pages/Payment/Payment";
+import PaymentCancel from "../Pages/Payment/PaymentCancel/PaymentCancel";
 
 export const router = createBrowserRouter([
   {
@@ -16,22 +19,36 @@ export const router = createBrowserRouter([
         Component: Home,
         loader: () => fetch("/whylearn.json").then((res) => res.json()),
       },
+      {
+        path: "/pricing",
+        Component: Pricing,
+      },
     ],
   },
   {
-    path: "/pricing",
+    path: "/payments",
     Component: Payment,
+    children: [
+      {
+        path: "/payments/payment-success",
+        Component: PaymentSuccess,
+      },
+      {
+        path: "/payments/payment-cancel",
+        Component: PaymentCancel,
+      },
+    ],
   },
   {
-    path: "auth",
+    path: "/auth",
     Component: AuthLayout,
     children: [
       {
-        path: "login",
+        path: "/auth/login",
         element: <Login></Login>,
       },
       {
-        path: "register",
+        path: "/auth/register",
         element: <Register></Register>,
       },
     ],

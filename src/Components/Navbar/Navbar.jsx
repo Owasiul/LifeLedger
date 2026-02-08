@@ -5,18 +5,34 @@ import "./Navbar.css";
 import Logo from "../../assets/Logo.png";
 import AvatarDropdown from "./AvatarDropdown/AvatarDropdown";
 import useAuth from "../../Hooks/useAuth";
+import useAxiosSecure from "../../Hooks/useAxiosSecure";
 
 const Navbar = () => {
+  const axiosSecure = useAxiosSecure();
   const { user } = useAuth();
-  const [theme, setTheme] = useState(localStorage.getItem("theme") || "light");
+  const [userData, setUserData] = useState([]);
+  console.log(userData);
 
+  useEffect(() => {
+    if (!user || user.email === null) {
+      return;
+    }
+    const fetchUsers = async () => {
+      const res = await axiosSecure.get(`/users/${user.email}`);
+      setUserData(res.data);
+    };
+    fetchUsers();
+  }, [axiosSecure, user]);
+
+  // theme
+  const [theme, setTheme] = useState(localStorage.getItem("theme") || "light");
   useEffect(() => {
     document.documentElement.setAttribute("data-theme", theme);
     localStorage.setItem("theme", theme);
   }, [theme]);
 
   const toggleTheme = () => setTheme(theme === "light" ? "dark" : "light");
-
+  // nav items
   const navItems = (
     <div className="flex lg:flex-row flex-col">
       <li className="text-lg text-content font-medium hover:text-violet-400">
@@ -94,7 +110,7 @@ const Navbar = () => {
             </svg>
           </label>
           {user ? (
-            <AvatarDropdown></AvatarDropdown>
+            <AvatarDropdown userData={userData}></AvatarDropdown>
           ) : (
             <>
               <Link
