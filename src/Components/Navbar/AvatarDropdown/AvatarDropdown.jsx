@@ -2,12 +2,13 @@ import { useState, useRef, useEffect } from "react";
 import useAuth from "../../../Hooks/useAuth";
 import { LogOutIcon, LucideLayoutDashboard, Star } from "lucide-react";
 import { Link } from "react-router";
+import useUser from "../../../Hooks/useUser";
 
-const AvatarDropdown = ({ userData }) => {
+const AvatarDropdown = () => {
   const { user, LogOut } = useAuth();
   const [isOpen, setIsOpen] = useState(false);
   const dropdownRef = useRef(null);
-  const { isPremium } = userData;
+  const { userData } = useUser();
   // Close dropdown when clicking outside
   useEffect(() => {
     function handleClickOutside(event) {
@@ -54,9 +55,7 @@ const AvatarDropdown = ({ userData }) => {
                 <p className="text-sm text-base-content/60">See your profile</p>
               </div>
               <div>
-                {isPremium && (
-                  <span className="text-2xl"> ⭐ </span>
-                )}
+                {userData?.isPremium && <span className="text-2xl"> ⭐ </span>}
               </div>
             </div>
           </div>

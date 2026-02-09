@@ -5,24 +5,9 @@ import "./Navbar.css";
 import Logo from "../../assets/Logo.png";
 import AvatarDropdown from "./AvatarDropdown/AvatarDropdown";
 import useAuth from "../../Hooks/useAuth";
-import useAxiosSecure from "../../Hooks/useAxiosSecure";
 
 const Navbar = () => {
-  const axiosSecure = useAxiosSecure();
   const { user } = useAuth();
-  const [userData, setUserData] = useState([]);
-  console.log(userData);
-
-  useEffect(() => {
-    if (!user || user.email === null) {
-      return;
-    }
-    const fetchUsers = async () => {
-      const res = await axiosSecure.get(`/users/${user.email}`);
-      setUserData(res.data);
-    };
-    fetchUsers();
-  }, [axiosSecure, user]);
 
   // theme
   const [theme, setTheme] = useState(localStorage.getItem("theme") || "light");
@@ -46,7 +31,7 @@ const Navbar = () => {
         </NavLink>
       </li>
       <li className="text-lg text-content font-medium hover:text-violet-400">
-        <NavLink to="/lessons">Public Lessons</NavLink>
+        <NavLink to="/all-lessons">Public Lessons</NavLink>
       </li>
       {user && (
         <>
@@ -110,7 +95,7 @@ const Navbar = () => {
             </svg>
           </label>
           {user ? (
-            <AvatarDropdown userData={userData}></AvatarDropdown>
+            <AvatarDropdown></AvatarDropdown>
           ) : (
             <>
               <Link

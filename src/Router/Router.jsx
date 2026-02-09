@@ -8,6 +8,9 @@ import PaymentSuccess from "../Pages/Payment/PaymentSuccess/PaymentSuccess";
 import Pricing from "../Pages/Payment/Pricing";
 import Payment from "../Pages/Payment/Payment";
 import PaymentCancel from "../Pages/Payment/PaymentCancel/PaymentCancel";
+import Lessons from "../Pages/Lessons/Lessons";
+import LessonsDetails from "../Pages/Lessons/LessonsDetails";
+import PrivateRoute from "../Context/PrivateRoute";
 
 export const router = createBrowserRouter([
   {
@@ -22,6 +25,10 @@ export const router = createBrowserRouter([
       {
         path: "/pricing",
         Component: Pricing,
+      },
+      {
+        path: "/all-lessons",
+        Component: Lessons,
       },
     ],
   },
@@ -52,5 +59,13 @@ export const router = createBrowserRouter([
         element: <Register></Register>,
       },
     ],
+  },
+  {
+    path: "/all-lessons/:id",
+    element: (
+      <PrivateRoute>
+        <LessonsDetails></LessonsDetails>,
+      </PrivateRoute>
+    ),
   },
 ]);

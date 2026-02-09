@@ -1,87 +1,165 @@
-import { Bookmark, Share2 } from "lucide-react";
-import React from "react";
+import { Bookmark, Lock, LogIn, Share2, Zap } from "lucide-react";
 import { Link } from "react-router";
-// todo: Have to create fake lessions
+import useAxiosSecure from "../../../../Hooks/useAxiosSecure";
+import { useQuery } from "@tanstack/react-query";
+import useUser from "../../../../Hooks/useUser";
+
 const FeaturedLessons = () => {
+  const axiosSecure = useAxiosSecure();
+
+  const { data: lessons = [] } = useQuery({
+    queryKey: ["lessons"],
+    queryFn: async () => {
+      const res = await axiosSecure.get("/lessons");
+      return res.data;
+    },
+  });
+
+  const { userData } = useUser();
+  const isPremiumUser = userData?.isPremium;
+
   return (
     <div className="w-[90%] mx-auto">
-      <div className="head my-10 ">
+      <div className="my-10">
         <h2 className="lg:text-6xl text-3xl text-secondary font-semibold">
           Featured Wisdom
         </h2>
         <p className="lg:text-2xl text-xl text-primary mt-3">
-          {" "}
           Curated lessons from our community's most insightful voices.
         </p>
       </div>
-      <div className="body">
-        <div className="card bg-gray-50 dark:bg-gray-800 w-96 h-96 p-5 rounded-lg my-5">
-          <div className="top flex flex-row justify-between">
-            {/* user  */}
-            {/* <img className="w-10 h-10 object-contain" src="" alt="" /> */}
-            <p className="dark:text-white">userImage</p>
-            <p className="badge bg-red-400">is premium</p>
-          </div>
-          <div className="Card-body mt-3 space-y-5">
-            <h1 className="lg:text-3xl text-2xl dark:text-white">
-              Lesson Title
-            </h1>
 
-            {/* badges */}
-            <span className="badge bg-success">badge</span>
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        {lessons.map((lesson) => {
+          const isLocked = lesson.accessLevel !== "free" && !isPremiumUser;
 
-            {/* image */}
-            <p className="dark:text-white">Image</p>
-            {/* <img src="" alt="" /> */}
-          </div>
-          {/* card footer */}
-          <div className="flex flex-row w-full justify-around items-center mt-5">
-            {/* upvote */}
-            <div className="upvote flex flex-row gap-3 items-center">
-              <svg
-                width="1em"
-                height="1em"
-                viewBox="0 0 24 24"
-                xmlns="http://www.w3.org/2000/svg"
-                className="w-5 h-5 pointer-events-none text-gray-700 dark:text-gray-300"
-              >
-                <path
-                  d="M9.456 4.216l-5.985 7.851c-.456.637-.583 1.402-.371 2.108l.052.155a2.384 2.384 0 002.916 1.443l2.876-.864.578 4.042a2.384 2.384 0 002.36 2.047h.234l.161-.006a2.384 2.384 0 002.2-2.041l.576-4.042 2.877.864a2.384 2.384 0 002.625-3.668L14.63 4.33a3.268 3.268 0 00-5.174-.115zm3.57.613c.16.114.298.253.411.411l5.897 7.736a.884.884 0 01-.973 1.36l-3.563-1.069a.884.884 0 00-1.129.722l-.678 4.75a.884.884 0 01-.875.759h-.234a.884.884 0 01-.875-.76l-.679-4.75a.884.884 0 00-1.128-.72l-3.563 1.068a.884.884 0 01-.973-1.36L10.56 5.24a1.767 1.767 0 012.465-.41z"
-                  fill="currentcolor"
-                  fillRule="evenodd"
-                ></path>
-              </svg>
-              {/* like */}
-              <p className="dark:text-white">Like</p>
+          return (
+            <div
+              key={lesson._id}
+              className="card w-96 h-full mx-auto relative group bg-white dark:bg-gray-800 rounded-2xl shadow-sm hover:shadow-lg transition-all duration-300 overflow-hidden"
+            >
+              {/* 🔒 Premium Overlay (ONLY when locked) */}
+              {isLocked && (
+                <div className="absolute inset-0 z-20 flex flex-col items-center justify-center bg-black/60 backdrop-blur-sm text-white px-6 text-center">
+                  <Lock className="text-purple-400 mb-3" size={22} />
+                  <p className="text-sm leading-relaxed">
+                    Premium content. Upgrade to unlock this lesson.
+                  </p>
+                  <Link
+                    to="/pricing"
+                    className="mt-4 inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-purple-600 hover:bg-purple-700 transition text-sm font-medium"
+                  >
+                    <Zap size={14} />
+                    Upgrade
+                  </Link>
+                </div>
+              )}
+
+              {/* Card Content Wrapper */}
+              <div className={isLocked ? "blur-sm pointer-events-none" : ""}>
+                {/* Header */}
+                <div className="flex items-center justify-between px-4 py-3">
+                  <div className="flex items-center gap-3">
+                    <img
+                      src={lesson.creatorPhoto}
+                      alt={lesson.creatorName}
+                      className="w-9 h-9 rounded-full object-cover"
+                    />
+                    <span className="text-sm font-medium text-gray-700 dark:text-gray-300">
+                      {lesson.creatorName}
+                    </span>
+                  </div>
+
+                  <span
+                    className={`px-3 py-1 text-xs rounded-full font-medium text-white ${
+                      lesson.accessLevel === "free"
+                        ? "bg-emerald-600"
+                        : isPremiumUser
+                          ? "bg-purple-600"
+                          : "bg-orange-500"
+                    }`}
+                  >
+                    {lesson.accessLevel}
+                  </span>
+                </div>
+
+                {/* Content Area (Thumbnail + Body) with hover overlay */}
+                <div className="relative">
+                  {/* Thumbnail */}
+                  <div className="relative w-full aspect-video overflow-hidden">
+                    <img
+                      src={lesson.image}
+                      alt={lesson.title}
+                      className="w-full h-full object-cover hover:scale-105 transition-transform duration-300"
+                    />
+                  </div>
+
+                  {/* Body */}
+                  <div className="p-4 space-y-3">
+                    <h2 className="text-lg font-semibold text-gray-900 dark:text-white line-clamp-2">
+                      {lesson.title}
+                    </h2>
+
+                    <span
+                      className={`inline-block px-2 py-1 text-xs rounded-md text-white ${
+                        lesson.emotionalTone === "Urgent"
+                          ? "bg-orange-400"
+                          : "bg-green-600"
+                      }`}
+                    >
+                      {lesson.emotionalTone}
+                    </span>
+                  </div>
+
+                  {/* ✅ Read button overlay - ONLY covers thumbnail + body */}
+                  {!isLocked && (
+                    <div className="absolute inset-0 z-10 flex items-center justify-center bg-black/50 opacity-0 group-hover:opacity-100 transition">
+                      <Link
+                        to={`/all-lessons/${lesson?._id}`}
+                        className="px-5 py-2 rounded-lg bg-blue-600 text-white text-sm font-medium hover:bg-blue-700 flex items-center gap-2"
+                      >
+                        Read Post <LogIn size={18} />
+                      </Link>
+                    </div>
+                  )}
+                </div>
+
+                {/* Footer - Outside the overlay area */}
+                <div className="flex items-center justify-between px-4 py-3 border-t border-gray-200 dark:border-gray-700 text-gray-600 dark:text-gray-300">
+                  <div className="flex items-center gap-2 hover:text-green-500 cursor-pointer transition">
+                    {/* upvote */}
+                    <svg
+                      className="w-5 h-5"
+                      viewBox="0 0 24 24"
+                      fill="currentColor"
+                    >
+                      {" "}
+                      <path d="M9.456 4.216l-5.985 7.851a2.384 2.384 0 002.545 3.551l2.876-.864.578 4.042a2.384 2.384 0 004.72 0l.576-4.042 2.877.864a2.384 2.384 0 002.625-3.668L14.63 4.33a3.268 3.268 0 00-5.174-.115z" />{" "}
+                    </svg>
+                    <span className="text-sm">{lesson.likesCount}</span>
+                  </div>
+                  {/* Downvote */}{" "}
+                  <svg
+                    className="w-5 h-5 rotate-180 hover:text-red-500 cursor-pointer transition"
+                    viewBox="0 0 24 24"
+                    fill="currentColor"
+                  >
+                    {" "}
+                    <path d="M9.456 4.216l-5.985 7.851a2.384 2.384 0 002.545 3.551l2.876-.864.578 4.042a2.384 2.384 0 004.72 0l.576-4.042 2.877.864a2.384 2.384 0 002.625-3.668L14.63 4.33a3.268 3.268 0 00-5.174-.115z" />{" "}
+                  </svg>
+                  <div className="flex items-center gap-2 hover:text-yellow-500 cursor-pointer transition">
+                    <Bookmark size={18} />
+                    <span className="text-sm">{lesson.favoritesCount}</span>
+                  </div>
+                  <Share2
+                    size={18}
+                    className="hover:text-blue-500 cursor-pointer transition"
+                  />
+                </div>
+              </div>
             </div>
-            {/* downvote */}
-            <div className="downvote">
-              <svg
-                width="1em"
-                height="1em"
-                viewBox="0 0 24 24"
-                xmlns="http://www.w3.org/2000/svg"
-                className="w-5 h-5 pointer-events-none rotate-180 text-gray-700 dark:text-gray-300"
-              >
-                <path
-                  d="M9.456 4.216l-5.985 7.851c-.456.637-.583 1.402-.371 2.108l.052.155a2.384 2.384 0 002.916 1.443l2.876-.864.578 4.042a2.384 2.384 0 002.36 2.047h.234l.161-.006a2.384 2.384 0 002.2-2.041l.576-4.042 2.877.864a2.384 2.384 0 002.625-3.668L14.63 4.33a3.268 3.268 0 00-5.174-.115zm3.57.613c.16.114.298.253.411.411l5.897 7.736a.884.884 0 01-.973 1.36l-3.563-1.069a.884.884 0 00-1.129.722l-.678 4.75a.884.884 0 01-.875.759h-.234a.884.884 0 01-.875-.76l-.679-4.75a.884.884 0 00-1.128-.72l-3.563 1.068a.884.884 0 01-.973-1.36L10.56 5.24a1.767 1.767 0 012.465-.41z"
-                  fill="currentcolor"
-                  fillRule="evenodd"
-                ></path>
-              </svg>
-            </div>
-            {/* comments */}
-            <div className="comments"></div>
-            {/* bookmark */}
-            <div className="bookmark text-gray-700 dark:text-gray-300">
-              <Bookmark></Bookmark>
-            </div>
-            {/* share */}
-            <div className="share text-gray-700 dark:text-gray-300">
-              <Share2></Share2>
-            </div>
-          </div>
-        </div>
+          );
+        })}
       </div>
     </div>
   );

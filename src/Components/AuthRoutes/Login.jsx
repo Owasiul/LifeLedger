@@ -2,12 +2,10 @@ import React from "react";
 import { NavLink, useLocation, useNavigate } from "react-router";
 import useAuth from "../../Hooks/useAuth";
 import { useForm } from "react-hook-form";
-// import useAxiosSecure from "../../Hooks/useAxiosSecure";
 
 const Login = () => {
   const { register, handleSubmit, user } = useForm();
   const { signInwithEmail_Password, googleSignIn, updateUserData } = useAuth();
-  //   const axiosSecure = useAxiosSecure();
   const location = useLocation();
   // console.log(location);
   const navigate = useNavigate();
@@ -59,6 +57,7 @@ const Login = () => {
       console.log(error);
     }
   };
+
   return (
     <div>
       <div className="head space-y-1.5">
