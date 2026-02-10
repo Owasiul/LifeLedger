@@ -3,10 +3,11 @@ import { Link } from "react-router";
 import useAxiosSecure from "../../../../Hooks/useAxiosSecure";
 import { useQuery } from "@tanstack/react-query";
 import useUser from "../../../../Hooks/useUser";
+import useAuth from "../../../../Hooks/useAuth";
 
 const FeaturedLessons = () => {
   const axiosSecure = useAxiosSecure();
-
+  const { user } = useAuth();
   const { data: lessons = [] } = useQuery({
     queryKey: ["lessons"],
     queryFn: async () => {
@@ -14,6 +15,14 @@ const FeaturedLessons = () => {
       return res.data;
     },
   });
+
+  // handleLike
+  const handleLike = async (lessonID) => {
+    const res = await axiosSecure.post(`/lessons/${lessonID}/likes`, {
+      user: user._id,
+    });
+    return res.data;
+  };
 
   const { userData } = useUser();
   const isPremiumUser = userData?.isPremium;
@@ -127,16 +136,23 @@ const FeaturedLessons = () => {
                 {/* Footer - Outside the overlay area */}
                 <div className="flex items-center justify-between px-4 py-3 border-t border-gray-200 dark:border-gray-700 text-gray-600 dark:text-gray-300">
                   <div className="flex items-center gap-2 hover:text-green-500 cursor-pointer transition">
-                    {/* upvote */}
-                    <svg
-                      className="w-5 h-5"
-                      viewBox="0 0 24 24"
-                      fill="currentColor"
+                    <button
+                      onClick={() => {
+                        handleLike(lesson._id);
+                      }}
+                      className="upvote flex flex-row gap-3"
                     >
-                      {" "}
-                      <path d="M9.456 4.216l-5.985 7.851a2.384 2.384 0 002.545 3.551l2.876-.864.578 4.042a2.384 2.384 0 004.72 0l.576-4.042 2.877.864a2.384 2.384 0 002.625-3.668L14.63 4.33a3.268 3.268 0 00-5.174-.115z" />{" "}
-                    </svg>
-                    <span className="text-sm">{lesson.likesCount}</span>
+                      {/* upvote */}
+                      <svg
+                        className="w-5 h-5"
+                        viewBox="0 0 24 24"
+                        fill="currentColor"
+                      >
+                        {" "}
+                        <path d="M9.456 4.216l-5.985 7.851a2.384 2.384 0 002.545 3.551l2.876-.864.578 4.042a2.384 2.384 0 004.72 0l.576-4.042 2.877.864a2.384 2.384 0 002.625-3.668L14.63 4.33a3.268 3.268 0 00-5.174-.115z" />{" "}
+                      </svg>
+                      <span className="text-sm">{lesson.likesCount}</span>
+                    </button>
                   </div>
                   {/* Downvote */}{" "}
                   <svg

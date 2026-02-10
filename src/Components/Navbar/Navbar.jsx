@@ -1,11 +1,10 @@
 import { Moon, Sun } from "lucide-react";
 import React, { useEffect, useState } from "react";
 import { Link, NavLink } from "react-router";
-import "./Navbar.css";
 import Logo from "../../assets/Logo.png";
 import AvatarDropdown from "./AvatarDropdown/AvatarDropdown";
 import useAuth from "../../Hooks/useAuth";
-
+import "./CSS/Navbar.css";
 const Navbar = () => {
   const { user } = useAuth();
 
@@ -21,7 +20,7 @@ const Navbar = () => {
   const navItems = (
     <div className="flex lg:flex-row flex-col">
       <li className="text-lg text-content font-medium hover:text-violet-400">
-        <NavLink to={user ? `/dashboard/add-lesson` : "/auth/login"}>
+        <NavLink to={user ? `/dashboard/add-lessons` : "/auth/login"}>
           Add Lesson
         </NavLink>
       </li>

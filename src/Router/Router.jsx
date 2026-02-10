@@ -11,6 +11,8 @@ import PaymentCancel from "../Pages/Payment/PaymentCancel/PaymentCancel";
 import Lessons from "../Pages/Lessons/Lessons";
 import LessonsDetails from "../Pages/Lessons/LessonsDetails";
 import PrivateRoute from "../Context/PrivateRoute";
+import Dashboard from "../Pages/Dashboard/Dashboard";
+import AddLesson from "../Pages/Dashboard/Dashboard_Components/AddLesson";
 
 export const router = createBrowserRouter([
   {
@@ -67,5 +69,19 @@ export const router = createBrowserRouter([
         <LessonsDetails></LessonsDetails>,
       </PrivateRoute>
     ),
+  },
+  {
+    path: "/dashboard",
+    element: (
+      <PrivateRoute>
+        <Dashboard></Dashboard>
+      </PrivateRoute>
+    ),
+    children: [
+      {
+        path: "/dashboard/add-lessons",
+        Component: AddLesson,
+      },
+    ],
   },
 ]);

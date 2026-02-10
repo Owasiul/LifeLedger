@@ -31,6 +31,17 @@ const LessonsDetails = () => {
     },
   });
 
+  const { data: filteredData = [] } = useQuery({
+    queryKey: ["filterdData", lessonsDetails?.category],
+    queryFn: async () => {
+      const res = await axiosSecure.get(
+        `/filtered-lessons?category=${lessonsDetails?.category}`,
+      );
+      return res.data;
+    },
+  });
+
+  // format date
   const formatDate = (dateString) => {
     if (!dateString) return "N/A";
     return new Date(dateString).toLocaleDateString("en-US", {
@@ -40,6 +51,7 @@ const LessonsDetails = () => {
     });
   };
 
+  // format reading time
   const calculateReadingTime = (text) => {
     if (!text) return "5 min read";
     const wordsPerMinute = 200;
@@ -152,7 +164,7 @@ const LessonsDetails = () => {
                     <div className="flex items-center gap-2">
                       <Heart className="w-5 h-5 text-slate-400" />
                       <span className="text-white font-semibold">
-                        {lessonsDetails.likesCount} Likes
+                        {lessonsDetails.likes.length} Likes
                       </span>
                     </div>
                     <div className="flex items-center gap-2">
@@ -197,7 +209,11 @@ const LessonsDetails = () => {
                   {/* Comment Input */}
                   <div className="flex gap-3">
                     <div className="w-10 h-10 rounded-full shrink-0">
-                      <img className="rounded-full" src={user.photoURL} alt="" />
+                      <img
+                        className="rounded-full"
+                        src={user.photoURL}
+                        alt=""
+                      />
                     </div>
                     <div className="flex-1 flex gap-2">
                       <input
@@ -235,12 +251,6 @@ const LessonsDetails = () => {
                     <h3 className="text-xl font-bold text-white mb-1">
                       {lessonsDetails.creatorName}
                     </h3>
-                    <p className="text-slate-400 text-sm mb-4">
-                      Total Lessons Created: 150
-                    </p>
-                    <button className="w-full px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg transition-colors">
-                      View all lessons by this author
-                    </button>
                   </div>
                 </div>
 
@@ -253,7 +263,37 @@ const LessonsDetails = () => {
                   </div>
 
                   <div className="space-y-3">
-                    {/* Todo need to show similar data */}
+                    {filteredData.map((sameData) => {
+                      return (
+                        <div
+                          key={sameData?._id}
+                          className="bg-slate-700/50 rounded-lg p-3 hover:bg-slate-700 transition-colors cursor-pointer"
+                        >
+                          <div className="flex gap-3">
+                            <div className="w-16 h-20 ">
+                              <img
+                                className="object-contain rounded-lg"
+                                src={sameData.image}
+                                alt=""
+                              />
+                            </div>
+                            <div className="flex-1 min-w-0">
+                              <h4 className="font-semibold text-white text-sm mb-1 truncate">
+                                {sameData.title}
+                              </h4>
+                              <div className="flex items-center gap-2 text-xs text-slate-400">
+                                <span className="px-2 py-0.5 bg-blue-600/20 text-blue-400 rounded">
+                                  {sameData.category}
+                                </span>
+                                <span className="px-2 py-0.5 bg-purple-600/20 text-purple-400 rounded">
+                                  {sameData.emotionalTone}
+                                </span>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      );
+                    })}
                   </div>
                 </div>
 

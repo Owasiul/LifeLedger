@@ -62,7 +62,10 @@ const AvatarDropdown = () => {
 
           {/* Menu Items */}
           <div className="p-2 border-t border-base-300">
-            <Link className="btn btn-ghost justify-start w-full flex flex-row  gap-2 py-3 px-4 border-b border-gray-100">
+            <Link
+              to="/dashboard"
+              className="btn btn-ghost justify-start w-full flex flex-row  gap-2 py-3 px-4 border-b border-gray-100"
+            >
               <LucideLayoutDashboard size={20}></LucideLayoutDashboard>
               <span className="text-lg font-semibold">DashBoard</span>{" "}
             </Link>

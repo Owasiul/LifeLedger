@@ -12,10 +12,11 @@ import {
   ThumbsUp,
   Zap,
 } from "lucide-react";
+import useAuth from "../../Hooks/useAuth";
 
 const Lessons = () => {
   const axiosSecure = useAxiosSecure();
-
+  const { user } = useAuth();
   const { data: lessons = [] } = useQuery({
     queryKey: ["lessons"],
     queryFn: async () => {
@@ -24,6 +25,13 @@ const Lessons = () => {
     },
   });
 
+  // handleLike
+  const handleLike = async (lessonID) => {
+    const res = await axiosSecure.post(`/lessons/${lessonID}/likes`, {
+      user: user._id,
+    });
+    return res.data;
+  };
   const { userData } = useUser();
   const isPremiumUser = userData?.isPremium;
   return (
@@ -124,10 +132,13 @@ const Lessons = () => {
               {/* Footer - outside the overlay wrapper */}
               <div className="mt-auto px-5 py-4 border-t border-gray-100 dark:border-slate-800 flex items-center justify-between">
                 <div className="flex items-center gap-4 text-slate-500 dark:text-slate-400">
-                  <button className="flex items-center gap-1 hover:text-emerald-500 transition-colors">
+                  <button
+                    onClick={() => handleLike(lesson?._id)}
+                    className="flex items-center gap-1 hover:text-emerald-500 transition-colors"
+                  >
                     <ThumbsUp size={18} />{" "}
                     <span className="text-xs font-bold">
-                      {lesson.likesCount}
+                      {lesson.likes.length}
                     </span>
                   </button>
                   <button className="hover:text-rose-500 transition-colors">
@@ -135,14 +146,18 @@ const Lessons = () => {
                   </button>
                 </div>
                 <div className="flex items-center gap-2 text-slate-400">
-                  <Bookmark
-                    size={18}
-                    className="hover:text-amber-500 cursor-pointer"
-                  />
-                  <Share2
-                    size={18}
-                    className="hover:text-indigo-500 cursor-pointer"
-                  />
+                  <div className="">
+                    <Bookmark
+                      size={18}
+                      className="hover:text-amber-500 cursor-pointer"
+                    />
+                  </div>
+                  <div className="">
+                    <Share2
+                      size={18}
+                      className="hover:text-indigo-500 cursor-pointer"
+                    />
+                  </div>
                 </div>
               </div>
             </div>
