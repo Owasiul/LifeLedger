@@ -1,4 +1,4 @@
-import { Moon, Sun } from "lucide-react";
+import { Menu, Moon, Sun } from "lucide-react";
 import React, { useEffect, useState } from "react";
 import { Link, NavLink } from "react-router";
 import Logo from "../../assets/Logo.png";
@@ -18,7 +18,7 @@ const Navbar = () => {
   const toggleTheme = () => setTheme(theme === "light" ? "dark" : "light");
   // nav items
   const navItems = (
-    <div className="flex lg:flex-row flex-col">
+    <div className="flex lg:flex-row flex-col lg:gap-0 gap-5">
       <li className="text-lg text-content font-medium hover:text-violet-400">
         <NavLink to={user ? `/dashboard/add-lessons` : "/auth/login"}>
           Add Lesson
@@ -44,68 +44,65 @@ const Navbar = () => {
   );
   return (
     <div>
-      <div className="navbar bg-base-100 shadow-sm">
+      <div className="navbar bg-base-100 shadow-sm px-4">
+        {/* LEFT SIDE */}
         <div className="navbar-start">
-          <div className="dropdown">
+          {/* Mobile Menu */}
+          <div className="dropdown block">
             <div tabIndex={0} role="button" className="btn btn-ghost lg:hidden">
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                className="h-5 w-5"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
-              >
-                {" "}
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth="2"
-                  d="M4 6h16M4 12h8m-8 6h16"
-                />{" "}
-              </svg>
+              <Menu className="w-5 h-5" />
             </div>
+
             <ul
-              tabIndex="-1"
-              className="menu menu-sm dropdown-content bg-base-100 rounded-box z-1 mt-3 w-52 p-2 shadow"
+              tabIndex={0}
+              className="menu menu-sm dropdown-content mt-3 p-2 shadow bg-base-100 rounded-box w-72"
             >
               {navItems}
             </ul>
           </div>
-          <NavLink to="/">
-            <img className="object-contain w-20" src={Logo} alt="" />{" "}
+
+          {/* Logo */}
+          <NavLink to="/" className="">
+            <img className="object-contain w-20" src={Logo} alt="logo" />
           </NavLink>
         </div>
+
+        {/* CENTER (Desktop Only) */}
         <div className="navbar-center hidden lg:flex">
           <ul className="menu menu-horizontal px-1">{navItems}</ul>
         </div>
-        <div className="navbar-end flex flex-row gap-3">
-          {/* Theme toggle */}
+
+        {/* RIGHT SIDE */}
+        <div className="navbar-end flex items-center gap-3">
+          {/* Theme Toggle */}
           <label className="swap swap-rotate btn btn-ghost btn-circle">
             <input
               type="checkbox"
               onChange={toggleTheme}
               checked={theme === "dark"}
             />
-            <svg className="swap-off w-5 h-5" viewBox="0 0 24 24">
-              <Moon></Moon>
-            </svg>
-            <svg className="swap-on w-5 h-5" viewBox="0 0 24 24">
-              <Sun></Sun>
-            </svg>
+
+            {/* Light Mode Icon */}
+            <Moon className="swap-off w-5 h-5" />
+
+            {/* Dark Mode Icon */}
+            <Sun className="swap-on w-5 h-5" />
           </label>
+
           {user ? (
-            <AvatarDropdown></AvatarDropdown>
+            <AvatarDropdown />
           ) : (
             <>
               <Link
                 to="/auth/login"
-                className="btn bg-[#4F46E5] hover:bg-[#4338CA] text-white"
+                className="btn btn-sm md:btn-md bg-[#4F46E5] hover:bg-[#4338CA] text-white"
               >
                 Sign In
               </Link>
+
               <Link
                 to="/auth/register"
-                className="btn bg-accent hover:bg-sky-600 text-white"
+                className="btn btn-sm md:btn-md bg-accent hover:bg-sky-600 text-white"
               >
                 Sign Up
               </Link>

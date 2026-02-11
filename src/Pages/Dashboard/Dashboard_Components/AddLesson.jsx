@@ -9,13 +9,58 @@ import {
   Save,
   X,
 } from "lucide-react";
+import { useForm } from "react-hook-form";
+import useAxiosSecure from "../../../Hooks/useAxiosSecure";
+import useAuth from "../../../Hooks/useAuth";
+import axios from "axios";
 
 const AddLesson = () => {
   const { userData } = useUser();
-  console.log(userData);
+  const { user } = useAuth();
+  const axiosSecure = useAxiosSecure();
+  const { register, handleSubmit } = useForm();
+
+  const handleSubmitPost = async (data) => {
+    const isFeatured = userData.isPremium === true ? true : false;
+    try {
+      // Create FormData and upload image to imgbb
+      const formData = new FormData();
+      formData.append("image", data.image[0]);
+
+      const image_API_URL = `https://api.imgbb.com/1/upload?key=${
+        import.meta.env.VITE_Imgbb
+      }`;
+
+      // ✔️ Await the imgbb upload
+      const imgbbResponse = await axios.post(image_API_URL, formData);
+
+      const uploadedImageUrl = imgbbResponse.data.data.url;
+
+      const lessonData = {
+        title: data.title,
+        description: data.description,
+        category: data.category,
+        emotionalTone: data.emotionalTone,
+        image: uploadedImageUrl,
+        visibility: data.visibility,
+        accessLevel: data.accessLevel,
+        creatorId: userData._id,
+        creatorName: user.displayName,
+        creatorPhoto: user.photoURL,
+        likes: [],
+        isFeatured,
+      };
+      const res = await axiosSecure.post("/lessons", lessonData);
+      console.log(lessonData, data);
+      console.log(res.data);
+      return res.data;
+    } catch (error) {
+      console.log(error);
+    }
+  };
   return (
     <div>
-      <form className="space-y-8">
+      <form onSubmit={handleSubmit(handleSubmitPost)} className="space-y-8">
         {/* Sticky Header */}
         <div className="sticky top-0 z-20 bg-base-100/80 backdrop-blur border-b border-base-200">
           <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 py-5">
@@ -65,6 +110,7 @@ const AddLesson = () => {
                   <input
                     type="text"
                     name="title"
+                    {...register("title")}
                     required
                     placeholder="The one thing I wish I knew at 20…"
                     className="
@@ -82,6 +128,7 @@ const AddLesson = () => {
                   </label>
                   <textarea
                     name="description"
+                    {...register("description")}
                     required
                     placeholder="Tell the full story. What happened? What changed your perspective?"
                     className="
@@ -113,6 +160,7 @@ const AddLesson = () => {
                   </label>
                   <select
                     name="category"
+                    {...register("category")}
                     required
                     className="select select-bordered focus:select-primary"
                   >
@@ -133,6 +181,7 @@ const AddLesson = () => {
                   </label>
                   <select
                     name="tone"
+                    {...register("emotionalTone")}
                     required
                     className="select select-bordered focus:select-primary"
                   >
@@ -160,7 +209,11 @@ const AddLesson = () => {
                   <label className="label text-xs font-semibold text-base-content/50 uppercase">
                     Privacy
                   </label>
-                  <select name="privacy" className="select select-bordered">
+                  <select
+                    name="privacy"
+                    {...register("visibility")}
+                    className="select select-bordered"
+                  >
                     <option value="public">Public (Everyone)</option>
                     <option value="private">Private (Only Me)</option>
                   </select>
@@ -173,27 +226,28 @@ const AddLesson = () => {
 
                   <div
                     className={
-                      userData?.isPremium !== "premium"
+                      userData?.isPremium === false
                         ? "tooltip tooltip-top w-full"
                         : "w-full"
                     }
                     data-tip={
-                      userData?.isPremium !== "premium"
+                      userData?.isPremium === false
                         ? "Upgrade to Premium to create paid lessons"
                         : undefined
                     }
                   >
                     <select
                       name="access"
-                      disabled={userData?.isPremium !== "premium"}
+                      {...register("accessLevel")}
+                      disabled={userData?.isPremium === false}
                       className={`
-                  select select-bordered w-full
-                  ${
-                    userData?.isPremium !== "premium"
-                      ? "bg-base-200 text-base-content/40 cursor-not-allowed"
-                      : "select-primary border-primary"
-                  }
-                `}
+      select select-bordered w-full
+      ${
+        userData?.isPremium === false
+          ? "bg-base-200 text-base-content/40 cursor-not-allowed"
+          : "select-primary border-primary"
+      }
+    `}
                     >
                       <option value="free">Free Lesson</option>
                       <option value="premium">💎 Premium Lesson</option>
@@ -231,6 +285,7 @@ const AddLesson = () => {
                     type="file"
                     id="image-upload"
                     accept="image/*"
+                    {...register("image")}
                     className="hidden"
                   />
                 </label>

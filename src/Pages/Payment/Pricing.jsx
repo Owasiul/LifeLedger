@@ -4,10 +4,11 @@ import Navbar from "../../Components/Navbar/Navbar";
 import Footer from "../../Components/Footer/Footer";
 import useAxiosSecure from "../../Hooks/useAxiosSecure";
 import useAuth from "../../Hooks/useAuth";
+import useUser from "../../Hooks/useUser";
 
 const Pricing = () => {
-
   const axiosSecure = useAxiosSecure();
+  const { userData } = useUser();
   const { user } = useAuth();
   const handlePayment = async () => {
     const res = await axiosSecure.post(`/create-checkout-session`, {
@@ -120,20 +121,34 @@ const Pricing = () => {
             {/* Footer Actions */}
             <tfoot>
               <tr>
-                <td></td>
-                <td className="text-center py-6">
-                  <button className="btn btn-outline btn-sm sm:btn-md btn-primary w-full max-w-30">
-                    Current Plan
-                  </button>
-                </td>
-                <td className="text-center py-6 bg-base-200/30 rounded-b-lg">
-                  <button
-                    onClick={handlePayment}
-                    className="btn btn-secondary btn-sm sm:btn-md w-full max-w-30 shadow-lg shadow-secondary/20"
-                  >
-                    <Zap size={16} fill="currentColor" /> Upgrade
-                  </button>
-                </td>
+                {userData?.isPremium === false ? (
+                  <>
+                    <td></td>
+                    <td className="text-center py-6">
+                      <button className="btn btn-outline btn-sm sm:btn-md btn-primary w-full max-w-30">
+                        Current Plan
+                      </button>
+                    </td>
+                    <td className="text-center py-6 bg-base-200/30 rounded-b-lg">
+                      <button
+                        onClick={handlePayment}
+                        className="btn btn-secondary btn-sm sm:btn-md w-full max-w-30 shadow-lg shadow-secondary/20"
+                      >
+                        <Zap size={16} fill="currentColor" /> Upgrade
+                      </button>
+                    </td>
+                  </>
+                ) : (
+                  <>
+                    <td></td>
+                    <td></td>
+                    <td className="text-center py-6">
+                      <button className="btn btn-outline btn-sm sm:btn-md btn-primary w-full max-w-30">
+                        Current Plan
+                      </button>
+                    </td>
+                  </>
+                )}
               </tr>
             </tfoot>
           </table>

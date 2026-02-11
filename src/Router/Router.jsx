@@ -13,6 +13,7 @@ import LessonsDetails from "../Pages/Lessons/LessonsDetails";
 import PrivateRoute from "../Context/PrivateRoute";
 import Dashboard from "../Pages/Dashboard/Dashboard";
 import AddLesson from "../Pages/Dashboard/Dashboard_Components/AddLesson";
+import UserLessons from "../Pages/Dashboard/Dashboard_Components/UserLessons";
 
 export const router = createBrowserRouter([
   {
@@ -81,6 +82,10 @@ export const router = createBrowserRouter([
       {
         path: "/dashboard/add-lessons",
         Component: AddLesson,
+      },
+      {
+        path: "/dashboard/my-lessons",
+        Component: UserLessons,
       },
     ],
   },

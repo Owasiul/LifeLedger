@@ -45,7 +45,7 @@ const FeaturedLessons = () => {
           return (
             <div
               key={lesson._id}
-              className="card w-96 h-full mx-auto relative group bg-white dark:bg-gray-800 rounded-2xl shadow-sm hover:shadow-lg transition-all duration-300 overflow-hidden"
+              className="card lg:w-96 full h-full mx-auto relative group bg-white dark:bg-gray-800 rounded-2xl shadow-sm hover:shadow-lg transition-all duration-300 overflow-hidden"
             >
               {/* 🔒 Premium Overlay (ONLY when locked) */}
               {isLocked && (

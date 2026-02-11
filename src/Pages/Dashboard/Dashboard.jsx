@@ -13,8 +13,12 @@ import {
   LogOut,
 } from "lucide-react";
 import useAuth from "../../Hooks/useAuth";
+import Logo from "../../assets/Logo.png";
 const Dashboard = () => {
-  const { user } = useAuth();
+  const { user, LogOut: logout } = useAuth();
+  const handleLogOut = () => {
+    logout().catch((error) => console.log(error));
+  };
   return (
     <div>
       <div className="drawer lg:drawer-open bg-base-100">
@@ -42,27 +46,12 @@ const Dashboard = () => {
 
             {/* Navbar Right Side */}
             <div className="flex-none gap-2">
-              <div className="dropdown dropdown-end ml-2">
-                <div
-                  tabIndex={0}
-                  role="button"
-                  className="btn btn-ghost btn-circle avatar"
-                >
-                  <div className="w-10 rounded-full border border-primary/20">
-                    <img alt="User Profile" src={user.photoURL} />
-                  </div>
-                </div>
-                <ul
-                  tabIndex={0}
-                  className="mt-3 z-1 p-2 shadow-xl menu menu-sm dropdown-content bg-base-100 rounded-box w-52 border border-base-200"
-                >
-                  <li>
-                    <a>Profile Settings</a>
-                  </li>
-                  <li>
-                    <a className="text-error">Logout</a>
-                  </li>
-                </ul>
+              <div className="w-10">
+                <img
+                  className="rounded-full"
+                  alt="User Profile"
+                  src={user.photoURL}
+                />
               </div>
             </div>
           </nav>
@@ -77,16 +66,11 @@ const Dashboard = () => {
         <div className="drawer-side z-50">
           <label htmlFor="my-drawer-4" className="drawer-overlay"></label>
 
-          <aside className="w-72 bg-base-200/50 border-r border-base-300 min-h-screen flex flex-col">
+          <aside className="w-72 bg-base-100 border-r border-base-300 min-h-screen flex flex-col">
             {/* Logo Section */}
-            <div className="p-6 mb-2 flex items-center gap-3">
-              <div className="bg-primary p-2 rounded-xl text-primary-content">
-                <BookOpen size={24} />
-              </div>
-              <span className="text-xl font-bold tracking-tight">
-                Lifeledger
-              </span>
-            </div>
+            <Link to="/" className="p-6 mb-2 flex items-center gap-3">
+              <img className="w-20" src={Logo} alt="" />
+            </Link>
 
             <ul className="menu p-4 pt-0 gap-1 text-base-content flex-1">
               <li className="menu-title text-xs uppercase tracking-widest opacity-50 mt-4 mb-2">
@@ -171,7 +155,10 @@ const Dashboard = () => {
 
             {/* Footer Sidebar Section */}
             <div className="p-4 mt-auto border-t border-base-300">
-              <button className="btn btn-ghost btn-block justify-start gap-3 hover:bg-error/10 hover:text-error transition-colors">
+              <button
+                onClick={handleLogOut}
+                className="btn btn-ghost btn-block justify-start gap-3 hover:bg-error/10 hover:text-error transition-colors"
+              >
                 <LogOut size={20} />
                 <span>Sign Out</span>
               </button>

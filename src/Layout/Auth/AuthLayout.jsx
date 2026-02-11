@@ -1,14 +1,21 @@
 import React from "react";
 import Logo from "../../assets/Logo.png";
-import { Outlet } from "react-router";
+import { Outlet, useLocation } from "react-router";
+import loginImg from "../../assets/LoginImg.png";
+import registerImg from "../../assets/registerImg.png";
 const AuthLayout = () => {
+  const location = useLocation();
   return (
     <div>
       <div className="">
         <div className="min-h-screen flex flex-col">
           {/* Logo at the top left */}
           <div className="absolute top-8 left-8 z-10">
-            <img className="w-28 object-contain bg-white rounded-full" src={Logo} alt="" />
+            <img
+              className="w-28 object-contain bg-white rounded-full"
+              src={Logo}
+              alt=""
+            />
           </div>
 
           {/* Main content area with two columns */}
@@ -21,13 +28,15 @@ const AuthLayout = () => {
             </div>
 
             {/* Right side - Image area */}
-            {/* TODO: Have to add image */}
             <div className="w-full lg:w-1/2 hidden bg-[#2610ecb4] lg:flex items-center justify-center py-8">
-              <img
-                //   src={sideImg}
-                alt="Authentication illustration"
-                className="max-w-xs sm:max-w-sm lg:max-w-lg"
-              />
+              <div>
+                {" "}
+                {location.pathname === "/auth/login" ? (
+                  <img src={loginImg} alt="Login" />
+                ) : location.pathname === "/auth/register" ? (
+                  <img src={registerImg} alt="Register" />
+                ) : null}{" "}
+              </div>
             </div>
           </div>
         </div>
