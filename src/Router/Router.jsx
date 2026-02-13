@@ -14,11 +14,21 @@ import PrivateRoute from "../Context/PrivateRoute";
 import Dashboard from "../Pages/Dashboard/Dashboard";
 import AddLesson from "../Pages/Dashboard/Dashboard_Components/AddLesson";
 import UserLessons from "../Pages/Dashboard/Dashboard_Components/UserLessons";
+import Profile from "../Pages/Dashboard/Dashboard_Components/Profile";
+import Overview from "../Pages/Dashboard/Dashboard_Components/Overview";
+import AdminRoute from "../Context/AdminRoute";
+import AdminOverview from "../Pages/Dashboard/Dashboard_Admin/AdminOverview";
+import UserManagement from "../Pages/Dashboard/Dashboard_Admin/UserManagement";
+import LessonsManagement from "../Pages/Dashboard/Dashboard_Admin/LessonsManagement";
+import Loading from "../Components/Loading/Loading";
+import Error from "../Components/Error/Error";
 
 export const router = createBrowserRouter([
   {
     path: "/",
     element: <Root></Root>,
+    errorElement: <Error></Error>,
+    hydrateFallbackElement: <Loading> </Loading>,
     children: [
       {
         index: true,
@@ -38,6 +48,8 @@ export const router = createBrowserRouter([
   {
     path: "/payments",
     Component: Payment,
+    errorElement: <Error></Error>,
+    hydrateFallbackElement: <Loading> </Loading>,
     children: [
       {
         path: "/payments/payment-success",
@@ -52,6 +64,8 @@ export const router = createBrowserRouter([
   {
     path: "/auth",
     Component: AuthLayout,
+    errorElement: <Error></Error>,
+    hydrateFallbackElement: <Loading> </Loading>,
     children: [
       {
         path: "/auth/login",
@@ -71,8 +85,11 @@ export const router = createBrowserRouter([
       </PrivateRoute>
     ),
   },
+  // user / admin dashboard
   {
     path: "/dashboard",
+    errorElement: <Error></Error>,
+    hydrateFallbackElement: <Loading> </Loading>,
     element: (
       <PrivateRoute>
         <Dashboard></Dashboard>
@@ -80,12 +97,46 @@ export const router = createBrowserRouter([
     ),
     children: [
       {
+        index: true,
+        path: "/dashboard/overview",
+        Component: Overview,
+      },
+      {
         path: "/dashboard/add-lessons",
         Component: AddLesson,
       },
       {
         path: "/dashboard/my-lessons",
         Component: UserLessons,
+      },
+      {
+        path: "/dashboard/profile",
+        Component: Profile,
+      },
+      // Admin Dashboard
+      {
+        path: "/dashboard/admin-overview",
+        element: (
+          <AdminRoute>
+            <AdminOverview></AdminOverview>
+          </AdminRoute>
+        ),
+      },
+      {
+        path: "/dashboard/users-management",
+        element: (
+          <AdminRoute>
+            <UserManagement></UserManagement>
+          </AdminRoute>
+        ),
+      },
+      {
+        path: "/dashboard/lessons-management",
+        element: (
+          <AdminRoute>
+            <LessonsManagement></LessonsManagement>
+          </AdminRoute>
+        ),
       },
     ],
   },

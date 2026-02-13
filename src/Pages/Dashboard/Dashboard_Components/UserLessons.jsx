@@ -4,20 +4,23 @@ import useAuth from "../../../Hooks/useAuth";
 import useAxiosSecure from "../../../Hooks/useAxiosSecure";
 import useUser from "../../../Hooks/useUser";
 import Swal from "sweetalert2";
+import { useNavigate } from "react-router";
 
 const UserLessons = () => {
   const { user } = useAuth();
   const { userData } = useUser();
   const axiosSecure = useAxiosSecure();
+  const navigate = useNavigate();
   const { refetch, data: lessons = [] } = useQuery({
     queryKey: ["lessons", user?.displayName],
     queryFn: async () => {
       const res = await axiosSecure.get(`/lessons/${user?.displayName}`);
-      refetch();
+      console.log(res.data);
       return res.data;
     },
   });
-  const handleDeletePost = async () => {
+  // delete post
+  const handleDeletePost = async (id) => {
     Swal.fire({
       title: "Are you sure?",
       text: "You want to delete this post!",
@@ -29,7 +32,7 @@ const UserLessons = () => {
     }).then(async (result) => {
       if (result.isConfirmed) {
         try {
-          const res = await axiosSecure.delete(`/lessons/${lessons?._id}`);
+          const res = await axiosSecure.delete(`/lessons/${id}`);
 
           if (res.data) {
             Swal.fire({
@@ -37,11 +40,12 @@ const UserLessons = () => {
               text: "Your post has been deleted.",
               icon: "success",
             });
+            refetch(); // 👈 don’t forget this
           }
         } catch (error) {
           Swal.fire({
-            title: { error, message: error.message },
-            text: "Something went wrong while deleting.",
+            title: "Error",
+            text: error.message,
             icon: "error",
           });
         }
@@ -156,7 +160,10 @@ const UserLessons = () => {
                   {/* Actions - Always visible but responsive */}
                   <td className="px-4 py-4">
                     <div className="flex flex-col sm:flex-row gap-2 min-w-25">
-                      <button className="px-3 py-1.5 text-xs sm:text-sm bg-blue-100 text-blue-700 rounded-lg hover:bg-blue-200 transition-colors whitespace-nowrap">
+                      <button
+                        onClick={() => navigate(`/all-lessons/${lesson._id}`)}
+                        className="px-3 py-1.5 text-xs sm:text-sm bg-blue-100 text-blue-700 rounded-lg hover:bg-blue-200 transition-colors whitespace-nowrap"
+                      >
                         Details
                       </button>
 

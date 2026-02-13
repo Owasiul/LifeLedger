@@ -51,7 +51,7 @@ const AvatarDropdown = () => {
               </div>
               {/* user name */}
               <div>
-                <h3 className="font-semibold">{user.displayName} </h3>
+                <h3 className="font-semibold">{user?.displayName} </h3>
                 <p className="text-sm text-base-content/60">See your profile</p>
               </div>
               <div>

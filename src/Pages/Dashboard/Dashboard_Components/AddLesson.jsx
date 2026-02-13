@@ -37,16 +37,16 @@ const AddLesson = () => {
       const uploadedImageUrl = imgbbResponse.data.data.url;
 
       const lessonData = {
-        title: data.title,
-        description: data.description,
-        category: data.category,
-        emotionalTone: data.emotionalTone,
+        title: data?.title,
+        description: data?.description,
+        category: data?.category,
+        emotionalTone: data?.emotionalTone,
         image: uploadedImageUrl,
-        visibility: data.visibility,
-        accessLevel: data.accessLevel,
-        creatorId: userData._id,
-        creatorName: user.displayName,
-        creatorPhoto: user.photoURL,
+        visibility: data?.visibility,
+        accessLevel: data?.accessLevel,
+        creatorId: userData?._id,
+        creatorName: user?.displayName,
+        creatorPhoto: user?.photoURL,
         likes: [],
         isFeatured,
       };

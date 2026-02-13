@@ -11,10 +11,15 @@ import {
   Bell,
   Search,
   LogOut,
+  HomeIcon,
+  UserCircle2,
+  BookText,
 } from "lucide-react";
 import useAuth from "../../Hooks/useAuth";
 import Logo from "../../assets/Logo.png";
+import useRoles from "../../Hooks/useRoles";
 const Dashboard = () => {
+  const { role } = useRoles();
   const { user, LogOut: logout } = useAuth();
   const handleLogOut = () => {
     logout().catch((error) => console.log(error));
@@ -39,7 +44,6 @@ const Dashboard = () => {
               <div className="hidden sm:block text-sm breadcrumbs px-4">
                 <ul>
                   <li>Dashboard</li>
-                  <li className="font-semibold text-primary">Overview</li>
                 </ul>
               </div>
             </div>
@@ -76,10 +80,9 @@ const Dashboard = () => {
               <li className="menu-title text-xs uppercase tracking-widest opacity-50 mt-4 mb-2">
                 Main Menu
               </li>
-
               <li>
                 <NavLink
-                  to="/"
+                  to="/dashboard/overview"
                   end
                   className={({ isActive }) =>
                     isActive
@@ -151,6 +154,32 @@ const Dashboard = () => {
                   <span>Profile</span>
                 </NavLink>
               </li>
+
+              {role === "admin" && (
+                <>
+                  <li className="menu-title text-xs uppercase tracking-widest opacity-50 mt-6 mb-2">
+                    Admin Management
+                  </li>
+                  <li>
+                    <NavLink to="/dashboard/admin-overview">
+                      <HomeIcon />
+                      <span>Admin Overview</span>
+                    </NavLink>
+                  </li>
+                  <li>
+                    <NavLink to="/dashboard/users-management">
+                      <UserCircle2 />
+                      <span>Users Management</span>
+                    </NavLink>
+                  </li>
+                  <li>
+                    <NavLink to="/dashboard/lessons-management">
+                      <BookText />
+                      <span>Lessons Management</span>
+                    </NavLink>
+                  </li>
+                </>
+              )}
             </ul>
 
             {/* Footer Sidebar Section */}
