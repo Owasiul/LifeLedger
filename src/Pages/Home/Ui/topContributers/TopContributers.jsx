@@ -11,7 +11,6 @@ const TopContributers = () => {
       return res.data;
     },
   });
-  console.log(topContributers);
   return (
     <div className="w-[90%] mx-auto my-5">
       <div className="title">

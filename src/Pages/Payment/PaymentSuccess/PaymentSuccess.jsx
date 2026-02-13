@@ -10,11 +10,7 @@ const PaymentSuccess = () => {
   const axiosSecure = useAxiosSecure();
   useEffect(() => {
     if (setSessonId) {
-      axiosSecure
-        .patch(`/verify-payment-success?session_id=${setSessonId}`)
-        .then((res) => {
-          console.log("full response", res.data);
-        });
+      axiosSecure.patch(`/verify-payment-success?session_id=${setSessonId}`);
     }
   }, [axiosSecure, setSessonId]);
   return (

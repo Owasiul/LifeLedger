@@ -11,7 +11,6 @@ const Overview = () => {
     queryKey: ["lessons", user?.displayName],
     queryFn: async () => {
       const res = await axiosSecure.get(`/lessons/${user?.displayName}`);
-      console.log(res.data);
       return res.data;
     },
   });
@@ -19,7 +18,6 @@ const Overview = () => {
     queryKey: ["users"],
     queryFn: async () => {
       const res = await axiosSecure.get(`/users`);
-      console.log(res.data);
       return res.data;
     },
   });

@@ -52,8 +52,6 @@ const AddLesson = () => {
         isFeatured,
       };
       const res = await axiosSecure.post("/lessons", lessonData);
-      console.log(lessonData, data);
-      console.log(res.data);
       return res.data;
     } catch (error) {
       console.log(error);

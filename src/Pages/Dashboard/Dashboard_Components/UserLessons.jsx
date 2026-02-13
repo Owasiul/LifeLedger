@@ -15,7 +15,6 @@ const UserLessons = () => {
     queryKey: ["lessons", user?.displayName],
     queryFn: async () => {
       const res = await axiosSecure.get(`/lessons/${user?.displayName}`);
-      console.log(res.data);
       return res.data;
     },
   });

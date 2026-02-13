@@ -10,12 +10,8 @@ const AuthLayout = () => {
       <div className="">
         <div className="min-h-screen flex flex-col">
           {/* Logo at the top left */}
-          <div className="absolute top-8 left-8 z-10">
-            <img
-              className="w-28 object-contain bg-white rounded-full"
-              src={Logo}
-              alt=""
-            />
+          <div className="absolute top-0 left-0 z-10">
+            <img className="w-28 object-contain " src={Logo} alt="" />
           </div>
 
           {/* Main content area with two columns */}

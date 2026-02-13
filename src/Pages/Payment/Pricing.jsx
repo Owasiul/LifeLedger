@@ -14,7 +14,6 @@ const Pricing = () => {
     const res = await axiosSecure.post(`/create-checkout-session`, {
       email: user.email,
     });
-    console.log(res.data);
     if (res.data.url) {
       window.location.href = res.data.url;
     }
