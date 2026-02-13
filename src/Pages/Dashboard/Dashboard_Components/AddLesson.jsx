@@ -46,6 +46,7 @@ const AddLesson = () => {
         accessLevel: data?.accessLevel,
         creatorId: userData?._id,
         creatorName: user?.displayName,
+        creatorEmail: userData?.email,
         creatorPhoto: user?.photoURL,
         likes: [],
         isFeatured,

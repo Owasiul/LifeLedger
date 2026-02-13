@@ -17,6 +17,7 @@ import {
 import Navbar from "../../Components/Navbar/Navbar";
 import Footer from "../../Components/Footer/Footer";
 import useAuth from "../../Hooks/useAuth";
+import Swal from "sweetalert2";
 
 const LessonsDetails = () => {
   const axiosSecure = useAxiosSecure();
@@ -74,6 +75,42 @@ const LessonsDetails = () => {
       </div>
     );
   }
+
+  // reports lessons
+  const handleReportLesson = async (id) => {
+    try {
+      const result = await Swal.fire({
+        title: "Are you sure?",
+        text: "You won't be able to revert this!",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#3085d6",
+        cancelButtonColor: "#d33",
+        confirmButtonText: "Yes, report it!",
+      });
+
+      if (result.isConfirmed) {
+        const res = await axiosSecure.post(`/reports/${id}`, {
+          user: user,
+        });
+
+        Swal.fire({
+          title: "Reported!",
+          text: "The lesson has been reported successfully.",
+          icon: "success",
+        });
+
+        return res.data;
+      }
+    } catch (error) {
+      console.error(error);
+      Swal.fire({
+        title: "Error!",
+        text: "Something went wrong while reporting.",
+        icon: "error",
+      });
+    }
+  };
 
   return (
     <div>
@@ -192,7 +229,10 @@ const LessonsDetails = () => {
                     <Heart className="w-4 h-4" />
                     Like
                   </button>
-                  <button className="flex items-center gap-2 px-4 py-2 bg-slate-800 hover:bg-slate-700 text-white rounded-lg transition-colors">
+                  <button
+                    onClick={() => handleReportLesson(lessonsDetails?._id)}
+                    className="flex items-center gap-2 px-4 py-2 bg-slate-800 hover:bg-slate-700 text-white rounded-lg transition-colors"
+                  >
                     <Flag className="w-4 h-4" />
                     Report Lesson
                   </button>

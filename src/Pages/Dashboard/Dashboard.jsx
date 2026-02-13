@@ -14,6 +14,7 @@ import {
   HomeIcon,
   UserCircle2,
   BookText,
+  Flag,
 } from "lucide-react";
 import useAuth from "../../Hooks/useAuth";
 import Logo from "../../assets/Logo.png";
@@ -109,20 +110,6 @@ const Dashboard = () => {
                 </NavLink>
               </li>
 
-              <li>
-                <NavLink
-                  to="/dashboard/saved-lessons"
-                  className={({ isActive }) =>
-                    isActive
-                      ? "active bg-primary/10 text-primary font-medium"
-                      : "hover:bg-base-300"
-                  }
-                >
-                  <Bookmark size={20} />
-                  <span>Favorites</span>
-                </NavLink>
-              </li>
-
               <li className="menu-title text-xs uppercase tracking-widest opacity-50 mt-6 mb-2">
                 Management
               </li>
@@ -176,6 +163,12 @@ const Dashboard = () => {
                     <NavLink to="/dashboard/lessons-management">
                       <BookText />
                       <span>Lessons Management</span>
+                    </NavLink>
+                  </li>
+                  <li>
+                    <NavLink to="/dashboard/reports-management">
+                      < Flag/>
+                      <span>Reports Management</span>
                     </NavLink>
                   </li>
                 </>

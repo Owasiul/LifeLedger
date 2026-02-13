@@ -18,30 +18,52 @@ const AdminOverview = () => {
       return res.data;
     },
   });
+ const {data: reports = []} = useQuery({
+         queryKey: ["reports"],
+         queryFn: async() =>{
+             const res = await axiosSecure.get(`/reports`)
+             return res.data
+         }
+     })
   return (
-    <div className="w-[90%] my-5 mx-auto space-y-5">
-      <div className="title">
-        <h1 className="text-4xl font-bold">
-          {" "}
-          Here is All the data of your platform{" "}
-        </h1>
+    <div className="w-[90%] my-10 mx-auto space-y-8">
+      {/* Title */}
+      <div className="text-center">
+        <h1 className="text-4xl font-bold text-secondary">Platform Overview</h1>
+        <p className="text-primary mt-2">
+          Here is all the data of your platform
+        </p>
       </div>
-      {/* lessons created */}
-      <div className="body grid md:grid-cols-2 grid-cols-1 gap-3">
-        <div className="lessons p-4 justify-center items-center bg-green-500 rounded-xl">
-          <h1 className="text-xl font-bold">All Lessons Created</h1>
-          <span className="font-bold text-2xl"> {lessons.length} </span>
+
+      {/* Stats Grid */}
+      <div className="grid md:grid-cols-3 gap-6">
+        {/* Lessons */}
+        <div className="p-6 bg-green-100 rounded-xl shadow hover:shadow-lg transition">
+          <h2 className="text-lg font-semibold text-green-700">
+            Lessons Created
+          </h2>
+          <span className="block text-4xl font-bold text-green-900 mt-2">
+            {lessons.length}
+          </span>
         </div>
-        {/* users length */}
-        <div className="Users p-4 justify-center items-center bg-red-500 rounded-xl">
-          <h1 className="text-xl font-bold">All Users</h1>
-          <span className="font-bold text-2xl"> {users.length} </span>
+
+        {/* Users */}
+        <div className="p-6 bg-red-100 rounded-xl shadow hover:shadow-lg transition">
+          <h2 className="text-lg font-semibold text-red-700">Users</h2>
+          <span className="block text-4xl font-bold text-red-900 mt-2">
+            {users.length}
+          </span>
         </div>
-        {/* repoted lessons */}
-        <div className="Users p-4 justify-center items-center bg-blue-500 rounded-xl">
-          <h1 className="text-xl font-bold">Reported Lessons</h1>
-          {/* TODO: have to create */}
-          <span className="font-bold text-2xl"> 0 </span>
+
+        {/* Reported Lessons */}
+        <div className="p-6 bg-blue-100 rounded-xl shadow hover:shadow-lg transition">
+          <h2 className="text-lg font-semibold text-blue-700">
+            Reported Lessons
+          </h2>
+          <span className="block text-4xl font-bold text-blue-900 mt-2">
+            {" "}
+            {reports.length}{" "}
+          </span>
         </div>
       </div>
     </div>

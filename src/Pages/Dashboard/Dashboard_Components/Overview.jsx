@@ -15,6 +15,14 @@ const Overview = () => {
       return res.data;
     },
   });
+  const { data: users = [] } = useQuery({
+    queryKey: ["users"],
+    queryFn: async () => {
+      const res = await axiosSecure.get(`/users`);
+      console.log(res.data);
+      return res.data;
+    },
+  });
   return (
     <div>
       <div className="title space-y-1">
@@ -28,7 +36,9 @@ const Overview = () => {
             <h2 className="text-lg font-semibold text-slate-700">
               Total Lessons Created
             </h2>
-            <p className="text-4xl font-bold text-slate-900 mt-2">1</p>
+            <p className="text-4xl font-bold text-slate-900 mt-2">
+              {users.contributedLessons || 0}{" "}
+            </p>
           </div>
           <div className="w-16 h-16 flex items-center justify-center bg-sky-300 rounded-full">
             <BookOpenTextIcon size={32} className="text-slate-800" />

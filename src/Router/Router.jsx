@@ -22,6 +22,7 @@ import UserManagement from "../Pages/Dashboard/Dashboard_Admin/UserManagement";
 import LessonsManagement from "../Pages/Dashboard/Dashboard_Admin/LessonsManagement";
 import Loading from "../Components/Loading/Loading";
 import Error from "../Components/Error/Error";
+import ReportsManagement from "../Pages/Dashboard/Dashboard_Admin/ReportsManagement";
 
 export const router = createBrowserRouter([
   {
@@ -135,6 +136,14 @@ export const router = createBrowserRouter([
         element: (
           <AdminRoute>
             <LessonsManagement></LessonsManagement>
+          </AdminRoute>
+        ),
+      },
+      {
+        path: "/dashboard/reports-management",
+        element: (
+          <AdminRoute>
+            <ReportsManagement></ReportsManagement>
           </AdminRoute>
         ),
       },
