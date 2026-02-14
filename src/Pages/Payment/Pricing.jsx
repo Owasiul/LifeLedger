@@ -120,7 +120,7 @@ const Pricing = () => {
             {/* Footer Actions */}
             <tfoot>
               <tr>
-                {userData?.isPremium === false ? (
+                {!userData?.isPremium ? (
                   <>
                     <td></td>
                     <td className="text-center py-6">

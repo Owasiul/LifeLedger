@@ -60,7 +60,10 @@ const Profile = () => {
             {/* Stats Cards */}
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <div className="bg-white/10 backdrop-blur-md rounded-xl p-5 text-center hover:scale-105 transition-transform duration-300">
-                <p className="text-3xl font-bold">1</p>
+                <p className="text-3xl font-bold">
+                  {" "}
+                  {userData?.contributedLessons}{" "}
+                </p>
                 <p className="text-sm text-white/80 mt-1">Lessons Created</p>
               </div>
 

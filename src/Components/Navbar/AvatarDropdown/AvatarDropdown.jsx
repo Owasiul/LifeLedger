@@ -6,6 +6,7 @@ import useUser from "../../../Hooks/useUser";
 
 const AvatarDropdown = () => {
   const { user, LogOut } = useAuth();
+  console.log({ user });
   const [isOpen, setIsOpen] = useState(false);
   const dropdownRef = useRef(null);
   const { userData } = useUser();
@@ -46,7 +47,11 @@ const AvatarDropdown = () => {
               {/* user img */}
               <div className="avatar">
                 <div className="w-12 rounded-full">
-                  <img src={user?.photoURL} alt="User" />
+                  <img
+                    referrerPolicy="no-referrer"
+                    src={user?.photoURL}
+                    alt="User"
+                  />
                 </div>
               </div>
               {/* user name */}

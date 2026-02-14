@@ -8,7 +8,8 @@ import Swal from "sweetalert2";
 import axios from "axios";
 
 const Register = () => {
-  const { googleSignIn, updateUserData } = useAuth();
+  const { registerWithEmail_Password, googleSignIn, updateUserData } =
+    useAuth();
 
   const navigate = useNavigate();
   const location = useLocation();
@@ -43,11 +44,14 @@ const Register = () => {
       formData.append("image", updateImage);
 
       const image_API_URL = `https://api.imgbb.com/1/upload?key=${
-        import.meta.env.VITE_Imgb
+        import.meta.env.VITE_Imgbb
       }`;
 
       const imgbbResponse = await axios.post(image_API_URL, formData);
       const uploadedImageUrl = imgbbResponse.data.data.url;
+
+      // firebase registration
+      await registerWithEmail_Password(data.email, data.password);
 
       //  Save user in DB
       const userInfo = {
@@ -55,9 +59,7 @@ const Register = () => {
         displayName: data.name,
         photoURL: uploadedImageUrl,
       };
-
       await axiosSecure.post("/users", userInfo);
-
       //  Update Firebase profile
       await updateUserData({
         displayName: data.name,
