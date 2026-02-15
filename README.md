@@ -1,121 +1,192 @@
-```markdown
-# LifeLedger
+# 🧾 LifeLedger
 
-**LifeLedger** — A modern **full-stack** personal life management application built with the **MERN stack** (MongoDB, Express.js, React, Node.js) to track and organize your daily records, goals, finances, habits, or events in one secure place.
+> A modern full-stack personal life management application built with the MERN stack.
 
-![React](https://img.shields.io/badge/React-18.2.0-blue?logo=react)
-![Vite](https://img.shields.io/badge/Vite-5.x-purple?logo=vite)
-![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-3.4-06B6D4?logo=tailwind-css)
-![DaisyUI](https://img.shields.io/badge/DaisyUI-4.x-1DB2E7?logo=daisyui)
-![TanStack Query](https://img.shields.io/badge/TanStack_Query-5.x-00B4D8?logo=react-query)
-![Express.js](https://img.shields.io/badge/Express.js-4.x-000000?logo=express)
-![Node.js](https://img.shields.io/badge/Node.js-20.x-339933?logo=node.js)
-![MongoDB](https://img.shields.io/badge/MongoDB-7.x-47A248?logo=mongodb)
+**LifeLedger** helps users track and organize daily records, goals, finances, habits, and important events — all in one secure and centralized platform.
 
-**Live Demo (Frontend)**: [https://life-ledger-client.vercel.app](https://life-ledger-client.vercel.app)  
-**Deployed on Vercel**
+---
 
-> This repository contains the **frontend (client)** of LifeLedger. The backend is built separately with Express.js and MongoDB.
+## 🌐 Live Demo
 
-## 🚀 Features
+🔗 **Frontend (Vercel):**  
+https://life-ledger-client.vercel.app  
 
-- Modern, responsive UI built with **Tailwind CSS** and **DaisyUI**
-- Client-side routing with **React Router**
-- Efficient data fetching, caching, and synchronization using **TanStack Query**
-- Seamless form handling with **React Hook Form**
-- API communication via **Axios**
-- Fast development and hot module replacement with **Vite**
-- Clean, maintainable code with **ESLint** configuration
-- Secure data storage and persistence via **Express.js** backend and **MongoDB**
+> This repository contains the **frontend (client)** application.  
+> Backend is built separately using Express.js and MongoDB.
 
-*(Add more specific features here as you build them — e.g., user authentication, dashboard analytics, expense/habit tracking, etc.)*
-
-## 🖼️ Screenshots
-
-*(Add screenshots of your app here to showcase the UI)*
-
-```markdown
-![Homepage]<img width="1862" height="811" alt="image" src="https://github.com/user-attachments/assets/2dd111ee-0dfb-4a82-94eb-8a54ea14ea00" />
-
-![Dashboard]<img width="1851" height="625" alt="image" src="https://github.com/user-attachments/assets/918ddae6-c149-4492-91cc-ac879383ed95" />
-
-![Other Feature]<img width="1851" height="605" alt="image" src="https://github.com/user-attachments/assets/690fc107-fd2b-4e00-833b-3fe61b205f3a" />
-
-
-
-(Recommendation: Create a `screenshots` folder in your repo and add actual images.)
+---
 
 ## 🛠️ Tech Stack
 
-### Frontend
-- **Framework**: React + Vite
-- **Styling**: Tailwind CSS, DaisyUI
-- **Routing**: React Router
-- **Data Fetching**: TanStack Query (React Query)
-- **Forms**: React Hook Form
-- **HTTP Client**: Axios
-- **Deployment**: Vercel
+### 🚀 Frontend
+- **React 18 + Vite**
+- **Tailwind CSS + DaisyUI**
+- **React Router**
+- **TanStack Query (React Query)**
+- **React Hook Form**
+- **Axios**
+- **ESLint**
+- **Deployed on Vercel**
 
-### Backend (Separate Repository)
-- **Runtime**: Node.js
-- **Framework**: Express.js
-- **Database**: MongoDB (NoSQL database for flexible and scalable data storage)
+### 🔧 Backend (Separate Repository)
+- **Node.js**
+- **Express.js**
+- **MongoDB**
 
-*[(backend repository is public, link it here: [Backend Repository](https://github.com/Owasiul/LifeLedger-server))]*
+🔗 Backend Repository:  
+https://github.com/Owasiul/LifeLedger-server
+
+---
+
+## ✨ Features
+
+- 🔐 Secure user data handling via backend API
+- ⚡ Fast and responsive UI
+- 📊 Organized dashboard interface
+- 🔄 Optimized API calls with caching (TanStack Query)
+- 🧾 Form validation using React Hook Form
+- 📱 Fully responsive design
+- 🧩 Modular and scalable folder structure
+- 🚀 Optimized production build with Vite
+
+> More advanced features (analytics, authentication, premium modules, etc.) are being added progressively.
+
+---
+
+## 🖼️ Screenshots
 
 
-## 📦 Installation (Frontend)
+### 🏠 Homepage
+<img width="1862" height="811" alt="image" src="https://github.com/user-attachments/assets/67953c8f-be36-4c2a-98c7-9cd3a80f0405" />
 
-1. Clone the repository
-   ```bash
-   git clone https://github.com/Owasiul/LifeLedger.git
-   ```
 
-3. Install dependencies
-   ```bash
-   npm install
-   ```
+### 📊 Dashboard
+<img width="1851" height="625" alt="image" src="https://github.com/user-attachments/assets/3787bdb5-1c8c-45b4-b4b6-a446bc167ebd" />
 
-4. Start the development server
-   ```bash
-   npm run dev
-   ```
 
-   Open [http://localhost:5173](http://localhost:5173)
+### 📌 Feature View
+<img width="1851" height="625" alt="image" src="https://github.com/user-attachments/assets/acbb359b-2e6e-4605-89db-75f657cc06b5" />
 
-> **Note**: For full functionality (API calls, authentication, data persistence), you need a running Express.js backend connected to a MongoDB instance. Set the API base URL via environment variable (e.g., `VITE_API_URL=http://localhost:5000`) in a `.env` file. If you have a separate backend repo, follow its setup instructions (MongoDB URI, etc.).
 
-## 🔨 Build for Production
+---
+
+## 📂 Project Structure (Frontend)
+
+```
+src/
+ ├── components/
+ ├── pages/
+ ├── hooks/
+ ├── services/
+ ├── routes/
+ ├── layouts/
+ └── assets/
+```
+
+---
+
+## ⚙️ Installation & Setup (Frontend)
+
+### 1️⃣ Clone the repository
+
+```bash
+git clone https://github.com/Owasiul/LifeLedger.git
+cd LifeLedger
+```
+
+### 2️⃣ Install dependencies
+
+```bash
+npm install
+```
+
+### 3️⃣ Setup Environment Variables
+
+Create a `.env` file in the root directory:
+
+```
+VITE_API_URL=http://localhost:5000
+```
+
+### 4️⃣ Run development server
+
+```bash
+npm run dev
+```
+
+Open:  
+http://localhost:5173
+
+---
+
+## 🏗️ Production Build
+
+Build the project:
 
 ```bash
 npm run build
 ```
 
-Preview the production build locally:
+Preview production build locally:
 
 ```bash
 npm run preview
 ```
 
+---
+
+## 🔐 Environment Variables
+
+| Variable        | Description              |
+|----------------|--------------------------|
+| VITE_API_URL   | Backend API base URL     |
+
+---
+
+## 📌 Roadmap
+
+- [ ] User Authentication (JWT / Firebase)
+- [ ] Analytics dashboard
+- [ ] Habit & Expense Tracking Modules
+- [ ] Dark/Light theme toggle
+- [ ] Premium feature access
+- [ ] Role-based authorization
+
+---
+
 ## 🤝 Contributing
 
-Contributions, issues, and feature requests are welcome! Feel free to check the [issues page](https://github.com/Owasiul/LifeLedger/issues).
+Contributions, issues, and feature requests are welcome!
 
-1. Fork the repository
-2. Create your feature branch (`git checkout -b feature/AmazingFeature`)
-3. Commit your changes (`git commit -m 'Add some AmazingFeature'`)
-4. Push to the branch (`git push origin feature/AmazingFeature`)
-5. Open a Pull Request
+1. Fork the repository  
+2. Create your feature branch  
+   ```bash
+   git checkout -b feature/AmazingFeature
+   ```
+3. Commit changes  
+   ```bash
+   git commit -m "Add AmazingFeature"
+   ```
+4. Push to GitHub  
+   ```bash
+   git push origin feature/AmazingFeature
+   ```
+5. Open a Pull Request  
+
+---
 
 ## 📄 License
 
-Distributed under the MIT License. See `LICENSE` file for more information (add one if it doesn't exist yet).
+Distributed under the **MIT License**.  
+Please add a LICENSE file if not already included.
+
+---
 
 ## 👨‍💻 Author
 
 **MD. Owasiul Islam**  
-GitHub: [@Owasiul](https://github.com/Owasiul)
+GitHub: https://github.com/Owasiul  
 
 ---
-⭐ If you like this project, give it a star on GitHub!
-```
+
+⭐ If you like this project, consider giving it a star!
