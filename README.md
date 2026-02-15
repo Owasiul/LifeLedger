@@ -175,12 +175,6 @@ Contributions, issues, and feature requests are welcome!
 
 ---
 
-## 📄 License
-
-Distributed under the **MIT License**.  
-Please add a LICENSE file if not already included.
-
----
 
 ## 👨‍💻 Author
 
