@@ -2,6 +2,7 @@ import React from "react";
 import { NavLink, useLocation, useNavigate } from "react-router";
 import useAuth from "../../Hooks/useAuth";
 import { useForm } from "react-hook-form";
+import axios from "axios";
 
 const Login = () => {
   const { register, handleSubmit } = useForm();
@@ -17,7 +18,6 @@ const Login = () => {
       const result = await signInwithEmail_Password(data.email, data.password);
 
       const signedInUser = result.user;
-
       await updateUserData({
         displayName: signedInUser.displayName,
         email: signedInUser.email,
@@ -36,6 +36,24 @@ const Login = () => {
       const result = await googleSignIn();
       const signedInUser = result.user;
 
+      let existingUser;
+      try {
+        const response = await axios.get(`/users/${signedInUser.email}`);
+        existingUser = response.data; 
+      } catch (error) {
+        
+        console.log(error);
+        existingUser = null;
+      }
+
+      if (!existingUser) {
+        await axios.post(`/users`, {
+          displayName: signedInUser.displayName,
+          email: signedInUser.email,
+          photoURL: signedInUser.photoURL,
+        });
+      }
+
       await updateUserData({
         displayName: signedInUser.displayName,
         email: signedInUser.email,
@@ -44,7 +62,7 @@ const Login = () => {
 
       navigate(from, { replace: true });
     } catch (error) {
-      console.log(error);
+      console.error("Google Sign-In failed:", error);
     }
   };
 

@@ -1,6 +1,6 @@
 import React from "react";
 import useAxiosSecure from "../../Hooks/useAxiosSecure";
-import { useQuery } from "@tanstack/react-query";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { useParams } from "react-router";
 import {
   Heart,
@@ -18,12 +18,16 @@ import Navbar from "../../Components/Navbar/Navbar";
 import Footer from "../../Components/Footer/Footer";
 import useAuth from "../../Hooks/useAuth";
 import Swal from "sweetalert2";
+import { useForm } from "react-hook-form";
 
 const LessonsDetails = () => {
   const axiosSecure = useAxiosSecure();
   const { id } = useParams();
   const { user } = useAuth();
+  const queryClient = useQueryClient();
+  const { register, handleSubmit, reset } = useForm();
 
+  // lessons details
   const { data: lessonsDetails } = useQuery({
     queryKey: ["lessonsdetails", id],
     queryFn: async () => {
@@ -32,6 +36,18 @@ const LessonsDetails = () => {
     },
   });
 
+  // getting the Comments Data
+  const { data: commentsData = [] } = useQuery({
+    queryKey: ["commentsData", lessonsDetails?._id],
+    queryFn: async () => {
+      const res = await axiosSecure.get(`/comments/${lessonsDetails._id}`);
+      console.log(res.data);
+      return res.data;
+    },
+    enabled: !!lessonsDetails?._id,
+  });
+
+  // filtered Data shown in suggetion
   const { data: filteredData = [] } = useQuery({
     queryKey: ["filterdData", lessonsDetails?.category],
     queryFn: async () => {
@@ -60,21 +76,6 @@ const LessonsDetails = () => {
     const minutes = Math.ceil(words / wordsPerMinute);
     return `${minutes} min read`;
   };
-
-  if (!lessonsDetails) {
-    return (
-      <div className="flex items-center justify-center min-h-screen bg-linear-to-br from-slate-900 via-slate-800 to-slate-900">
-        <div className="text-center">
-          <h2 className="text-2xl font-bold text-white mb-2">
-            Lesson not found
-          </h2>
-          <p className="text-slate-400">
-            The lesson you're looking for doesn't exist.
-          </p>
-        </div>
-      </div>
-    );
-  }
 
   // reports lessons
   const handleReportLesson = async (id) => {
@@ -111,6 +112,67 @@ const LessonsDetails = () => {
       });
     }
   };
+
+  // likes
+  const handleLike = async (lessonID) => {
+    const alreadyLiked = lessonsDetails.likes.includes(user._id);
+    if (!alreadyLiked) {
+      const res = await axiosSecure.post(`/lessons/${lessonID}/likes`, {
+        user: user._id,
+      });
+      queryClient.invalidateQueries({ queryKey: ["lessons"] });
+      return res.data;
+    }
+  };
+
+  // comments
+  const handleComment = async (data, lessonID) => {
+    try {
+      const res = await axiosSecure.post(`/comments/${lessonID}`, {
+        comment: data.comment.trim(),
+        user: user._id,
+      });
+
+      // Invalidate queries to refresh comments
+      queryClient.invalidateQueries({
+        queryKey: ["commentsData", lessonsDetails._id],
+      });
+
+      reset();
+
+      Swal.fire({
+        icon: "success",
+        title: "Comment Added",
+        text: "Your comment has been posted successfully.",
+        timer: 1500,
+      });
+
+      return res.data;
+    } catch (error) {
+      console.error("Comment error:", error);
+      Swal.fire({
+        icon: "error",
+        title: "Error",
+        text:
+          error?.response?.data?.message ||
+          "Failed to post comment. Please try again.",
+      });
+    }
+  };
+  if (!lessonsDetails) {
+    return (
+      <div className="flex items-center justify-center min-h-screen bg-linear-to-br from-slate-900 via-slate-800 to-slate-900">
+        <div className="text-center">
+          <h2 className="text-2xl font-bold text-white mb-2">
+            Lesson not found
+          </h2>
+          <p className="text-slate-400">
+            The lesson you're looking for doesn't exist.
+          </p>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div>
@@ -225,12 +287,15 @@ const LessonsDetails = () => {
                     <Bookmark className="w-4 h-4" />
                     Save to Favorites
                   </button>
-                  <button className="flex items-center gap-2 px-4 py-2 bg-slate-800 hover:bg-slate-700 text-white rounded-lg transition-colors">
+                  <button
+                    onClick={() => handleLike(lessonsDetails._id)}
+                    className="flex items-center gap-2 px-4 py-2 bg-slate-800 hover:bg-slate-700 text-white rounded-lg transition-colors"
+                  >
                     <Heart className="w-4 h-4" />
                     Like
                   </button>
                   <button
-                    onClick={() => handleReportLesson(lessonsDetails?._id)}
+                    onClick={() => handleReportLesson(lessonsDetails._id)}
                     className="flex items-center gap-2 px-4 py-2 bg-slate-800 hover:bg-slate-700 text-white rounded-lg transition-colors"
                   >
                     <Flag className="w-4 h-4" />
@@ -255,20 +320,50 @@ const LessonsDetails = () => {
                         alt=""
                       />
                     </div>
-                    <div className="flex-1 flex gap-2">
+                    <form
+                      onSubmit={handleSubmit((data) =>
+                        handleComment(data, lessonsDetails._id),
+                      )}
+                      className="flex-1 flex gap-2 "
+                    >
                       <input
                         type="text"
+                        {...register("comment")}
                         placeholder="Add a comment..."
                         className="flex-1 px-4 py-2 bg-slate-800 border border-slate-700 rounded-lg text-white placeholder-slate-500 focus:outline-none focus:border-blue-500"
                       />
-                      <button className="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg transition-colors">
+                      <button
+                        type="submit"
+                        className="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg transition-colors"
+                      >
                         <Send className="w-4 h-4" />
                       </button>
-                    </div>
+                    </form>
                   </div>
 
                   {/* Sample Comments */}
-                  <div className="space-y-4"></div>
+                  <div className="space-y-4">
+                    {commentsData.map((c) => (
+                      <div key={c._id} className="flex items-start gap-3">
+                        <img
+                          className="w-10 h-10 rounded-full object-cover"
+                          src={c.userPhoto || user?.photoURL}
+                          alt=""
+                        />
+                        <div className="bg-slate-800 rounded-lg px-4 py-2 flex-1">
+                          <p className="text-white text-sm font-semibold">
+                            {c.userName || "User"}
+                          </p>
+                          <p className="text-slate-300 text-sm">{c.comment}</p>
+                        </div>
+                      </div>
+                    ))}
+                    {commentsData.length === 0 && (
+                      <p className="text-slate-500 text-sm">
+                        No comments yet. Be the first!
+                      </p>
+                    )}
+                  </div>
                 </div>
               </div>
 

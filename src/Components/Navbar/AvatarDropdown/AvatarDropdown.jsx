@@ -6,7 +6,7 @@ import useUser from "../../../Hooks/useUser";
 
 const AvatarDropdown = () => {
   const { user, LogOut } = useAuth();
-  console.log({ user });
+  // console.log({ user });
   const [isOpen, setIsOpen] = useState(false);
   const dropdownRef = useRef(null);
   const { userData } = useUser();

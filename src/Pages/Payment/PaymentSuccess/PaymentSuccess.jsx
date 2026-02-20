@@ -12,11 +12,6 @@ const PaymentSuccess = () => {
     if (setSessonId) {
       axiosSecure
         .patch(`/verify-payment-success?session_id=${setSessonId}`)
-        .catch((err) => {
-          console.log("❌ Error status:", err.response?.status);
-          console.log("❌ Error message:", err.response?.data);
-          console.log("❌ Full URL:", err.config?.url);
-        });
     }
   }, [axiosSecure, setSessonId]);
   return (
