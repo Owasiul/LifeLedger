@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import useAxiosSecure from "../../Hooks/useAxiosSecure";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { useParams } from "react-router";
@@ -26,6 +26,7 @@ const LessonsDetails = () => {
   const { user } = useAuth();
   const queryClient = useQueryClient();
   const { register, handleSubmit, reset } = useForm();
+  const [savedLesson, setSavedLesson] = useState(null);
 
   // lessons details
   const { data: lessonsDetails } = useQuery({
@@ -130,7 +131,10 @@ const LessonsDetails = () => {
     try {
       const res = await axiosSecure.post(`/comments/${lessonID}`, {
         comment: data.comment.trim(),
-        user: user._id,
+        user: {
+          displayName: user?.displayName,
+          photoURL: user?.photoURL,
+        },
       });
 
       // Invalidate queries to refresh comments
@@ -159,6 +163,36 @@ const LessonsDetails = () => {
       });
     }
   };
+
+  // saved lesson
+  const handleSaveLesson = async (lessonID) => {
+    try {
+      const res = await axiosSecure.post(`/lessons/${lessonID}/saved-lessons`, {
+        lessonTitle: lessonsDetails?.title,
+        user: {
+          email: user?.email,
+        },
+      });
+      setSavedLesson(res.data);
+      Swal.fire({
+        icon: "success",
+        title: "Lesson Saved",
+        text: "This lesson has been saved successfully.",
+        timer: 1500,
+      });
+      return res.data;
+    } catch (error) {
+      console.error("Comment error:", error);
+      Swal.fire({
+        icon: "error",
+        title: "Error",
+        text:
+          error?.response?.data?.message ||
+          "Failed to save the lesson. Please try again.",
+      });
+    }
+  };
+
   if (!lessonsDetails) {
     return (
       <div className="flex items-center justify-center min-h-screen bg-linear-to-br from-slate-900 via-slate-800 to-slate-900">
@@ -282,11 +316,20 @@ const LessonsDetails = () => {
                 </div>
 
                 {/* Action Buttons */}
-                <div className="flex flex-wrap gap-3">
-                  <button className="flex items-center gap-2 px-4 py-2 bg-slate-800 hover:bg-slate-700 text-white rounded-lg transition-colors">
-                    <Bookmark className="w-4 h-4" />
-                    Save to Favorites
-                  </button>
+                <div className="flex flex-wrap gap-3 items-center">
+                  <div className="">
+                    {savedLesson?.saved ? (
+                      <span className="text-green-500">Lesson Saved</span>
+                    ) : (
+                      <button
+                        onClick={() => handleSaveLesson(lessonsDetails?._id)}
+                        className="flex items-center gap-2 px-4 py-2 bg-slate-800 hover:bg-slate-700 text-white rounded-lg transition-colors"
+                      >
+                        <Bookmark className="w-4 h-4" />
+                        Save to Favorites
+                      </button>
+                    )}
+                  </div>
                   <button
                     onClick={() => handleLike(lessonsDetails._id)}
                     className="flex items-center gap-2 px-4 py-2 bg-slate-800 hover:bg-slate-700 text-white rounded-lg transition-colors"
@@ -344,17 +387,19 @@ const LessonsDetails = () => {
                   {/* Sample Comments */}
                   <div className="space-y-4">
                     {commentsData.map((c) => (
-                      <div key={c._id} className="flex items-start gap-3">
+                      <div key={c._id} className="flex items-start gap-3 p-2">
                         <img
                           className="w-10 h-10 rounded-full object-cover"
-                          src={c.userPhoto || user?.photoURL}
+                          src={c.userPhotoURL}
                           alt=""
                         />
-                        <div className="bg-slate-800 rounded-lg px-4 py-2 flex-1">
-                          <p className="text-white text-sm font-semibold">
-                            {c.userName || "User"}
+                        <div className="bg-gray-100 rounded-lg px-4 py-2 flex-1 space-y-1">
+                          <p className="text-black text-lg font-semibold">
+                            {c.commentedby}
                           </p>
-                          <p className="text-slate-300 text-sm">{c.comment}</p>
+                          <p className="text-black font-medium text-sm">
+                            {c.comment}
+                          </p>
                         </div>
                       </div>
                     ))}

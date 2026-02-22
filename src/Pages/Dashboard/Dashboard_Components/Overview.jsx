@@ -7,6 +7,7 @@ import useAxiosSecure from "../../../Hooks/useAxiosSecure";
 const Overview = () => {
   const { user } = useAuth();
   const axiosSecure = useAxiosSecure();
+  // lessons
   const { data: lessons = [] } = useQuery({
     queryKey: ["lessons", user?.displayName],
     queryFn: async () => {
@@ -14,10 +15,20 @@ const Overview = () => {
       return res.data;
     },
   });
+  // users data
   const { data: users = [] } = useQuery({
     queryKey: ["users"],
     queryFn: async () => {
       const res = await axiosSecure.get(`/users`);
+      return res.data;
+    },
+  });
+  // saved lessons
+  const { data: savedLessons = [] } = useQuery({
+    queryKey: ["savedLessons"],
+    queryFn: async () => {
+      const res = await axiosSecure.get(`/saved-lessons`);
+      console.log(res.data);
       return res.data;
     },
   });
@@ -49,7 +60,10 @@ const Overview = () => {
             <h2 className="text-lg font-semibold text-slate-700">
               Total Saved Favorites
             </h2>
-            <p className="text-4xl font-bold text-slate-900 mt-2">1</p>
+            <p className="text-4xl font-bold text-slate-900 mt-2">
+              {" "}
+              {savedLessons.length}{" "}
+            </p>
           </div>
           <div className="w-16 h-16 flex items-center justify-center bg-green-400 rounded-full">
             <Heart size={32} className="text-slate-800" />
