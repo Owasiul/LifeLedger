@@ -27,7 +27,7 @@ const Overview = () => {
   const { data: savedLessons = [] } = useQuery({
     queryKey: ["savedLessons"],
     queryFn: async () => {
-      const res = await axiosSecure.get(`/saved-lessons`);
+      const res = await axiosSecure.get(`/saved-lessons?email=${user?.email}`);
       console.log(res.data);
       return res.data;
     },

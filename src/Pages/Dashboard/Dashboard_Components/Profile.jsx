@@ -29,6 +29,15 @@ const Profile = () => {
     });
   };
   //   console.log(profile);
+  // saved lessons
+  const { data: savedLessons = [] } = useQuery({
+    queryKey: ["savedLessons"],
+    queryFn: async () => {
+      const res = await axiosSecure.get(`/saved-lessons?email=${user?.email}`);
+      console.log(res.data);
+      return res.data;
+    },
+  });
   return (
     <div>
       <div className="bg-linear-to-r from-primary to-primary/80 text-white rounded-2xl shadow-lg p-6 md:p-10">
@@ -52,9 +61,12 @@ const Profile = () => {
               {userData?.role === "admin" && (
                 <span>
                   {" "}
-                  <Crown size={40} className="text-yellow-500"></Crown>{" "}
+                  <div className="badge bg-linear-to-r from-yellow-600 via-emerald-800 to-orange-700 text-white">
+                    ADMIN
+                  </div>
                 </span>
               )}
+              {userData?.isPremium === true && <span className="text-3xl"> ⭐</span>}
             </div>
 
             {/* Stats Cards */}
@@ -68,7 +80,7 @@ const Profile = () => {
               </div>
 
               <div className="bg-white/10 backdrop-blur-md rounded-xl p-5 text-center hover:scale-105 transition-transform duration-300">
-                <p className="text-3xl font-bold">1</p>
+                <p className="text-3xl font-bold"> {savedLessons.length} </p>
                 <p className="text-sm text-white/80 mt-1">Lessons Saved</p>
               </div>
             </div>

@@ -39,7 +39,7 @@ const UserLessons = () => {
               text: "Your post has been deleted.",
               icon: "success",
             });
-            refetch(); // 👈 don’t forget this
+            refetch();
           }
         } catch (error) {
           Swal.fire({

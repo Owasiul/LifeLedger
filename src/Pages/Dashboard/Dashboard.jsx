@@ -109,6 +109,19 @@ const Dashboard = () => {
                   <span>My Lessons</span>
                 </NavLink>
               </li>
+              <li>
+                <NavLink
+                  to="/dashboard/my-favorites"
+                  className={({ isActive }) =>
+                    isActive
+                      ? "active bg-primary/10 text-primary font-medium"
+                      : "hover:bg-base-300"
+                  }
+                >
+                  <Bookmark size={20} />
+                  <span>Saved Lessons</span>
+                </NavLink>
+              </li>
 
               <li className="menu-title text-xs uppercase tracking-widest opacity-50 mt-6 mb-2">
                 Management
@@ -167,7 +180,7 @@ const Dashboard = () => {
                   </li>
                   <li>
                     <NavLink to="/dashboard/reports-management">
-                      < Flag/>
+                      <Flag />
                       <span>Reports Management</span>
                     </NavLink>
                   </li>
