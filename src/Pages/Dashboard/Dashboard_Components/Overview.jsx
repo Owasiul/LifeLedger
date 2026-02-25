@@ -3,23 +3,17 @@ import { BookOpenTextIcon, Heart } from "lucide-react";
 import React from "react";
 import useAuth from "../../../Hooks/useAuth";
 import useAxiosSecure from "../../../Hooks/useAxiosSecure";
+import useUser from "../../../Hooks/useUser";
 
 const Overview = () => {
   const { user } = useAuth();
   const axiosSecure = useAxiosSecure();
+  const { userData } = useUser();
   // lessons
   const { data: lessons = [] } = useQuery({
     queryKey: ["lessons", user?.displayName],
     queryFn: async () => {
       const res = await axiosSecure.get(`/lessons/${user?.displayName}`);
-      return res.data;
-    },
-  });
-  // users data
-  const { data: users = [] } = useQuery({
-    queryKey: ["users"],
-    queryFn: async () => {
-      const res = await axiosSecure.get(`/users`);
       return res.data;
     },
   });
@@ -46,7 +40,7 @@ const Overview = () => {
               Total Lessons Created
             </h2>
             <p className="text-4xl font-bold text-slate-900 mt-2">
-              {users.contributedLessons || 0}{" "}
+              {userData?.contributedLessons || 0}{" "}
             </p>
           </div>
           <div className="w-16 h-16 flex items-center justify-center bg-sky-300 rounded-full">

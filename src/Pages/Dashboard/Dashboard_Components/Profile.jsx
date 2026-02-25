@@ -7,6 +7,7 @@ import { Crown } from "lucide-react";
 
 const Profile = () => {
   const { userData } = useUser();
+  console.log(userData);
   const { user } = useAuth();
   const axiosSecure = useAxiosSecure();
   const { data: profile = [] } = useQuery({
@@ -66,7 +67,9 @@ const Profile = () => {
                   </div>
                 </span>
               )}
-              {userData?.isPremium === true && <span className="text-3xl"> ⭐</span>}
+              {userData?.isPremium === true && (
+                <span className="text-3xl"> ⭐</span>
+              )}
             </div>
 
             {/* Stats Cards */}
@@ -74,7 +77,7 @@ const Profile = () => {
               <div className="bg-white/10 backdrop-blur-md rounded-xl p-5 text-center hover:scale-105 transition-transform duration-300">
                 <p className="text-3xl font-bold">
                   {" "}
-                  {userData?.contributedLessons}{" "}
+                  {userData?.contributedLessons || 0}{" "}
                 </p>
                 <p className="text-sm text-white/80 mt-1">Lessons Created</p>
               </div>

@@ -51,6 +51,7 @@ const UserLessons = () => {
       }
     });
   };
+ 
 
   return (
     <div>
@@ -153,7 +154,7 @@ const UserLessons = () => {
 
                   {/* Stats - Hidden on mobile */}
                   <td className="px-4 py-4 text-sm text-accent hidden sm:table-cell whitespace-nowrap">
-                    👍 {lesson.likes?.length || 0} | ⭐
+                    👍 {lesson.likes?.length || 0}
                   </td>
 
                   {/* Actions - Always visible but responsive */}

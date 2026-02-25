@@ -100,7 +100,6 @@ export const router = createBrowserRouter([
     children: [
       {
         index: true,
-        path: "/dashboard/overview",
         Component: Overview,
       },
       {
