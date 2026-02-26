@@ -81,20 +81,6 @@ const Dashboard = () => {
               <li className="menu-title text-xs uppercase tracking-widest opacity-50 mt-4 mb-2">
                 Main Menu
               </li>
-              <li>
-                <NavLink
-                  to="/dashboard/overview"
-                  end
-                  className={({ isActive }) =>
-                    isActive
-                      ? "active bg-primary/10 text-primary font-medium"
-                      : "hover:bg-base-300"
-                  }
-                >
-                  <Home size={20} />
-                  <span>Overview</span>
-                </NavLink>
-              </li>
 
               <li>
                 <NavLink
