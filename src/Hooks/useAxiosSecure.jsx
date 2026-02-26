@@ -4,8 +4,8 @@ import useAuth from "./useAuth";
 import { useNavigate } from "react-router";
 
 const instance = axios.create({
-  // baseURL: "https://life-ledger-server.vercel.app",
-  baseURL: "http://localhost:3030",
+  baseURL: "https://life-ledger-server.vercel.app",
+  // baseURL: "http://localhost:3030",
 });
 
 const useAxiosSecure = () => {
