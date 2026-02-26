@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import useAxiosSecure from "../../Hooks/useAxiosSecure";
 import { useQuery } from "@tanstack/react-query";
 import useUser from "../../Hooks/useUser";
@@ -17,17 +17,36 @@ import useAuth from "../../Hooks/useAuth";
 const Lessons = () => {
   const axiosSecure = useAxiosSecure();
   const { user } = useAuth();
+  const { userData } = useUser();
+  const isPremiumUser = userData?.isPremium;
   // implement pagination
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage] = useState(10);
 
-  // all lessons data
+  // implement sort
+  const [sort, setSort] = useState("");
+  const [order, setOrder] = useState("");
+
+  // implement search
+  const [searchText, setSearchText] = useState("");
+  const [debouncedSearch, setDebouncedSearch] = useState("");
+  console.log(searchText);
+
+  // handle dely
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setDebouncedSearch(searchText);
+    }, 1);
+    return () => clearTimeout(timer);
+  }, [searchText]);
+
+  // all lessons data with sort and search
   const { data } = useQuery({
-    queryKey: ["lessons", currentPage],
+    queryKey: ["lessons", currentPage, sort, order, debouncedSearch],
     queryFn: async () => {
       const skip = (currentPage - 1) * itemsPerPage;
       const res = await axiosSecure.get(
-        `/all-lessons?limit=${itemsPerPage}&skip=${skip}`,
+        `/all-lessons?limit=${itemsPerPage}&skip=${skip}&sort=${sort}&order=${order}&search=${debouncedSearch}`,
       );
       return res.data;
     },
@@ -35,6 +54,7 @@ const Lessons = () => {
   const lessons = data?.all_lessons || [];
   const totalPages = data ? Math.ceil(data.total / itemsPerPage) : 0;
 
+  // all lessons data
   const { data: allLessons = [] } = useQuery({
     queryKey: ["lessons"],
     queryFn: async () => {
@@ -50,8 +70,12 @@ const Lessons = () => {
     });
     return res.data;
   };
-  const { userData } = useUser();
-  const isPremiumUser = userData?.isPremium;
+  // handle sorting
+  const handleSort = (e) => {
+    const [sort, order] = e.target.value.split("-");
+    setSort(sort);
+    setOrder(order);
+  };
 
   return (
     <div className="">
@@ -82,29 +106,25 @@ const Lessons = () => {
                 <path d="m21 21-4.3-4.3"></path>
               </g>
             </svg>
-            <input type="search" required placeholder="Search" />
+            <input
+              onChange={(e) => setSearchText(e.target.value)}
+              type="search"
+              required
+              placeholder="Search"
+            />
           </label>
         </div>
         {/* select */}
-        <select
-          className="select"
-          // onChange={handleChange}
-          defaultValue=""
-        >
+        <select className="select" onChange={handleSort} defaultValue="">
           <option value="" disabled>
             Sort by
           </option>
 
-          {/* Date */}
           <option value="createdAt-desc">Newest First</option>
           <option value="createdAt-asc">Oldest First</option>
-
-          {/* Popularity */}
-          <option value="likes-desc">Most Liked</option>
-
-          {/* Access */}
-          <option value="free-first">Free First</option>
-          <option value="premium-first">Premium First</option>
+          <option value="likesCount-desc">Most Liked</option>
+          <option value="accessLevel-asc">Free First</option>
+          <option value="accessLevel-desc">Premium First</option>
         </select>
       </div>
       {/* middle */}
@@ -238,6 +258,7 @@ const Lessons = () => {
           );
         })}
       </div>
+      {/* bottom */}
       <div className="flex gap-2 my-6 mx-2 justify-end">
         <button
           className="btn"
