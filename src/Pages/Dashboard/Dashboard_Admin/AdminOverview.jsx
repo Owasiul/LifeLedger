@@ -18,13 +18,13 @@ const AdminOverview = () => {
       return res.data;
     },
   });
- const {data: reports = []} = useQuery({
-         queryKey: ["reports"],
-         queryFn: async() =>{
-             const res = await axiosSecure.get(`/reports`)
-             return res.data
-         }
-     })
+  const { data: reports = [] } = useQuery({
+    queryKey: ["reports"],
+    queryFn: async () => {
+      const res = await axiosSecure.get(`/reports`);
+      return res.data;
+    },
+  });
   return (
     <div className="w-[90%] my-10 mx-auto space-y-8">
       {/* Title */}
@@ -43,7 +43,7 @@ const AdminOverview = () => {
             Lessons Created
           </h2>
           <span className="block text-4xl font-bold text-green-900 mt-2">
-            {lessons.length}
+            {lessons.total}
           </span>
         </div>
 
@@ -51,7 +51,7 @@ const AdminOverview = () => {
         <div className="p-6 bg-red-100 rounded-xl shadow hover:shadow-lg transition">
           <h2 className="text-lg font-semibold text-red-700">Users</h2>
           <span className="block text-4xl font-bold text-red-900 mt-2">
-            {users.length}
+            {users?.length}
           </span>
         </div>
 
@@ -62,7 +62,7 @@ const AdminOverview = () => {
           </h2>
           <span className="block text-4xl font-bold text-blue-900 mt-2">
             {" "}
-            {reports.length}{" "}
+            {reports?.length}{" "}
           </span>
         </div>
       </div>

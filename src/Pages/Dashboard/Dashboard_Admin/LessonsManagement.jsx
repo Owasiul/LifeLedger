@@ -10,11 +10,12 @@ const LessonsManagement = () => {
   const { refetch, data: lessons = [] } = useQuery({
     queryKey: ["lessons"],
     queryFn: async () => {
-      const res = await axiosSecure.get(`/all-lessons`);
+      const res = await axiosSecure.get(`/allLessons`);
       return res.data;
     },
   });
 
+  // handle delete post
   const handleDeletePost = async (id) => {
     Swal.fire({
       title: "Are you sure?",
@@ -35,7 +36,7 @@ const LessonsManagement = () => {
               text: "Your post has been deleted.",
               icon: "success",
             });
-            refetch(); // 👈 don’t forget this
+            refetch();
           }
         } catch (error) {
           Swal.fire({
