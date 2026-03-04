@@ -12,9 +12,9 @@ const UserLessons = () => {
   const axiosSecure = useAxiosSecure();
   const navigate = useNavigate();
   const { refetch, data: lessons = [] } = useQuery({
-    queryKey: ["lessons", user?.displayName],
+    queryKey: ["lessons", user?.email],
     queryFn: async () => {
-      const res = await axiosSecure.get(`/lessons/${user?.displayName}`);
+      const res = await axiosSecure.get(`/lessons/${user?.email}`);
       return res.data;
     },
   });
@@ -51,7 +51,6 @@ const UserLessons = () => {
       }
     });
   };
- 
 
   return (
     <div>
@@ -167,7 +166,10 @@ const UserLessons = () => {
                         Details
                       </button>
 
-                      <button className="px-3 py-1.5 text-xs sm:text-sm bg-yellow-100 text-yellow-700 rounded-lg hover:bg-yellow-200 transition-colors whitespace-nowrap">
+                      <button
+                        onClick={() => navigate(`/dashboard/update-lessons`)}
+                        className="px-3 py-1.5 text-xs sm:text-sm bg-yellow-100 text-yellow-700 rounded-lg hover:bg-yellow-200 transition-colors whitespace-nowrap"
+                      >
                         Update
                       </button>
 

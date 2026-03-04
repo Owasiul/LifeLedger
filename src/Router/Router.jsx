@@ -24,6 +24,7 @@ import Loading from "../Components/Loading/Loading";
 import Error from "../Components/Error/Error";
 import ReportsManagement from "../Pages/Dashboard/Dashboard_Admin/ReportsManagement";
 import SavedLesson from "../Pages/Dashboard/Dashboard_Components/SavedLesson";
+import UpdateLesson from "../Pages/Dashboard/Dashboard_Components/UpdateLesson";
 
 export const router = createBrowserRouter([
   {
@@ -105,6 +106,10 @@ export const router = createBrowserRouter([
       {
         path: "/dashboard/add-lessons",
         Component: AddLesson,
+      },
+      {
+        path: "/dashboard/update-lessons",
+        Component: UpdateLesson,
       },
       {
         path: "/dashboard/my-lessons",

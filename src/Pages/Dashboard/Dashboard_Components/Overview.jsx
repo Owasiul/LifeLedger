@@ -11,9 +11,9 @@ const Overview = () => {
   const { userData } = useUser();
   // lessons
   const { data: lessons = [] } = useQuery({
-    queryKey: ["lessons", user?.displayName],
+    queryKey: ["lessons", user?.email],
     queryFn: async () => {
-      const res = await axiosSecure.get(`/lessons/${user?.displayName}`);
+      const res = await axiosSecure.get(`/lessons/${user?.email}`);
       return res.data;
     },
   });

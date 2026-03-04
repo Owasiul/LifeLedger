@@ -13,6 +13,7 @@ import { useForm } from "react-hook-form";
 import useAxiosSecure from "../../../Hooks/useAxiosSecure";
 import useAuth from "../../../Hooks/useAuth";
 import axios from "axios";
+import Swal from "sweetalert2";
 
 const AddLesson = () => {
   const { userData } = useUser();
@@ -52,6 +53,11 @@ const AddLesson = () => {
         isFeatured,
       };
       const res = await axiosSecure.post("/lessons", lessonData);
+      Swal.fire({
+        title: "success!",
+        text: "Your Lesson has been added successfully!",
+        icon: "success",
+      });
       return res.data;
     } catch (error) {
       console.log(error);
@@ -133,6 +139,7 @@ const AddLesson = () => {
                     className="
                 textarea textarea-bordered
                 w-full
+                h-96
                 text-lg leading-8
                 resize-none
                 focus:textarea-primary

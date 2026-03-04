@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useRef, useState } from "react";
 import useAxiosSecure from "../../Hooks/useAxiosSecure";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { useParams } from "react-router";
@@ -27,6 +27,7 @@ const LessonsDetails = () => {
   const queryClient = useQueryClient();
   const { register, handleSubmit, reset } = useForm();
   const [savedLesson, setSavedLesson] = useState(null);
+  const shareModalRef = useRef();
 
   // lessons details
   const { data: lessonsDetails } = useQuery({
@@ -193,6 +194,11 @@ const LessonsDetails = () => {
     }
   };
 
+  // share btn
+  const shareModal = () => {
+    shareModalRef.current.showModal();
+  };
+
   if (!lessonsDetails) {
     return (
       <div className="flex items-center justify-center min-h-screen bg-linear-to-br from-slate-900 via-slate-800 to-slate-900">
@@ -344,7 +350,10 @@ const LessonsDetails = () => {
                     <Flag className="w-4 h-4" />
                     Report Lesson
                   </button>
-                  <button className="flex items-center gap-2 px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg transition-colors">
+                  <button
+                    onClick={() => shareModal()}
+                    className="flex items-center gap-2 px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg transition-colors"
+                  >
                     <Share2 className="w-4 h-4" />
                     Share
                   </button>
@@ -490,6 +499,23 @@ const LessonsDetails = () => {
             </div>
           </div>
         </div>
+        <dialog
+          ref={shareModalRef}
+          className="modal modal-bottom sm:modal-middle"
+        >
+          <div className="modal-box">
+            <h3 className="font-bold text-lg">Hello!</h3>
+            <p className="py-4">
+              Press ESC key or click the button below to close
+            </p>
+            <div className="modal-action">
+              <form method="dialog">
+                {/* if there is a button in form, it will close the modal */}
+                <button className="btn">Close</button>
+              </form>
+            </div>
+          </div>
+        </dialog>
       </main>
       <Footer></Footer>
     </div>

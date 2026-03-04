@@ -11,10 +11,10 @@ const Profile = () => {
   const { user } = useAuth();
   const axiosSecure = useAxiosSecure();
   const { data: profile = [] } = useQuery({
-    queryKey: ["profile", user?.displayName],
+    queryKey: ["profile", user?.email],
     queryFn: async () => {
       const res = await axiosSecure.get(
-        `/lessons/${user?.displayName || userData.displayName}`,
+        `/lessons/${user?.email || userData.email}`,
       );
       console.log(res.data);
       return res.data;
