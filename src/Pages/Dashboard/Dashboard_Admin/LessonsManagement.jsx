@@ -64,35 +64,33 @@ const LessonsManagement = () => {
             </tr>
           </thead>
           <tbody>
-            {lessons.map((lesson, idx) => {
-              return (
-                <tr key={idx}>
-                  <th> {idx + 1} </th>
-                  <td
-                    className="leading-tight 
+            {lessons.map((lesson, idx) => (
+              <tr key={idx}>
+                <th> {idx + 1} </th>
+                <td
+                  className="leading-tight 
                whitespace-nowrap overflow-hidden text-ellipsis"
+                >
+                  {lesson.title}
+                </td>
+                <td> {lesson.creatorName} </td>
+                <td> {lesson.category} </td>
+                <td className="flex flex-row gap-5">
+                  <button
+                    onClick={() => navigate(`/all-lessons/${lesson?._id}`)}
+                    className="btn bg-sky-700 text-white"
                   >
-                    {lesson.title}
-                  </td>
-                  <td> {lesson.creatorName} </td>
-                  <td> {lesson.category} </td>
-                  <td className="flex flex-row gap-5">
-                    <button
-                      onClick={() => navigate(`/all-lessons/${lesson?._id}`)}
-                      className="btn bg-sky-700 text-white"
-                    >
-                      View
-                    </button>
-                    <button
-                      onClick={() => handleDeletePost(lesson?._id)}
-                      className="btn bg-amber-700 text-white"
-                    >
-                      Delete
-                    </button>
-                  </td>
-                </tr>
-              );
-            })}
+                    View
+                  </button>
+                  <button
+                    onClick={() => handleDeletePost(lesson?._id)}
+                    className="btn bg-amber-700 text-white"
+                  >
+                    Delete
+                  </button>
+                </td>
+              </tr>
+            ))}
           </tbody>
         </table>
       </div>
