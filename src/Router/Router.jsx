@@ -104,6 +104,10 @@ export const router = createBrowserRouter([
         Component: Overview,
       },
       {
+        path: "/dashboard/overview",
+        Component: Overview,
+      },
+      {
         path: "/dashboard/add-lessons",
         Component: AddLesson,
       },

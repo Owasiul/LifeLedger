@@ -20,6 +20,7 @@ import useAuth from "../../Hooks/useAuth";
 import Swal from "sweetalert2";
 import { useForm } from "react-hook-form";
 import ReactShare from "../../Components/ReactShare/ReactShare";
+import Loading from "../../Components/Loading/Loading";
 
 const LessonsDetails = () => {
   const axiosSecure = useAxiosSecure();
@@ -44,7 +45,7 @@ const LessonsDetails = () => {
     queryKey: ["commentsData", lessonsDetails?._id],
     queryFn: async () => {
       const res = await axiosSecure.get(`/comments/${lessonsDetails._id}`);
-      console.log(res.data);
+      // console.log(res.data);
       return res.data;
     },
     enabled: !!lessonsDetails?._id,
@@ -201,18 +202,7 @@ const LessonsDetails = () => {
   };
 
   if (!lessonsDetails) {
-    return (
-      <div className="flex items-center justify-center min-h-screen bg-linear-to-br from-slate-900 via-slate-800 to-slate-900">
-        <div className="text-center">
-          <h2 className="text-2xl font-bold text-white mb-2">
-            Lesson not found
-          </h2>
-          <p className="text-slate-400">
-            The lesson you're looking for doesn't exist.
-          </p>
-        </div>
-      </div>
-    );
+    return <Loading />;
   }
 
   return (
@@ -220,42 +210,41 @@ const LessonsDetails = () => {
       <Navbar></Navbar>
       <main>
         <div className="min-h-screen bg-linear-to-br from-slate-900 via-slate-800 to-slate-900">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-8">
             {/* Header Section */}
-            <div className="mb-8">
-              <div className="flex items-center gap-2 mb-4">
-                <span className="px-3 py-1 bg-blue-600/20 text-blue-400 rounded-full text-sm font-medium">
+            <div className="mb-6 sm:mb-8">
+              <div className="flex flex-wrap items-center gap-2 mb-3 sm:mb-4">
+                <span className="px-3 py-1 bg-blue-600/20 text-blue-400 rounded-full text-xs sm:text-sm font-medium">
                   Category: {lessonsDetails.category}
                 </span>
-                <span className="px-3 py-1 bg-purple-600/20 text-purple-400 rounded-full text-sm font-medium">
+                <span className="px-3 py-1 bg-purple-600/20 text-purple-400 rounded-full text-xs sm:text-sm font-medium">
                   Tone: {lessonsDetails.emotionalTone}
                 </span>
               </div>
-
-              <h1 className="text-4xl md:text-5xl font-bold text-white mb-2">
+              <h1 className="text-2xl sm:text-4xl md:text-5xl font-bold text-white mb-2 leading-tight">
                 {lessonsDetails.title}
               </h1>
             </div>
 
             {/* Main Content Grid */}
-            <div className="grid lg:grid-cols-3 gap-8 mb-8">
+            <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 sm:gap-8 mb-8">
               {/* Left Column - Main Content */}
-              <div className="lg:col-span-2 space-y-6">
+              <div className="lg:col-span-2 space-y-5 sm:space-y-6">
                 {/* Featured Image */}
                 <div className="relative rounded-xl overflow-hidden bg-slate-800 shadow-2xl">
                   {lessonsDetails.image ? (
                     <img
                       src={lessonsDetails.image}
                       alt={lessonsDetails.title}
-                      className="w-full h-auto object-cover"
+                      className="w-full h-auto object-cover max-h-75 sm:max-h-100 md:max-h-125"
                     />
                   ) : (
-                    <div className="w-full h-96 bg-linear-to-br from-blue-600/20 to-purple-600/20 flex items-center justify-center">
+                    <div className="w-full h-48 sm:h-72 md:h-96 bg-linear-to-br from-blue-600/20 to-purple-600/20 flex items-center justify-center">
                       <div className="text-center">
-                        <div className="w-20 h-20 mx-auto mb-4 bg-blue-600/30 rounded-2xl flex items-center justify-center">
-                          <Eye className="w-10 h-10 text-blue-400" />
+                        <div className="w-16 h-16 sm:w-20 sm:h-20 mx-auto mb-3 sm:mb-4 bg-blue-600/30 rounded-2xl flex items-center justify-center">
+                          <Eye className="w-8 h-8 sm:w-10 sm:h-10 text-blue-400" />
                         </div>
-                        <p className="text-slate-400">
+                        <p className="text-slate-400 text-sm sm:text-base">
                           No preview image available
                         </p>
                       </div>
@@ -264,21 +253,21 @@ const LessonsDetails = () => {
                 </div>
 
                 {/* Meta Information */}
-                <div className="flex flex-wrap items-center gap-4 text-sm text-slate-400 pb-6 border-b border-slate-700">
-                  <div className="flex items-center gap-2">
-                    <Calendar className="w-4 h-4" />
+                <div className="flex flex-wrap items-center gap-3 text-xs sm:text-sm text-slate-400 pb-5 sm:pb-6 border-b border-slate-700">
+                  <div className="flex items-center gap-1.5">
+                    <Calendar className="w-3.5 h-3.5 sm:w-4 sm:h-4 shrink-0" />
                     <span>Created: {formatDate(lessonsDetails.createdAt)}</span>
                   </div>
-                  <div className="flex items-center gap-2">
-                    <Clock className="w-4 h-4" />
+                  <div className="flex items-center gap-1.5">
+                    <Clock className="w-3.5 h-3.5 sm:w-4 sm:h-4 shrink-0" />
                     <span>Updated: {formatDate(lessonsDetails.updatedAt)}</span>
                   </div>
-                  <div className="flex items-center gap-2">
-                    <Globe className="w-4 h-4" />
+                  <div className="flex items-center gap-1.5">
+                    <Globe className="w-3.5 h-3.5 sm:w-4 sm:h-4 shrink-0" />
                     <span>Visibility: {lessonsDetails.visibility}</span>
                   </div>
-                  <div className="flex items-center gap-2">
-                    <Clock className="w-4 h-4" />
+                  <div className="flex items-center gap-1.5">
+                    <Clock className="w-3.5 h-3.5 sm:w-4 sm:h-4 shrink-0" />
                     <span>
                       Reading Time:{" "}
                       {calculateReadingTime(lessonsDetails.description)}
@@ -292,30 +281,32 @@ const LessonsDetails = () => {
                 </div>
 
                 {/* Content Body */}
-                <div className="prose prose-invert prose-lg max-w-none">
+                <div className="prose prose-invert prose-base sm:prose-lg max-w-none">
                   <div className="text-slate-300 leading-relaxed space-y-4">
-                    <p className="text-lg">{lessonsDetails.description}</p>
+                    <p className="text-base sm:text-lg">
+                      {lessonsDetails.description}
+                    </p>
                   </div>
                 </div>
 
                 {/* Engagement Bar */}
-                <div className="flex flex-wrap items-center justify-between gap-4 py-6 border-y border-slate-700">
-                  <div className="flex items-center gap-6">
-                    <div className="flex items-center gap-2">
-                      <Heart className="w-5 h-5 text-slate-400" />
-                      <span className="text-white font-semibold">
+                <div className="flex flex-wrap items-center justify-between gap-3 py-4 sm:py-6 border-y border-slate-700">
+                  <div className="flex items-center gap-4 sm:gap-6">
+                    <div className="flex items-center gap-1.5 sm:gap-2">
+                      <Heart className="w-4 h-4 sm:w-5 sm:h-5 text-slate-400" />
+                      <span className="text-white font-semibold text-sm sm:text-base">
                         {lessonsDetails.likes.length} Likes
                       </span>
                     </div>
-                    <div className="flex items-center gap-2">
-                      <Bookmark className="w-5 h-5 text-slate-400" />
-                      <span className="text-white font-semibold">
+                    <div className="flex items-center gap-1.5 sm:gap-2">
+                      <Bookmark className="w-4 h-4 sm:w-5 sm:h-5 text-slate-400" />
+                      <span className="text-white font-semibold text-sm sm:text-base">
                         {lessonsDetails.favoritesCount} Favorites
                       </span>
                     </div>
-                    <div className="flex items-center gap-2">
-                      <Eye className="w-5 h-5 text-slate-400" />
-                      <span className="text-white font-semibold">
+                    <div className="flex items-center gap-1.5 sm:gap-2">
+                      <Eye className="w-4 h-4 sm:w-5 sm:h-5 text-slate-400" />
+                      <span className="text-white font-semibold text-sm sm:text-base">
                         {lessonsDetails.viewsCount || 0} Views
                       </span>
                     </div>
@@ -323,52 +314,56 @@ const LessonsDetails = () => {
                 </div>
 
                 {/* Action Buttons */}
-                <div className="flex flex-wrap gap-3 items-center">
-                  <div className="">
+                <div className="flex flex-wrap gap-2 sm:gap-3 items-center">
+                  <div>
                     {savedLesson?.saved ? (
-                      <span className="text-green-500">Lesson Saved</span>
+                      <span className="text-green-500 text-sm sm:text-base">
+                        Lesson Saved
+                      </span>
                     ) : (
                       <button
                         onClick={() => handleSaveLesson(lessonsDetails?._id)}
-                        className="flex items-center gap-2 px-4 py-2 bg-slate-800 hover:bg-slate-700 text-white rounded-lg transition-colors"
+                        className="flex items-center gap-2 px-3 sm:px-4 py-2 bg-slate-800 hover:bg-slate-700 text-white rounded-lg transition-colors text-sm sm:text-base"
                       >
-                        <Bookmark className="w-4 h-4" />
-                        Save to Favorites
+                        <Bookmark className="w-4 h-4 shrink-0" />
+                        <span>Save to Favorites</span>
                       </button>
                     )}
                   </div>
                   <button
                     onClick={() => handleLike(lessonsDetails._id)}
-                    className="flex items-center gap-2 px-4 py-2 bg-slate-800 hover:bg-slate-700 text-white rounded-lg transition-colors"
+                    className="flex items-center gap-2 px-3 sm:px-4 py-2 bg-slate-800 hover:bg-slate-700 text-white rounded-lg transition-colors text-sm sm:text-base"
                   >
-                    <Heart className="w-4 h-4" />
-                    Like
+                    <Heart className="w-4 h-4 shrink-0" />
+                    <span>Like</span>
                   </button>
                   <button
                     onClick={() => handleReportLesson(lessonsDetails._id)}
-                    className="flex items-center gap-2 px-4 py-2 bg-slate-800 hover:bg-slate-700 text-white rounded-lg transition-colors"
+                    className="flex items-center gap-2 px-3 sm:px-4 py-2 bg-slate-800 hover:bg-slate-700 text-white rounded-lg transition-colors text-sm sm:text-base"
                   >
-                    <Flag className="w-4 h-4" />
-                    Report Lesson
+                    <Flag className="w-4 h-4 shrink-0" />
+                    <span>Report</span>
                   </button>
                   <button
                     onClick={() => shareModal()}
-                    className="flex items-center gap-2 px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg transition-colors"
+                    className="flex items-center gap-2 px-3 sm:px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg transition-colors text-sm sm:text-base"
                   >
-                    <Share2 className="w-4 h-4" />
-                    Share
+                    <Share2 className="w-4 h-4 shrink-0" />
+                    <span>Share</span>
                   </button>
                 </div>
 
                 {/* Comments Section */}
-                <div className="mt-8 space-y-4">
-                  <h3 className="text-xl font-bold text-white">Comments</h3>
+                <div className="mt-6 sm:mt-8 space-y-4">
+                  <h3 className="text-lg sm:text-xl font-bold text-white">
+                    Comments
+                  </h3>
 
                   {/* Comment Input */}
-                  <div className="flex gap-3">
-                    <div className="w-10 h-10 rounded-full shrink-0">
+                  <div className="flex gap-2 sm:gap-3">
+                    <div className="w-8 h-8 sm:w-10 sm:h-10 rounded-full shrink-0">
                       <img
-                        className="rounded-full"
+                        className="w-full h-full rounded-full object-cover"
                         src={user.photoURL}
                         alt=""
                       />
@@ -377,37 +372,40 @@ const LessonsDetails = () => {
                       onSubmit={handleSubmit((data) =>
                         handleComment(data, lessonsDetails._id),
                       )}
-                      className="flex-1 flex gap-2 "
+                      className="flex-1 flex md:gap-2 gap-1"
                     >
                       <input
                         type="text"
                         {...register("comment")}
                         placeholder="Add a comment..."
-                        className="flex-1 px-4 py-2 bg-slate-800 border border-slate-700 rounded-lg text-white placeholder-slate-500 focus:outline-none focus:border-blue-500"
+                        className="flex-1 min-w-0 px-3 sm:px-4 py-2 bg-slate-800 border border-slate-700 rounded-lg text-white text-sm sm:text-base placeholder-slate-500 focus:outline-none focus:border-blue-500"
                       />
                       <button
                         type="submit"
-                        className="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg transition-colors"
+                        className="px-2 md:px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg transition-colors shrink-0"
                       >
                         <Send className="w-4 h-4" />
                       </button>
                     </form>
                   </div>
 
-                  {/* Sample Comments */}
-                  <div className="space-y-4">
+                  {/* Comments List */}
+                  <div className="space-y-3 sm:space-y-4">
                     {commentsData.map((c) => (
-                      <div key={c._id} className="flex items-start gap-3 p-2">
+                      <div
+                        key={c._id}
+                        className="flex items-start gap-2 sm:gap-3 p-2"
+                      >
                         <img
-                          className="w-10 h-10 rounded-full object-cover"
+                          className="w-8 h-8 sm:w-10 sm:h-10 rounded-full object-cover shrink-0"
                           src={c.userPhotoURL}
                           alt=""
                         />
-                        <div className="bg-gray-100 rounded-lg px-4 py-2 flex-1 space-y-1">
-                          <p className="text-black text-lg font-semibold">
+                        <div className="bg-gray-100 rounded-lg px-3 sm:px-4 py-2 flex-1 min-w-0 space-y-1">
+                          <p className="text-black text-sm sm:text-base font-semibold truncate">
                             {c.commentedby}
                           </p>
-                          <p className="text-black font-medium text-sm">
+                          <p className="text-black font-medium text-xs sm:text-sm wrap-break-words">
                             {c.comment}
                           </p>
                         </div>
@@ -423,67 +421,64 @@ const LessonsDetails = () => {
               </div>
 
               {/* Right Column - Author & Similar */}
-              <div className="space-y-6">
+              <div className="space-y-5 sm:space-y-6">
                 {/* Author Card */}
-                <div className="bg-slate-800/50 backdrop-blur-sm rounded-xl p-6 border border-slate-700">
+                <div className="bg-slate-800/50 backdrop-blur-sm rounded-xl p-4 sm:p-6 border border-slate-700">
                   <div className="flex flex-col items-center text-center">
                     {lessonsDetails.creatorPhoto ? (
                       <img
                         src={lessonsDetails.creatorPhoto}
                         alt={lessonsDetails.creatorName}
-                        className="w-20 h-20 rounded-full mb-4 object-cover border-2 border-blue-500"
+                        className="w-16 h-16 sm:w-20 sm:h-20 rounded-full mb-3 sm:mb-4 object-cover border-2 border-blue-500"
                       />
                     ) : (
-                      <div className="w-20 h-20 rounded-full bg-linear-to-br from-blue-500 to-purple-600 mb-4 flex items-center justify-center text-white text-2xl font-bold">
+                      <div className="w-16 h-16 sm:w-20 sm:h-20 rounded-full bg-linear-to-br from-blue-500 to-purple-600 mb-3 sm:mb-4 flex items-center justify-center text-white text-xl sm:text-2xl font-bold">
                         {lessonsDetails.creatorName?.charAt(0) || "U"}
                       </div>
                     )}
-                    <h3 className="text-xl font-bold text-white mb-1">
+                    <h3 className="text-lg sm:text-xl font-bold text-white mb-1">
                       {lessonsDetails.creatorName}
                     </h3>
                   </div>
                 </div>
 
                 {/* Similar Lessons */}
-                <div className="bg-slate-800/50 backdrop-blur-sm rounded-xl p-6 border border-slate-700">
+                <div className="bg-slate-800/50 backdrop-blur-sm rounded-xl p-4 sm:p-6 border border-slate-700">
                   <div className="flex items-center justify-between mb-4">
-                    <h3 className="text-lg font-bold text-white">
+                    <h3 className="text-base sm:text-lg font-bold text-white">
                       Similar and Recommended Lessons
                     </h3>
                   </div>
-
                   <div className="space-y-3">
-                    {filteredData.map((sameData) => {
-                      return (
-                        <div
-                          key={sameData?._id}
-                          className="bg-slate-700/50 rounded-lg p-3 hover:bg-slate-700 transition-colors cursor-pointer"
-                        >
-                          <div className="flex gap-3">
-                            <div className="w-16 h-20 ">
-                              <img
-                                className="object-contain rounded-lg"
-                                src={sameData.image}
-                                alt=""
-                              />
-                            </div>
-                            <div className="flex-1 min-w-0">
-                              <h4 className="font-semibold text-white text-sm mb-1 truncate">
-                                {sameData.title}
-                              </h4>
-                              <div className="flex items-center gap-2 text-xs text-slate-400">
-                                <span className="px-2 py-0.5 bg-blue-600/20 text-blue-400 rounded">
-                                  {sameData.category}
-                                </span>
-                                <span className="px-2 py-0.5 bg-purple-600/20 text-purple-400 rounded">
-                                  {sameData.emotionalTone}
-                                </span>
-                              </div>
+                    {filteredData.map((sameData) => (
+                      <div
+                        key={sameData?._id}
+                        className="bg-slate-700/50 rounded-lg p-3 hover:bg-slate-700 transition-colors cursor-pointer"
+                      >
+                        <div className="flex gap-3">
+                          <div className="w-14 h-16 sm:w-16 sm:h-20 shrink-0">
+                            <img
+                              className="w-full h-full object-cover rounded-lg"
+                              src={sameData.image}
+                              alt=""
+                            />
+                          </div>
+                          <div className="flex-1 min-w-0">
+                            <h4 className="font-semibold text-white text-xs sm:text-sm mb-1 line-clamp-2">
+                              {sameData.title}
+                            </h4>
+                            <div className="flex flex-wrap items-center gap-1.5 text-xs text-slate-400">
+                              <span className="px-1.5 py-0.5 bg-blue-600/20 text-blue-400 rounded">
+                                {sameData.category}
+                              </span>
+                              <span className="px-1.5 py-0.5 bg-purple-600/20 text-purple-400 rounded">
+                                {sameData.emotionalTone}
+                              </span>
                             </div>
                           </div>
                         </div>
-                      );
-                    })}
+                      </div>
+                    ))}
                   </div>
                 </div>
 
@@ -491,8 +486,10 @@ const LessonsDetails = () => {
                 {lessonsDetails.isFeatured && (
                   <div className="bg-linear-to-br from-amber-600/20 to-orange-600/20 backdrop-blur-sm rounded-xl p-4 border border-amber-600/30">
                     <div className="flex items-center gap-2 text-amber-400">
-                      <span className="text-2xl">⭐</span>
-                      <span className="font-semibold">Featured Lesson</span>
+                      <span className="text-xl sm:text-2xl">⭐</span>
+                      <span className="font-semibold text-sm sm:text-base">
+                        Featured Lesson
+                      </span>
                     </div>
                   </div>
                 )}

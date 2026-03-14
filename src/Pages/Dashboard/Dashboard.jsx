@@ -15,6 +15,7 @@ import {
   UserCircle2,
   BookText,
   Flag,
+  House,
 } from "lucide-react";
 import useAuth from "../../Hooks/useAuth";
 import Logo from "../../assets/Logo.png";
@@ -82,6 +83,19 @@ const Dashboard = () => {
                 Main Menu
               </li>
 
+              <li>
+                <NavLink
+                  to="/dashboard/overview"
+                  className={({ isActive }) =>
+                    isActive
+                      ? "active bg-primary/10 text-primary font-medium"
+                      : "hover:bg-base-300"
+                  }
+                >
+                  <House size={20} />
+                  <span>Overview</span>
+                </NavLink>
+              </li>
               <li>
                 <NavLink
                   to="/dashboard/my-lessons"

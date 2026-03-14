@@ -72,16 +72,16 @@ const Lessons = () => {
   return (
     <div className="">
       {/* top */}
-      <div className="flex flex-row items-center justify-between mx-6 my-5">
+      <div className="flex flex-row items-center justify-between mx-6 my-5 gap-5">
         {/* total-lessons */}
         <div className="total-lessons">
-          <p className="text-3xl font-bold underline">
+          <p className="lg:text-3xl text-lg font-bold underline">
             Total Lessons : {data?.total}{" "}
           </p>
         </div>
         {/* search */}
         <div className="search">
-          <label className="input max-w-75 w-75 input-accent">
+          <label className="input max-w-75 lg:w-75 w-44 input-accent">
             <svg
               className="h-[1em] opacity-50"
               xmlns="http://www.w3.org/2000/svg"
