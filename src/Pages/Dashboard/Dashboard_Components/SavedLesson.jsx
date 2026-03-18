@@ -13,7 +13,7 @@ const SavedLesson = () => {
     queryKey: ["savedLessons"],
     queryFn: async () => {
       const res = await axiosSecure.get(`/saved-lessons?email=${user?.email}`);
-      console.log(res.data);
+      // console.log(res.data);
       return res.data;
     },
   });

@@ -6,6 +6,7 @@ import useAuth from "../../../Hooks/useAuth";
 import {
   ArrowRightIcon,
   Bookmark,
+  LockKeyholeIcon,
   Mail,
   Pencil,
   PencilIcon,
@@ -128,10 +129,11 @@ const Profile = () => {
             </div>
 
             <div className="flex items-center justify-center lg:justify-start gap-2 text-emerald-100/70 mb-6">
-              <span className="text-sm flex gap-3">
-                <Mail /> {user?.email || "user@email.com"}
-              </span>
-              <span className="text-xs opacity-50">🔒</span>
+              <span className="text-lg flex items-center gap-2">
+                <Mail size={20} />
+                {user?.email || "user@email.com"}
+                <LockKeyholeIcon color="olive" size={20} />{" "}
+              </span>{" "}
             </div>
 
             {/* Stats - Circular icon style from reference */}

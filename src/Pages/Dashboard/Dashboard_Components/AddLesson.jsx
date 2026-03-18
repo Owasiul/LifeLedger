@@ -20,6 +20,7 @@ const AddLesson = () => {
   const { user } = useAuth();
   const axiosSecure = useAxiosSecure();
   const { register, handleSubmit } = useForm();
+  // console.log(userData);
 
   const handleSubmitPost = async (data) => {
     const isFeatured = userData.isPremium === true ? true : false;
