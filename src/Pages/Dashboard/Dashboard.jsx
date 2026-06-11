@@ -15,7 +15,6 @@ import {
   Edit3,
   FileText,
   Heart,
-  ChevronRight,
   LayoutDashboard,
   BookOpenText,
   BookmarkCheck,
@@ -77,6 +76,7 @@ const useLessonStats = (userId) => {
     lessonsCreated: 0,
     lessonsSaved: 0,
     publicLessons: [],
+    totalViews: 0,
   });
   const [loading, setLoading] = useState(true);
 
@@ -95,6 +95,7 @@ const useLessonStats = (userId) => {
           lessonsCreated: 0,
           lessonsSaved: 0,
           publicLessons: [], // Array of public lesson objects
+          totalViews: 0,
         };
         setStats(mockStats);
       } catch (error) {
@@ -211,7 +212,7 @@ const Dashboard = () => {
                 <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-primary">
                   <img className="w-6 h-6 object-contain" src={Logo} alt="Logo" />
                 </div>
-                <span className="text-lg font-bold bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">
+                <span className="text-lg font-bold bg-linear-to-r from-primary to-secondary bg-clip-text text-transparent">
                   LearnHub
                 </span>
               </Link>
@@ -257,7 +258,7 @@ const Dashboard = () => {
                   </SidebarGroupContent>
                 </SidebarGroup>
 
-                {role === "admin" && (
+                {role?.toLowerCase() === "admin" && (
                   <>
                     <SidebarGroup>
                       <SidebarGroupLabel>Admin Management</SidebarGroupLabel>
@@ -338,7 +339,7 @@ const Dashboard = () => {
                 {isOverviewPage && (
                   <div className="space-y-8">
                     {/* Profile Header Card */}
-                    <div className="rounded-2xl border border-border bg-gradient-to-r from-primary/5 via-background to-secondary/5 p-6 shadow-sm transition-all hover:shadow-md">
+                    <div className="rounded-2xl border border-border bg-linear-to-r from-primary/5 via-background to-secondary/5 p-6 shadow-sm transition-all hover:shadow-md">
                       <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
                         <div className="flex items-center gap-4">
                           <div className="relative h-16 w-16 overflow-hidden rounded-full bg-primary/10">

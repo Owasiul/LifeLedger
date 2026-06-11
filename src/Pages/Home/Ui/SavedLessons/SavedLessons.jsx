@@ -15,6 +15,9 @@ const SavedLessons = () => {
       const res = await axiosSecure.get(`/top-lessons`);
       return res.data;
     },
+    staleTime: 30000,
+    refetchOnWindowFocus: false,
+    retry: 1,
   });
 
   if (isLoading) return <Loading />;

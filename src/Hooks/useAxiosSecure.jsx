@@ -8,6 +8,17 @@ const instance = axios.create({
   baseURL: API_BASE_URL,
 });
 
+// Module-level response interceptor — always active, no timing issues
+instance.interceptors.response.use(
+  async (response) => {
+    // Auto-unwrap the standard { success, message, data } response envelope
+    if (response.data?.success === true && response.data?.data !== undefined) {
+      response.data = response.data.data;
+    }
+    return response;
+  },
+);
+
 const useAxiosSecure = () => {
   const { user, LogOut } = useAuth();
   const navigate = useNavigate();
@@ -22,11 +33,9 @@ const useAxiosSecure = () => {
       return config;
     });
 
-    // intercept response
-    const resInterceptor = instance.interceptors.response.use(
-      async (response) => {
-        return response;
-      },
+    // intercept response errors (401/403 handling depends on hooks)
+    const errInterceptor = instance.interceptors.response.use(
+      (response) => response,
       (error) => {
         const statusCode = error.response?.status;
         if (statusCode === 401 || statusCode === 403) {
@@ -40,7 +49,7 @@ const useAxiosSecure = () => {
 
     return () => {
       instance.interceptors.request.eject(reqInterceptor);
-      instance.interceptors.response.eject(resInterceptor);
+      instance.interceptors.response.eject(errInterceptor);
     };
   }, [user, LogOut, navigate]);
 

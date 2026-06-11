@@ -120,7 +120,7 @@ const Register = () => {
             ) : (
               <CircleUserRound
                 size={64}
-                className="text-white dark:text-gray-500"
+                className="dark:text-white"
               />
             )}
           </div>

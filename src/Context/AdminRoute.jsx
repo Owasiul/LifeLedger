@@ -13,7 +13,8 @@ const AdminRoute = ({ children }) => {
     return <Loading />;
   }
 
-  if (role !== "admin") {
+  // Case-insensitive comparison for admin role
+  if (role?.toLowerCase() !== "admin") {
     return (
       <div className="flex flex-col items-center justify-center min-h-[50vh] text-center px-6">
         <ShieldAlert className="text-error mb-4" size={48} />

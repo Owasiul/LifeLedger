@@ -1,12 +1,13 @@
 import React, { useEffect, useState } from "react";
 import useAxiosSecure from "../../Hooks/useAxiosSecure";
-import { useQuery } from "@tanstack/react-query";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
 import useUser from "../../Hooks/useUser";
 import { Link } from "react-router";
 import {
   Bookmark,
   Lock,
   LogIn,
+  Search,
   Share2,
   ThumbsDown,
   ThumbsUp,
@@ -14,60 +15,80 @@ import {
 } from "lucide-react";
 import useAuth from "../../Hooks/useAuth";
 import Loading from "../../Components/Loading/Loading";
-import { Button } from "@heroui/react";
+import { Button, Input } from "@heroui/react";
 
 const Lessons = () => {
   const axiosSecure = useAxiosSecure();
+  const queryClient = useQueryClient();
   const { user } = useAuth();
-  const { userData } = useUser();
+  const { userData, isLoading: isUserLoading } = useUser();
   const isPremiumUser = userData?.isPremium;
-  // implement pagination
+
+  // Pagination
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage] = useState(10);
 
-  // implement sort
+  // Sort
   const [sort, setSort] = useState("");
   const [order, setOrder] = useState("");
 
-  // implement search
+  // Search
   const [searchText, setSearchText] = useState("");
   const [debouncedSearch, setDebouncedSearch] = useState("");
 
-  // handle dely
+  // Debounce search input and reset to page 1
   useEffect(() => {
     const timer = setTimeout(() => {
       setDebouncedSearch(searchText);
+      setCurrentPage(1);
     }, 500);
     return () => clearTimeout(timer);
   }, [searchText]);
 
-  // all lessons data with sort and search
+  // Fetch lessons
   const { isLoading, data } = useQuery({
     queryKey: ["lessons", currentPage, sort, order, debouncedSearch],
     queryFn: async () => {
       const skip = (currentPage - 1) * itemsPerPage;
-      const res = await axiosSecure.get(
-        `/all-lessons?limit=${itemsPerPage}&skip=${skip}&sort=${sort}&order=${order}&search=${debouncedSearch}`,
-      );
+      const params = new URLSearchParams();
+      params.set("limit", itemsPerPage);
+      params.set("skip", skip);
+      if (sort) params.set("sort", sort);
+      if (order) params.set("order", order);
+      if (debouncedSearch) params.set("search", debouncedSearch);
+      const res = await axiosSecure.get(`/all-lessons?${params.toString()}`);
       return res.data;
     },
   });
   const lessons = data?.all_lessons || [];
   const totalPages = data ? Math.ceil(data.total / itemsPerPage) : 0;
 
-  // handleLike
+  // Handle like – invalidate query so the like count updates
   const handleLike = async (lessonID) => {
-    const res = await axiosSecure.post(`/lessons/${lessonID}/likes`, {
-      user: user._id,
-    });
-    return res.data;
+    try {
+      await axiosSecure.post(`/lessons/${lessonID}/likes`, {
+        user: user._id,
+      });
+      // Refetch lessons to show updated counts
+      queryClient.invalidateQueries({ queryKey: ["lessons"] });
+    } catch (error) {
+      console.error("Like failed:", error);
+    }
   };
-  // handle sorting
+
+  // Sort handler
   const handleSort = (e) => {
-    const [sort, order] = e.target.value.split("-");
-    setSort(sort);
-    setOrder(order);
+    const [newSort, newOrder] = e.target.value.split("-");
+    setSort(newSort);
+    setOrder(newOrder);
+    // Reset to page 1 when sort changes
+    setCurrentPage(1);
   };
+
+  // While user data is loading, show a loader to avoid flash of wrong premium state
+  if (isUserLoading) {
+    return <Loading />;
+  }
 
   return (
     <div className="">
@@ -81,37 +102,22 @@ const Lessons = () => {
         </div>
         {/* search */}
         <div className="search">
-          <label className="input max-w-75 lg:w-75 w-44 input-accent">
-            <svg
-              className="h-[1em] opacity-50"
-              xmlns="http://www.w3.org/2000/svg"
-              viewBox="0 0 24 24"
-            >
-              <g
-                strokeLinejoin="round"
-                strokeLinecap="round"
-                strokeWidth="2.5"
-                fill="none"
-                stroke="currentColor"
-              >
-                <circle cx="11" cy="11" r="8"></circle>
-                <path d="m21 21-4.3-4.3"></path>
-              </g>
-            </svg>
-            <input
-              onChange={(e) => setSearchText(e.target.value)}
-              type="search"
-              required
-              placeholder="Search"
-            />
-          </label>
+          <Input
+            type="search"
+            placeholder="Search"
+            onChange={(e) => setSearchText(e.target.value)}
+            startcontent={<Search className="text-default-400" />}
+            classnames={{
+              base: "max-w-75 lg:w-75 w-44",
+              input: "placeholder:text-default-400",
+            }}
+          />
         </div>
         {/* select */}
         <select className="select" onChange={handleSort} defaultValue="">
           <option value="" disabled>
             Sort by
           </option>
-
           <option value="createdAt-desc">Newest First</option>
           <option value="createdAt-asc">Oldest First</option>
           <option value="likesCount-desc">Most Liked</option>
@@ -119,12 +125,18 @@ const Lessons = () => {
           <option value="accessLevel-desc">Premium First</option>
         </select>
       </div>
+
       {/* middle */}
       {isLoading ? (
         <Loading />
+      ) : lessons.length === 0 ? (
+        <div className="text-center py-20 text-gray-500 dark:text-gray-400">
+          No lessons found.
+        </div>
       ) : (
         <div className="grid lg:grid-cols-4 md:grid-cols-2 grid-cols-1 gap-5 w-[90%] mx-auto my-10">
           {lessons.map((lesson) => {
+            // isLocked is safely computed now that userData has loaded
             const isLocked = lesson.accessLevel !== "free" && !isPremiumUser;
             return (
               <div
@@ -217,7 +229,7 @@ const Lessons = () => {
                     )}
                   </div>
 
-                  {/* Footer - outside the overlay wrapper */}
+                  {/* Footer */}
                   <div className="mt-auto px-5 py-4 border-t border-gray-100 dark:border-slate-800 flex items-center justify-between">
                     <div className="flex items-center gap-4 text-slate-500 dark:text-slate-400">
                       <Button
@@ -240,18 +252,14 @@ const Lessons = () => {
                       </Button>
                     </div>
                     <div className="flex items-center gap-2 text-slate-400">
-                      <div className="">
-                        <Bookmark
-                          size={18}
-                          className="hover:text-amber-500 cursor-pointer"
-                        />
-                      </div>
-                      <div className="">
-                        <Share2
-                          size={18}
-                          className="hover:text-indigo-500 cursor-pointer"
-                        />
-                      </div>
+                      <Bookmark
+                        size={18}
+                        className="hover:text-amber-500 cursor-pointer"
+                      />
+                      <Share2
+                        size={18}
+                        className="hover:text-indigo-500 cursor-pointer"
+                      />
                     </div>
                   </div>
                 </div>
@@ -260,11 +268,13 @@ const Lessons = () => {
           })}
         </div>
       )}
-      {/* bottom */}
+
+      {/* bottom – pagination */}
       <div className="flex gap-2 my-6 mx-2 justify-end">
         <Button
-          className="btn"
-          disabled={currentPage === 1}
+          variant="flat"
+          color="default"
+          isDisabled={currentPage === 1}
           onClick={() => setCurrentPage(currentPage - 1)}
         >
           Prev
@@ -273,7 +283,8 @@ const Lessons = () => {
         {[...Array(totalPages).keys()].map((page) => (
           <Button
             key={page}
-            className={`btn ${currentPage === page + 1 ? "btn-primary" : ""}`}
+            variant={currentPage === page + 1 ? "solid" : "flat"}
+            color={currentPage === page + 1 ? "primary" : "default"}
             onClick={() => setCurrentPage(page + 1)}
           >
             {page + 1}
@@ -281,8 +292,9 @@ const Lessons = () => {
         ))}
 
         <Button
-          className="btn"
-          disabled={currentPage === totalPages}
+          variant="flat"
+          color="default"
+          isDisabled={currentPage === totalPages}
           onClick={() => setCurrentPage(currentPage + 1)}
         >
           Next

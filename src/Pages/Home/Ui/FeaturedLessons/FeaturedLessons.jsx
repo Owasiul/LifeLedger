@@ -16,6 +16,9 @@ const FeaturedLessons = () => {
       const res = await axiosSecure.get("/lessons");
       return res.data;
     },
+    staleTime: 30000,
+    refetchOnWindowFocus: false,
+    retry: 1,
   });
   console.log(lessons);
 
