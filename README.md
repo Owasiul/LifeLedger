@@ -40,6 +40,11 @@ https://github.com/Owasiul/LifeLedger-server
 
 ---
 
+Admin:
+-----
+admin email = hasinhayder77@gmail.com
+admin pass = hasinHaydar55@
+
 ## ✨ Features
 
 - 🔐 Firebase authentication (email/password + Google)
