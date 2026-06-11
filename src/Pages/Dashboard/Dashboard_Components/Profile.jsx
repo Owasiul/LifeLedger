@@ -1,6 +1,6 @@
-import React, { useRef } from "react";
+import React, { useMemo } from "react";
 import useUser from "../../../Hooks/useUser";
-import { useQuery } from "@tanstack/react-query";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
 import useAxiosSecure from "../../../Hooks/useAxiosSecure";
 import useAuth from "../../../Hooks/useAuth";
 import {
@@ -17,25 +17,29 @@ import { Menu, MenuButton, MenuItems } from "@headlessui/react";
 import { useForm } from "react-hook-form";
 import Swal from "sweetalert2";
 import axios from "axios";
+import { Button, Card } from "@heroui/react";
 
 const Profile = () => {
   const { userData } = useUser();
-  const { user, updateUserData, setUser } = useAuth();
+  const { user, updateUserData } = useAuth();
   const axiosSecure = useAxiosSecure();
   const navigate = useNavigate();
-  const updateProfileRef = useRef();
+  const queryClient = useQueryClient();
   const { register, handleSubmit } = useForm();
 
-  const { data: profile = [] } = useQuery({
-    queryKey: ["profile", user?.email],
+  const { data: lessons = [] } = useQuery({
+    queryKey: ["lessons", user?.email],
     queryFn: async () => {
-      const res = await axiosSecure.get(
-        `/lessons/${user?.email || userData.email}`,
-      );
+      const res = await axiosSecure.get(`/lessons/${user?.email}`);
       return res.data;
     },
+    enabled: !!user?.email,
   });
-  // console.log(profile);
+
+  const publicLessons = useMemo(
+    () => lessons.filter((lesson) => lesson.visibility === "public"),
+    [lessons],
+  );
 
   const formatDate = (dateString) => {
     if (!dateString) return "N/A";
@@ -47,50 +51,51 @@ const Profile = () => {
   };
 
   const { data: savedLessons = [] } = useQuery({
-    queryKey: ["savedLessons"],
+    queryKey: ["savedLessons", user?.email],
     queryFn: async () => {
       const res = await axiosSecure.get(`/saved-lessons?email=${user?.email}`);
       return res.data;
     },
+    enabled: !!user?.email,
   });
 
-  // Edit profile - opens modal
-  const editProfile = () => {
-    updateProfileRef.current?.showModal();
-  };
-  // update user profile
   const updateProfile = async (data) => {
     try {
-      const formData = new FormData();
-      formData.append("image", data.photoURL[0]);
-      const imgRes = await axios.post(
-        `https://api.imgbb.com/1/upload?key=${import.meta.env.VITE_Imgbb}`,
-        formData,
-      );
-      const photoURL = imgRes.data.data.url;
+      let photoURL = user?.photoURL;
 
-      const res = await axiosSecure.patch("/update-user", {
+      if (data.photoURL?.[0]) {
+        const formData = new FormData();
+        formData.append("image", data.photoURL[0]);
+        const imgRes = await axios.post(
+          `https://api.imgbb.com/1/upload?key=${import.meta.env.VITE_Imgbb}`,
+          formData,
+        );
+        photoURL = imgRes.data.data.url;
+      }
+
+      const displayName = data.displayName?.trim() || user?.displayName;
+
+      await axiosSecure.patch("/update-user", {
         email: user.email,
-        displayName: data.displayName,
-        photoURL: photoURL,
+        displayName,
+        photoURL,
       });
 
-      await updateUserData({
-        displayName: data.displayName,
-        photoURL: photoURL,
-      });
+      await updateUserData({ displayName, photoURL });
 
-      setUser((prev) => ({ ...prev, displayName: data.displayName, photoURL }));
+      queryClient.invalidateQueries({ queryKey: ["users"] });
 
       Swal.fire({
         title: "Successful!",
-        text: "Your name and image has been updated successfully",
+        text: "Your profile has been updated successfully",
         icon: "success",
       });
-
-      return res.data;
     } catch (error) {
-      console.log(error);
+      Swal.fire({
+        title: "Error",
+        text: error.message || "Failed to update profile",
+        icon: "error",
+      });
     }
   };
 
@@ -104,8 +109,9 @@ const Profile = () => {
           <div className="relative">
             <img
               className="w-32 h-32 object-cover rounded-full border-4 border-white/20 shadow-xl"
-              src={user?.photoURL || "user photo"}
-              alt="User"
+              src={user?.photoURL}
+              alt={user?.displayName || "User"}
+              referrerPolicy="no-referrer"
             />
             <div className="absolute bottom-1 right-1 w-6 h-6 bg-emerald-500 border-4 border-[#134e4a] rounded-full"></div>
           </div>
@@ -144,7 +150,7 @@ const Profile = () => {
                 </div>
                 <div>
                   <p className="text-2xl font-bold leading-none">
-                    {userData?.contributedLessons || 0}
+                    {userData?.contributedLessons ?? lessons.length}
                   </p>
                   <p className="text-xs font-medium mt-1">Lessons Created</p>
                 </div>
@@ -166,11 +172,7 @@ const Profile = () => {
 
           {/* Action Area */}
           <div className="lg:self-start">
-            <Menu
-              onClick={() => editProfile()}
-              as="div"
-              className="relative inline-block"
-            >
+            <Menu as="div" className="relative inline-block">
               <MenuButton className="bg-white text-[#134e4a] hover:bg-emerald-50 font-bold px-4 py-3 rounded-xl transition-all shadow-lg text-sm flex items-center justify-center gap-2">
                 <PencilIcon className="w-4 h-4" />
                 Edit Profile
@@ -194,6 +196,7 @@ const Profile = () => {
                       <input
                         type="text"
                         {...register("displayName")}
+                        defaultValue={user?.displayName}
                         placeholder="Enter your name"
                         className="w-full px-3 py-2 text-sm rounded-lg border border-gray-200 focus:outline-none focus:ring-2 focus:ring-gray-700 focus:border-transparent transition-all placeholder:text-gray-600"
                       />
@@ -201,23 +204,23 @@ const Profile = () => {
 
                     <div className="flex flex-col gap-1">
                       <label className="text-xs font-medium text-gray-500 uppercase tracking-wide">
-                        Image URL
+                        Profile Photo
                       </label>
                       <input
                         type="file"
                         accept="image/*"
                         {...register("photoURL")}
-                        placeholder="Paste image URL"
                         className="w-full px-3 py-2 text-sm rounded-lg border border-gray-200 focus:outline-none focus:ring-2 focus:ring-gray-700 focus:border-transparent transition-all placeholder:text-gray-600"
                       />
                     </div>
 
-                    <button
+                    <Button
                       type="submit"
-                      className="w-full bg-[#134e4a] hover:bg-emerald-800 text-white text-sm font-semibold py-2 rounded-lg transition-all"
+                      color="primary"
+                      className="w-full text-sm font-semibold py-2 rounded-lg"
                     >
                       Save Changes
-                    </button>
+                    </Button>
                   </div>
                 </form>
               </MenuItems>
@@ -230,17 +233,23 @@ const Profile = () => {
       <div className="max-w-6xl mx-auto mb-6 flex items-center gap-4">
         <h2 className="text-xl font-bold whitespace-nowrap">
           My Public Lessons{" "}
-          <span className=" font-medium">({profile?.length || 0})</span>
+          <span className=" font-medium">({publicLessons.length})</span>
         </h2>
         <div className="h-px bg-slate-200 w-full"></div>
       </div>
 
       {/* Lessons Grid - Matching card style from reference */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-        {profile.map((data) => (
-          <div
+        {publicLessons.length === 0 && (
+          <p className="col-span-full text-center text-base-content/60 py-12">
+            You have no public lessons yet. Create one and set its visibility to
+            public.
+          </p>
+        )}
+        {publicLessons.map((data) => (
+          <Card
             key={data._id}
-            className="card md:w-96 w-fit  group bg-white border border-gray-100 rounded-3xl shadow-sm hover:shadow-2xl hover:-translate-y-1 transition-all duration-500 overflow-hidden"
+            className="md:w-96 w-fit group bg-white border border-gray-100 rounded-3xl shadow-sm hover:shadow-2xl hover:-translate-y-1 transition-all duration-500 overflow-hidden"
           >
             {/* Image Container */}
             <div className="relative aspect-16/10 overflow-hidden">
@@ -253,7 +262,7 @@ const Profile = () => {
             </div>
 
             {/* Content */}
-            <div className="p-7">
+            <Card.Body className="p-7">
               <h2 className="text-xl font-bold text-gray-900 group-hover:text-primary transition-colors duration-300">
                 {data.title}
               </h2>
@@ -268,18 +277,20 @@ const Profile = () => {
                   {formatDate(data.createdAt)}
                 </span>
 
-                <button
+                <Button
                   onClick={() => navigate(`/all-lessons/${data._id}`)}
-                  className="btn flex items-center gap-1 text-accent font-semibold text-sm cursor-pointer group/link"
+                  variant="ghost"
+                  color="default"
+                  className="flex items-center gap-1 text-accent font-semibold text-sm cursor-pointer group/link"
                 >
                   <span>View Details</span>
                   <span className="transform group-hover/link:translate-x-1 transition-transform duration-300">
                     <ArrowRightIcon />
                   </span>
-                </button>
+                </Button>
               </div>
-            </div>
-          </div>
+            </Card.Body>
+          </Card>
         ))}
       </div>
     </div>

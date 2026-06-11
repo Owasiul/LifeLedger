@@ -2,10 +2,10 @@ import React, { useEffect } from "react";
 import axios from "axios";
 import useAuth from "./useAuth";
 import { useNavigate } from "react-router";
+import { API_BASE_URL } from "../config/api";
 
 const instance = axios.create({
-  // baseURL: "https://life-ledger-server.vercel.app",
-  baseURL: "http://localhost:3030",
+  baseURL: API_BASE_URL,
 });
 
 const useAxiosSecure = () => {
@@ -16,7 +16,7 @@ const useAxiosSecure = () => {
     // intercept request
     const reqInterceptor = instance.interceptors.request.use(async (config) => {
       if (user) {
-        const token = await user?.accessToken;
+        const token = await user.getIdToken();
         config.headers.authorization = `Bearer ${token}`;
       }
       return config;

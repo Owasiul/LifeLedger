@@ -1,4 +1,5 @@
 import React from "react";
+import { useNavigate } from "react-router";
 import useUser from "../../../Hooks/useUser";
 import {
   Type,
@@ -12,20 +13,23 @@ import {
 import { useForm } from "react-hook-form";
 import useAxiosSecure from "../../../Hooks/useAxiosSecure";
 import useAuth from "../../../Hooks/useAuth";
+import { useQueryClient } from "@tanstack/react-query";
 import axios from "axios";
 import Swal from "sweetalert2";
+import { Button, Card } from "@heroui/react";
 
 const AddLesson = () => {
+  const navigate = useNavigate();
+  const queryClient = useQueryClient();
   const { userData } = useUser();
+  console.log(userData);
   const { user } = useAuth();
   const axiosSecure = useAxiosSecure();
-  const { register, handleSubmit } = useForm();
-  // console.log(userData);
+  const { register, handleSubmit, reset } = useForm();
 
   const handleSubmitPost = async (data) => {
     const isFeatured = userData.isPremium === true ? true : false;
     try {
-      // Create FormData and upload image to imgbb
       const formData = new FormData();
       formData.append("image", data.image[0]);
 
@@ -33,9 +37,7 @@ const AddLesson = () => {
         import.meta.env.VITE_Imgbb
       }`;
 
-      // ✔️ Await the imgbb upload
       const imgbbResponse = await axios.post(image_API_URL, formData);
-
       const uploadedImageUrl = imgbbResponse.data.data.url;
 
       const lessonData = {
@@ -54,11 +56,14 @@ const AddLesson = () => {
         isFeatured,
       };
       const res = await axiosSecure.post("/lessons", lessonData);
+      queryClient.invalidateQueries({ queryKey: ["lessons"] });
+      reset();
       Swal.fire({
-        title: "success!",
-        text: "Your Lesson has been added successfully!",
+        title: "Success!",
+        text: "Your lesson has been added successfully!",
         icon: "success",
       });
+      navigate("/dashboard/my-lessons");
       return res.data;
     } catch (error) {
       console.log(error);
@@ -82,14 +87,15 @@ const AddLesson = () => {
             <div className="flex items-center gap-3">
               <button
                 type="button"
-                className="btn btn-ghost btn-sm text-error hover:bg-error/10"
+                className="btn btn-ghost btn-sm text-error"
+                onClick={() => navigate("/dashboard/my-lessons")}
               >
                 <X size={16} /> Cancel
               </button>
 
               <button
                 type="submit"
-                className="btn btn-primary btn-sm px-6 shadow-md shadow-primary/30"
+                className="btn btn-primary btn-sm px-6 shadow-md shadow-primary/30 cursor-pointer"
               >
                 <Save size={16} /> Publish Lesson
               </button>
@@ -103,7 +109,6 @@ const AddLesson = () => {
           <div className="lg:col-span-2 space-y-6">
             <div className="card bg-base-100 shadow-sm hover:shadow-md transition-shadow">
               <div className="card-body p-8 space-y-8">
-                {/* Draft Hint */}
                 <p className="text-xs text-base-content/40">
                   Draft • Not published yet
                 </p>
@@ -119,11 +124,7 @@ const AddLesson = () => {
                     {...register("title")}
                     required
                     placeholder="The one thing I wish I knew at 20…"
-                    className="
-                input input-bordered w-full
-                text-2xl font-semibold tracking-tight
-                focus:input-primary
-              "
+                    className="input input-bordered w-full text-2xl font-semibold tracking-tight focus:input-primary"
                   />
                 </div>
 
@@ -137,14 +138,7 @@ const AddLesson = () => {
                     {...register("description")}
                     required
                     placeholder="Tell the full story. What happened? What changed your perspective?"
-                    className="
-                textarea textarea-bordered
-                w-full
-                h-96
-                text-lg leading-8
-                resize-none
-                focus:textarea-primary
-              "
+                    className="textarea textarea-bordered w-full h-96 text-lg leading-8 resize-none focus:textarea-primary"
                   />
                 </div>
               </div>
@@ -161,7 +155,7 @@ const AddLesson = () => {
                   Metadata
                 </h3>
 
-                <div className="form-control flex lg:flex-row flex-col gap-5 ">
+                <div className="form-control flex lg:flex-row flex-col gap-5">
                   <label className="label text-xs font-semibold text-base-content/50 uppercase">
                     Category
                   </label>
@@ -247,14 +241,11 @@ const AddLesson = () => {
                       name="access"
                       {...register("accessLevel")}
                       disabled={userData?.isPremium === false}
-                      className={`
-      select select-bordered w-full
-      ${
-        userData?.isPremium === false
-          ? "bg-base-200 text-base-content/40 cursor-not-allowed"
-          : "select-primary border-primary"
-      }
-    `}
+                      className={`select select-bordered w-full ${
+                        userData?.isPremium === false
+                          ? "bg-base-200 text-base-content/40 cursor-not-allowed"
+                          : "select-primary border-primary"
+                      }`}
                     >
                       <option value="free">Free Lesson</option>
                       <option value="premium">💎 Premium Lesson</option>
@@ -274,12 +265,7 @@ const AddLesson = () => {
 
                 <label
                   htmlFor="image-upload"
-                  className="
-              border-2 border-dashed border-base-300
-              rounded-xl p-6 text-center cursor-pointer
-              hover:border-primary hover:bg-primary/5
-              transition-all
-            "
+                  className="border-2 border-dashed border-base-300 rounded-xl p-6 text-center cursor-pointer hover:border-primary hover:bg-primary/5 transition-all"
                 >
                   <ImageIcon
                     size={28}

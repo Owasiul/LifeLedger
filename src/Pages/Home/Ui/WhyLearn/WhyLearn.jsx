@@ -9,27 +9,28 @@ const WhyLearn = ({ whylearn }) => {
   };
 
   return (
-    <div className="my-10 w-[90%] mx-auto">
-      {/* Section Header */}
-      <div className="text-center mb-10">
-        <h2 className="text-3xl font-semibold text-secondary">
-          Why Learning From Life Matters
-        </h2>
-        <p className="mt-2 text-primary">
-          Real experiences. Real lessons. Real growth.
-        </p>
-      </div>
+    <section className="py-14 sm:py-16 bg-base-200/40">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="text-center mb-10">
+          <p className="text-xs uppercase tracking-[0.25em] text-primary/70 font-semibold mb-2">
+            Why It Matters
+          </p>
+          <h2 className="text-3xl sm:text-4xl font-bold text-base-content">
+            Why Learning From Life Matters
+          </h2>
+          <p className="mt-3 text-base-content/70">
+            Real experiences. Real lessons. Real growth.
+          </p>
+        </div>
 
-      {/* Cards */}
-      <div className="grid lg:grid-cols-4 md:grid-cols-2 grid-cols-1 gap-6">
+        <div className="grid lg:grid-cols-4 md:grid-cols-2 grid-cols-1 gap-6">
         {whylearn.map((learn) => {
           const Icon = iconMap[learn.icon];
 
           return (
             <div
               key={learn.id}
-              className="bg-white border border-gray-200 rounded-xl p-6 text-center
-                         shadow-sm hover:shadow-lg transition-all duration-300"
+              className="bg-base-100 border border-base-200 rounded-2xl p-6 text-center shadow-sm hover:shadow-md transition-all duration-300"
             >
               {/* Icon */}
               {Icon && (
@@ -48,8 +49,9 @@ const WhyLearn = ({ whylearn }) => {
             </div>
           );
         })}
+        </div>
       </div>
-    </div>
+    </section>
   );
 };
 

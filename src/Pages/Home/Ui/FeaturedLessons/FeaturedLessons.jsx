@@ -1,9 +1,10 @@
-import { Bookmark, Lock, LogIn, Share2, Zap } from "lucide-react";
+import { Bookmark, Lock, LogIn, Share2, Zap, ThumbsUp, ThumbsDown } from "lucide-react";
 import { Link } from "react-router";
 import useAxiosSecure from "../../../../Hooks/useAxiosSecure";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import useUser from "../../../../Hooks/useUser";
 import useAuth from "../../../../Hooks/useAuth";
+import { Button } from "@heroui/react";
 
 const FeaturedLessons = () => {
   const axiosSecure = useAxiosSecure();
@@ -16,6 +17,7 @@ const FeaturedLessons = () => {
       return res.data;
     },
   });
+  console.log(lessons);
 
   // handleLike
   const handleLike = async (lessonID) => {
@@ -29,158 +31,159 @@ const FeaturedLessons = () => {
   const { userData } = useUser();
   const isPremiumUser = userData?.isPremium;
 
-
   return (
-    <div className="w-[90%] mx-auto">
-      <div className="my-10">
-        <h2 className="lg:text-6xl text-3xl text-secondary font-semibold">
-          Featured Wisdom
-        </h2>
-        <p className="lg:text-2xl text-xl text-primary mt-3">
-          Curated lessons from our community's most insightful voices.
-        </p>
-      </div>
+    <section className="py-14 sm:py-16">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="mb-10">
+          <p className="text-xs uppercase tracking-[0.25em] text-primary/70 font-semibold mb-2">
+            Community Picks
+          </p>
+          <h2 className="text-3xl sm:text-4xl font-bold text-base-content">
+            Featured Wisdom
+          </h2>
+          <p className="text-base text-base-content/70 mt-3 max-w-2xl">
+            Curated lessons from our community's most insightful voices.
+          </p>
+        </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        {lessons.map((lesson) => {
-          const isLocked = lesson.accessLevel !== "free" && !isPremiumUser;
-
-          return (
-            <div
-              key={lesson._id}
-              className="card lg:w-96 full h-full mx-auto relative group bg-white dark:bg-gray-800 rounded-2xl shadow-sm hover:shadow-lg transition-all duration-300 overflow-hidden"
-            >
-              {/* 🔒 Premium Overlay (ONLY when locked) */}
-              {isLocked && (
-                <div className="absolute inset-0 z-20 flex flex-col items-center justify-center bg-black/60 backdrop-blur-sm text-white px-6 text-center">
-                  <Lock className="text-purple-400 mb-3" size={22} />
-                  <p className="text-sm leading-relaxed">
-                    Premium content. Upgrade to unlock this lesson.
-                  </p>
-                  <Link
-                    to="/pricing"
-                    className="mt-4 inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-purple-600 hover:bg-purple-700 transition text-sm font-medium"
+        <div className="grid lg:grid-cols-4 md:grid-cols-2 grid-cols-1 gap-5 w-[90%] mx-auto my-10">
+          {lessons.map((lesson) => {
+            const isLocked = lesson.accessLevel !== "free" && !isPremiumUser;
+            return (
+              <div
+                key={lesson._id}
+                className="group relative flex flex-col w-full max-w-100 mx-auto 
+                    /* Light Mode */ bg-white border-gray-100 shadow-sm 
+                    /* Dark Mode */ dark:bg-slate-900 dark:border-slate-800 dark:shadow-2xl 
+                    rounded-3xl border transition-all duration-500 overflow-hidden hover:shadow-xl"
+              >
+                {/* 🔒 Premium Overlay */}
+                {isLocked && (
+                  <div
+                    className="absolute inset-0 z-30 flex flex-col items-center justify-center 
+                        bg-slate-900/60 dark:bg-slate-950/80 backdrop-blur-md text-white px-8 text-center animate-in fade-in"
                   >
-                    <Zap size={14} />
-                    Upgrade
-                  </Link>
-                </div>
-              )}
-
-              {/* Card Content Wrapper */}
-              <div className={isLocked ? "blur-sm pointer-events-none" : ""}>
-                {/* Header */}
-                <div className="flex items-center justify-between px-4 py-3">
-                  <div className="flex items-center gap-3">
-                    <img
-                      src={lesson.creatorPhoto}
-                      alt={lesson.creatorName}
-                      className="w-9 h-9 rounded-full object-cover"
-                    />
-                    <span className="text-sm font-medium text-gray-700 dark:text-gray-300">
-                      {lesson.creatorName}
-                    </span>
+                    <div className="p-3 bg-purple-500/20 rounded-2xl mb-4 border border-purple-400/30">
+                      <Lock className="text-purple-400" size={28} />
+                    </div>
+                    <h3 className="text-lg font-bold mb-1">Premium Lesson</h3>
+                    <p className="text-sm text-slate-200 dark:text-slate-400 mb-6">
+                      Upgrade to unlock.
+                    </p>
+                    <Link
+                      to="/pricing"
+                      className="flex items-center gap-2 px-6 py-2.5 rounded-full bg-purple-600 hover:bg-purple-500 text-sm font-bold shadow-lg"
+                    >
+                      <Zap size={16} fill="currentColor" /> Upgrade
+                    </Link>
                   </div>
+                )}
 
-                  <span
-                    className={`px-3 py-1 text-xs rounded-full font-medium text-white ${
-                      lesson.accessLevel === "free"
-                        ? "bg-emerald-600"
-                        : isPremiumUser
-                          ? "bg-purple-600"
-                          : "bg-orange-500"
-                    }`}
-                  >
-                    {lesson.accessLevel}
-                  </span>
-                </div>
-
-                {/* Content Area (Thumbnail + Body) with hover overlay */}
-                <div className="relative">
-                  {/* Thumbnail */}
-                  <div className="relative w-full aspect-video overflow-hidden">
-                    <img
-                      src={lesson.image}
-                      alt={lesson.title}
-                      className="w-full h-full object-cover hover:scale-105 transition-transform duration-300"
-                    />
-                  </div>
-
-                  {/* Body */}
-                  <div className="p-4 space-y-3">
-                    <h2 className="text-lg font-semibold text-gray-900 dark:text-white line-clamp-2">
-                      {lesson.title}
-                    </h2>
-
+                {/* Card Body */}
+                <div
+                  className={`flex flex-col h-full ${isLocked ? "blur-[2px] pointer-events-none" : ""}`}
+                >
+                  {/* Header */}
+                  <div className="flex items-center justify-between px-5 py-4 bg-gray-50/50 dark:bg-slate-800/40">
+                    <div className="flex items-center gap-3">
+                      <img
+                        src={lesson.creatorPhoto}
+                        className="w-8 h-8 rounded-full ring-2 ring-white dark:ring-slate-700"
+                        alt=""
+                      />
+                      <span className="text-xs font-bold text-slate-600 dark:text-slate-300 uppercase tracking-tight">
+                        {lesson.creatorName}
+                      </span>
+                    </div>
                     <span
-                      className={`inline-block px-2 py-1 text-xs rounded-md text-white ${
-                        lesson.emotionalTone === "Urgent"
-                          ? "bg-orange-400"
-                          : "bg-green-600"
+                      className={`px-3 py-1 text-[10px] rounded-full font-bold text-white ${
+                        lesson.accessLevel === "free"
+                          ? "bg-emerald-500"
+                          : "bg-amber-500 dark:bg-orange-600"
                       }`}
                     >
-                      {lesson.emotionalTone}
+                      {lesson.accessLevel}
                     </span>
                   </div>
 
-                  {/* ✅ Read button overlay - ONLY covers thumbnail + body */}
-                  {!isLocked && (
-                    <div className="absolute inset-0 z-10 flex items-center justify-center bg-black/50 opacity-0 group-hover:opacity-100 transition">
-                      <Link
-                        to={`/all-lessons/${lesson?._id}`}
-                        className="px-5 py-2 rounded-lg bg-blue-600 text-white text-sm font-medium hover:bg-blue-700 flex items-center gap-2"
-                      >
-                        Read Post <LogIn size={18} />
-                      </Link>
+                  {/* Wrapper for Image & Title with Read button overlay */}
+                  <div className="relative">
+                    {/* Image */}
+                    <div className="relative overflow-hidden aspect-video">
+                      <img
+                        src={lesson.image}
+                        className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+                        alt=""
+                      />
                     </div>
-                  )}
-                </div>
 
-                {/* Footer - Outside the overlay area */}
-                <div className="flex items-center justify-between px-4 py-3 border-t border-gray-200 dark:border-gray-700 text-gray-600 dark:text-gray-300">
-                  <div className="flex items-center gap-2 hover:text-green-500 cursor-pointer transition">
-                    <button
-                      onClick={() => {
-                        handleLike(lesson._id);
-                      }}
-                      className="upvote flex flex-row gap-3"
-                    >
-                      {/* upvote */}
-                      <svg
-                        className="w-5 h-5"
-                        viewBox="0 0 24 24"
-                        fill="currentColor"
+                    {/* Title section */}
+                    <div className="p-5">
+                      <h2 className="text-xl font-bold text-slate-800 dark:text-slate-50 leading-tight mb-3">
+                        {lesson.title}
+                      </h2>
+                      <span className="px-2.5 py-0.5 rounded-md text-[11px] font-bold bg-indigo-50 text-indigo-600 dark:bg-indigo-900/30 dark:text-indigo-400">
+                        {lesson.emotionalTone}
+                      </span>
+                    </div>
+
+                    {/* Read button overlay - covers image and title area only */}
+                    {!isLocked && (
+                      <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all bg-black/20 backdrop-blur-[2px] z-10">
+                        <Link
+                          to={`/all-lessons/${lesson?._id}`}
+                          className="px-5 py-2 rounded-xl bg-white dark:bg-slate-800 text-slate-900 dark:text-white text-sm font-bold shadow-xl flex items-center gap-2"
+                        >
+                          Read Post <LogIn size={16} />
+                        </Link>
+                      </div>
+                    )}
+                  </div>
+
+                  {/* Footer - outside the overlay wrapper */}
+                  <div className="mt-auto px-5 py-4 border-t border-gray-100 dark:border-slate-800 flex items-center justify-between">
+                    <div className="flex items-center gap-4 text-slate-500 dark:text-slate-400">
+                      <Button
+                        onClick={() => handleLike(lesson?._id)}
+                        variant="ghost"
+                        color="default"
+                        className="flex items-center gap-1 hover:text-emerald-500 transition-colors"
                       >
-                        {" "}
-                        <path d="M9.456 4.216l-5.985 7.851a2.384 2.384 0 002.545 3.551l2.876-.864.578 4.042a2.384 2.384 0 004.72 0l.576-4.042 2.877.864a2.384 2.384 0 002.625-3.668L14.63 4.33a3.268 3.268 0 00-5.174-.115z" />{" "}
-                      </svg>
-                      <span className="text-sm">{lesson.likes.length}</span>
-                    </button>
+                        <ThumbsUp size={18} />{" "}
+                        <span className="text-xs font-bold">
+                          {lesson.likes.length}
+                        </span>
+                      </Button>
+                      <Button
+                        variant="ghost"
+                        color="default"
+                        className="hover:text-rose-500 transition-colors"
+                      >
+                        <ThumbsDown size={18} />
+                      </Button>
+                    </div>
+                    <div className="flex items-center gap-2 text-slate-400">
+                      <div className="">
+                        <Bookmark
+                          size={18}
+                          className="hover:text-amber-500 cursor-pointer"
+                        />
+                      </div>
+                      <div className="">
+                        <Share2
+                          size={18}
+                          className="hover:text-indigo-500 cursor-pointer"
+                        />
+                      </div>
+                    </div>
                   </div>
-                  {/* Downvote */}{" "}
-                  <svg
-                    className="w-5 h-5 rotate-180 hover:text-red-500 cursor-pointer transition"
-                    viewBox="0 0 24 24"
-                    fill="currentColor"
-                  >
-                    {" "}
-                    <path d="M9.456 4.216l-5.985 7.851a2.384 2.384 0 002.545 3.551l2.876-.864.578 4.042a2.384 2.384 0 004.72 0l.576-4.042 2.877.864a2.384 2.384 0 002.625-3.668L14.63 4.33a3.268 3.268 0 00-5.174-.115z" />{" "}
-                  </svg>
-                  <div className="flex items-center gap-2 hover:text-yellow-500 cursor-pointer transition">
-                    <Bookmark size={18} />
-                    <span className="text-sm">{lesson.favoritesCount}</span>
-                  </div>
-                  <Share2
-                    size={18}
-                    className="hover:text-blue-500 cursor-pointer transition"
-                  />
                 </div>
               </div>
-            </div>
-          );
-        })}
+            );
+          })}
+        </div>
       </div>
-    </div>
+    </section>
   );
 };
 

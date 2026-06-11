@@ -20,19 +20,19 @@ const SavedLessons = () => {
   if (isLoading) return <Loading />;
 
   return (
-    <div className="w-full min-h-screen py-10">
-      <div className="w-[90%] mx-auto">
-        {/* Header */}
-        <div className="my-10">
-          <div className="flex items-center gap-3 mb-4 justify-center">
-            <div className="p-3 rounded-lg">
-              <Bookmark className="text-blue-600" size={30} />
+    <section className="py-14 sm:py-16 bg-base-200/30">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="mb-10 text-center sm:text-left">
+          <p className="text-xs uppercase tracking-[0.25em] text-primary/70 font-semibold mb-2">
+            Trending
+          </p>
+          <div className="flex items-center gap-3 justify-center sm:justify-start">
+            <div className="p-2 rounded-xl bg-primary/10">
+              <Bookmark className="text-primary" size={24} />
             </div>
-            <div>
-              <h1 className="text-3xl font-bold text-accent">
-                Most Saved This Week
-              </h1>
-            </div>
+            <h2 className="text-3xl sm:text-4xl font-bold text-base-content">
+              Most Saved This Week
+            </h2>
           </div>
         </div>
 
@@ -61,7 +61,7 @@ const SavedLessons = () => {
             {mostSavedLessons.map((lesson, index) => (
               <div
                 key={lesson._id}
-                className="card w-96 group relative bg-white dark:bg-slate-800 rounded-2xl shadow-md hover:shadow-xl transition-all duration-300 overflow-hidden border border-slate-200 dark:border-slate-700"
+                className="card group relative bg-base-100 rounded-2xl shadow-sm hover:shadow-lg transition-all duration-300 overflow-hidden border border-base-200"
               >
                 {/* Trending Rank Badge */}
                 <div className="absolute top-4 left-4 z-10 flex items-center gap-2 px-3 py-2 bg-linear-to-r from-orange-500 to-red-500 text-white rounded-full font-bold text-sm shadow-lg">
@@ -151,7 +151,7 @@ const SavedLessons = () => {
           </div>
         )}
       </div>
-    </div>
+    </section>
   );
 };
 

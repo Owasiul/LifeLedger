@@ -3,6 +3,7 @@ import React from "react";
 import useAxiosSecure from "../../../Hooks/useAxiosSecure";
 import { useNavigate } from "react-router";
 import Swal from "sweetalert2";
+import { Button } from "@heroui/react";
 
 const ReportsManagement = () => {
   const axiosSecure = useAxiosSecure();
@@ -14,7 +15,6 @@ const ReportsManagement = () => {
     },
   });
   const navigate = useNavigate();
-  // console.log(reports);
 
   const handleDeleteLesson = async (id) => {
     Swal.fire({
@@ -102,27 +102,29 @@ const ReportsManagement = () => {
                   <td> {report.lessonTitle} </td>
                   <td> {report.reportedBy} </td>
                   <td className="flex gap-5">
-                    <button
+                    <Button
                       onClick={() =>
                         navigate(`/all-lessons/${report?.lessonId}`)
                       }
-                      className="btn rounded-xl text-white bg-emerald-700"
+                      color="success"
+                      size="sm"
                     >
-                      {" "}
-                      View{" "}
-                    </button>
-                    <button
+                      View
+                    </Button>
+                    <Button
                       onClick={() => handleIgnoreLesson(report?._id)}
-                      className="btn rounded-xl text-white bg-amber-700"
+                      color="warning"
+                      size="sm"
                     >
                       Ignore
-                    </button>
-                    <button
+                    </Button>
+                    <Button
                       onClick={() => handleDeleteLesson(report?.lessonId)}
-                      className="btn rounded-xl text-white bg-rose-700"
+                      color="danger"
+                      size="sm"
                     >
                       Delete
-                    </button>
+                    </Button>
                   </td>
                 </tr>
               );

@@ -17,39 +17,67 @@ const AuthProviders = ({ children }) => {
   const [loading, setLoading] = useState(true);
 
   // Register with email and password
-  const registerWithEmail_Password = (email, password) => {
+  const registerWithEmail_Password = async (email, password) => {
     setLoading(true);
-    return createUserWithEmailAndPassword(auth, email, password);
+    try {
+      const result = await createUserWithEmailAndPassword(auth, email, password);
+      return result;
+    } finally {
+      setLoading(false);
+    }
   };
 
   // Sign in with email and password
-  const signInwithEmail_Password = (email, password) => {
+  const signInwithEmail_Password = async (email, password) => {
     setLoading(true);
-    return signInWithEmailAndPassword(auth, email, password);
+    try {
+      const result = await signInWithEmailAndPassword(auth, email, password);
+      return result;
+    } finally {
+      setLoading(false);
+    }
   };
 
   // Sign in with Google
-  const googleSignIn = () => {
+  const googleSignIn = async () => {
     setLoading(true);
-    const googleProvider = new GoogleAuthProvider();
-    return signInWithPopup(auth, googleProvider);
+    try {
+      const googleProvider = new GoogleAuthProvider();
+      const result = await signInWithPopup(auth, googleProvider);
+      return result;
+    } finally {
+      setLoading(false);
+    }
   };
 
   // sign out
-  const LogOut = () => {
+  const LogOut = async () => {
     setLoading(true);
-    return signOut(auth);
+    try {
+      await signOut(auth);
+    } finally {
+      setLoading(false);
+    }
   };
 
   // update user data
-  const updateUserData = (updateUser) => {
-    updateProfile(auth.currentUser, updateUser);
+  const updateUserData = async (updateUser) => {
+    try {
+      await updateProfile(auth.currentUser, updateUser);
+    } catch (error) {
+      console.error("Failed to update user profile:", error);
+      throw error;
+    }
   };
 
   // Reset Password
-  const sendResetPasswordMail = (email) => {
+  const sendResetPasswordMail = async (email) => {
     setLoading(true);
-    return sendPasswordResetEmail(auth, email);
+    try {
+      await sendPasswordResetEmail(auth, email);
+    } finally {
+      setLoading(false);
+    }
   };
 
   // Track authentication state
@@ -57,7 +85,7 @@ const AuthProviders = ({ children }) => {
     const unsubscribe = onAuthStateChanged(auth, async (currentUser) => {
       if (currentUser) {
         await currentUser.reload();
-        setUser({ ...currentUser });
+        setUser(currentUser);
       } else {
         setUser(null);
       }

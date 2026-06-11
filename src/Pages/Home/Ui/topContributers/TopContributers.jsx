@@ -27,23 +27,15 @@ const TopContributers = () => {
   });
 
   return (
-    <section className="w-full max-w-3xl mx-auto px-4 py-12">
-      {/* Header */}
+    <section className="py-14 sm:py-16">
+      <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
       <div className="text-center mb-10">
-        <p className="text-xs uppercase tracking-[0.25em] text-indigo-400 font-semibold mb-2">
+        <p className="text-xs uppercase tracking-[0.25em] text-primary/70 font-semibold mb-2">
           This Week
         </p>
-        <h2
-          className="text-4xl font-black text-gray-900 leading-tight"
-          style={{ fontFamily: "'Georgia', serif", letterSpacing: "-0.02em" }}
-        >
+        <h2 className="text-3xl sm:text-4xl font-bold text-base-content">
           Top Contributors
         </h2>
-        <div className="mt-3 flex items-center justify-center gap-2">
-          <div className="h-px w-12 bg-linear-to-r from-transparent to-indigo-300" />
-          <div className="w-1.5 h-1.5 rounded-full bg-indigo-400" />
-          <div className="h-px w-12 bg-linear-to-l from-transparent to-indigo-300" />
-        </div>
       </div>
 
       {/* Loading */}
@@ -125,6 +117,7 @@ const TopContributers = () => {
           </p>
         </div>
       )}
+      </div>
     </section>
   );
 };

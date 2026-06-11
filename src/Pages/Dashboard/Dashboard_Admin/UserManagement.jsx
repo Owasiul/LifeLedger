@@ -3,6 +3,7 @@ import React from "react";
 import useAxiosSecure from "../../../Hooks/useAxiosSecure";
 import { Shield, ShieldOff } from "lucide-react";
 import Swal from "sweetalert2";
+import { Button } from "@heroui/react";
 
 const UserManagement = () => {
   const axiosSecure = useAxiosSecure();
@@ -71,19 +72,23 @@ const UserManagement = () => {
                 <td className="px-4 py-2 capitalize">{user.role}</td>
                 <td className="px-4 py-2 flex flex-wrap gap-2 justify-center">
                   {user.role === "admin" ? (
-                    <button
+                    <Button
                       onClick={() => handleMakeUser(user)}
-                      className="flex items-center gap-2 px-3 py-1 text-sm font-medium text-white bg-rose-500 rounded hover:bg-rose-600 transition"
+                      color="danger"
+                      size="sm"
+                      className="gap-2"
                     >
                       <Shield /> <span>Admin</span>
-                    </button>
+                    </Button>
                   ) : (
-                    <button
+                    <Button
                       onClick={() => handleMakeAdmin(user)}
-                      className="flex items-center gap-2 px-3 py-1 text-sm font-medium text-white bg-green-500 rounded hover:bg-green-600 transition"
+                      color="success"
+                      size="sm"
+                      className="gap-2"
                     >
                       <ShieldOff /> <span>User</span>
-                    </button>
+                    </Button>
                   )}
                 </td>
               </tr>

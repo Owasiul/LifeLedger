@@ -3,30 +3,47 @@ import React from "react";
 import useAxiosSecure from "../../../Hooks/useAxiosSecure";
 import useAuth from "../../../Hooks/useAuth";
 import { useNavigate } from "react-router";
+import Swal from "sweetalert2";
+import { Button } from "@heroui/react";
 
 const SavedLesson = () => {
   const axiosSecure = useAxiosSecure();
   const { user } = useAuth();
   const navigate = useNavigate();
-  //   see saved lessons
+
   const { refetch, data: savedLessons = [] } = useQuery({
-    queryKey: ["savedLessons"],
+    queryKey: ["savedLessons", user?.email],
     queryFn: async () => {
       const res = await axiosSecure.get(`/saved-lessons?email=${user?.email}`);
-      // console.log(res.data);
       return res.data;
     },
+    enabled: !!user?.email,
   });
-  //   handle remove from saved lesson
-  const handleRemoveSavedLesson = (id) => {
-    const res = axiosSecure.delete(`/saved-lessons/${id}`);
-    refetch();
-    return res.data;
+
+  const handleRemoveSavedLesson = async (id) => {
+    try {
+      await axiosSecure.delete(`/saved-lessons/${id}`);
+      Swal.fire({
+        title: "Removed",
+        text: "Lesson removed from your saved list.",
+        icon: "success",
+        timer: 1500,
+        showConfirmButton: false,
+      });
+      refetch();
+    } catch (error) {
+      Swal.fire({
+        title: "Error",
+        text: error.message || "Failed to remove saved lesson",
+        icon: "error",
+      });
+    }
   };
-  // handle view details
+
   const handleViewSavedLesson = (id) => {
     navigate(`/all-lessons/${id}`);
   };
+
   return (
     <div>
       <div className="my-5">
@@ -54,24 +71,35 @@ const SavedLesson = () => {
                   <td className="px-4 py-3">{sl.lessonTitle}</td>
                   <td className="px-4 py-3">
                     <div className="flex justify-center gap-3">
-                      <button
+                      <Button
                         onClick={() => handleViewSavedLesson(sl?.lessonId)}
-                        className="px-3 py-1 rounded-md bg-green-600 text-white hover:bg-green-700 transition"
+                        color="success"
+                        size="sm"
                       >
                         View
-                      </button>
-                      <button
+                      </Button>
+                      <Button
                         onClick={() => handleRemoveSavedLesson(sl?._id)}
-                        className="px-3 py-1 rounded-md bg-red-600 text-white hover:bg-red-700 transition"
+                        color="danger"
+                        size="sm"
                       >
                         Remove
-                      </button>
+                      </Button>
                     </div>
                   </td>
                 </tr>
               ))}
             </tbody>
           </table>
+
+          {savedLessons.length === 0 && (
+            <div className="text-center py-12 text-base-content/60">
+              <p className="text-lg font-medium">No saved lessons yet</p>
+              <p className="text-sm mt-2">
+                Browse lessons and bookmark the ones you want to keep.
+              </p>
+            </div>
+          )}
         </div>
       </div>
     </div>

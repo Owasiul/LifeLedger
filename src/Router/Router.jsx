@@ -82,11 +82,7 @@ export const router = createBrowserRouter([
   },
   {
     path: "/all-lessons/:id",
-    element: (
-      <PrivateRoute>
-        <LessonsDetails></LessonsDetails>,
-      </PrivateRoute>
-    ),
+    Component: LessonsDetails,
   },
   // user / admin dashboard
   {
@@ -112,7 +108,7 @@ export const router = createBrowserRouter([
         Component: AddLesson,
       },
       {
-        path: "/dashboard/update-lessons",
+        path: "/dashboard/update-lessons/:id",
         Component: UpdateLesson,
       },
       {

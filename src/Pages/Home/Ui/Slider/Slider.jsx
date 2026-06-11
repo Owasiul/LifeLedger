@@ -1,98 +1,87 @@
-import React from "react";
-// slide images
+import { Link } from "react-router";
 import slide1 from "../../../../assets/slide1.png";
 import slide2 from "../../../../assets/slide2.png";
 import slide3 from "../../../../assets/slide3.png";
-
-// Import Swiper React components
 import { Swiper, SwiperSlide } from "swiper/react";
-
-// Import Swiper styles
 import "swiper/css";
 import "swiper/css/pagination";
-
-// import required modules
 import { Autoplay, Pagination } from "swiper/modules";
+
+const slides = [
+  {
+    image: slide1,
+    title: "Audit the Detours",
+    description:
+      "Real growth happens when the plan fails but you don't. Learn from the moments that actually taught you how to move forward.",
+    cta: "Start Writing",
+    to: "/auth/register",
+    btnClass: "btn-accent",
+  },
+  {
+    image: slide2,
+    title: "Shortcuts from the Hive",
+    description:
+      "One person's mistake is the whole community's shortcut. Discover lessons shared by people who have already been there.",
+    cta: "Explore Lessons",
+    to: "/all-lessons",
+    btnClass: "btn-primary",
+  },
+  {
+    image: slide3,
+    title: "Stop Skimming, Start Scaling",
+    description:
+      "Unlock premium strategies and practical blueprints that turn reflection into real progress.",
+    cta: "View Plans",
+    to: "/pricing",
+    btnClass: "btn-secondary",
+  },
+];
 
 const Slider = () => {
   return (
-    <div>
+    <section className="relative">
       <Swiper
         autoplay={{
-          delay: 3500,
+          delay: 4500,
           disableOnInteraction: false,
         }}
-        pagination={{ dynamicBullets: true }}
+        pagination={{ clickable: true, dynamicBullets: true }}
         modules={[Pagination, Autoplay]}
-        className="mySwiper h-64 md:h-80 lg:h-170"
+        className="hero-swiper h-[420px] md:h-[520px] lg:h-[620px]"
       >
-        <SwiperSlide className="relative">
-          <div className="absolute inset-0 bg-black/40 z-10"></div>
-          <div className="absolute z-20 top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-white text-center px-6 md:px-12 w-full">
-            <h2 className="text-2xl md:text-4xl lg:text-5xl font-bold mb-3 md:mb-4">
-              Audit the Detours
-            </h2>
-            <p className="text-sm md:text-base lg:text-lg max-w-3xl mx-auto">
-              Real growth happens when the plan fails but you don't. Stop
-              looking for a straight line and start appreciating the
-              detours—those are the parts that actually taught you how to drive.
-            </p>
-            <button className="btn my-4 font-bold btn-accent text-white">
-              Start writting
-            </button>
-          </div>
-          <img
-            className="object-cover w-full h-full"
-            src={slide1}
-            alt="Audit the Detours"
-          />
-        </SwiperSlide>
-
-        <SwiperSlide className="relative">
-          <div className="absolute inset-0 bg-black/40 z-10"></div>
-          <div className="absolute z-20 top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-white text-center px-6 md:px-12 w-full">
-            <h2 className="text-2xl md:text-4xl lg:text-5xl font-bold mb-3 md:mb-4">
-              Shortcuts from the Hive
-            </h2>
-            <p className="text-sm md:text-base lg:text-lg max-w-3xl mx-auto">
-              One person's mistake is the whole community's shortcut. Let's stop
-              gatekeeping the "how-to" and start crowdsourcing the "how-we-won"
-              so we can all level up twice as fast.
-            </p>
-            <button className="btn my-4 btn-primary font-bold">
-              Explore Public Lessons
-            </button>
-          </div>
-          <img
-            className="object-cover w-full h-full"
-            src={slide2}
-            alt="Shortcuts from the Hive"
-          />
-        </SwiperSlide>
-
-        <SwiperSlide className="relative">
-          <div className="absolute inset-0 bg-black/40 z-10"></div>
-          <div className="absolute z-20 top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-white text-center px-6 md:px-12 w-full">
-            <h2 className="text-2xl md:text-4xl lg:text-5xl font-bold mb-3 md:mb-4">
-              Stop Skimming, Start Scaling
-            </h2>
-            <p className="text-sm md:text-base lg:text-lg max-w-3xl mx-auto">
-              Stop skimming the surface and start owning the results. Unlock our
-              Premium Vault for the high-level strategies and specific
-              blueprints that turn "trying" into "done."
-            </p>
-            <button className="btn btn-secondary my-4 font-bold">
-              Upgrade to premium
-            </button>
-          </div>
-          <img
-            className="object-cover w-full h-full"
-            src={slide3}
-            alt="Stop Skimming, Start Scaling"
-          />
-        </SwiperSlide>
+        {slides.map((slide) => (
+          <SwiperSlide key={slide.title} className="relative">
+            <div className="absolute inset-0 bg-linear-to-t from-slate-950/80 via-slate-900/50 to-slate-900/20 z-10" />
+            <div className="absolute z-20 inset-0 flex items-center">
+              <div className="max-w-7xl mx-auto w-full px-4 sm:px-6 lg:px-8">
+                <div className="max-w-2xl text-white">
+                  <p className="text-xs sm:text-sm uppercase tracking-[0.25em] text-sky-300 mb-3">
+                    LifeLedger
+                  </p>
+                  <h1 className="text-3xl sm:text-4xl lg:text-5xl font-bold leading-tight mb-4">
+                    {slide.title}
+                  </h1>
+                  <p className="text-sm sm:text-base lg:text-lg text-slate-200 leading-relaxed mb-6">
+                    {slide.description}
+                  </p>
+                  <Link
+                    to={slide.to}
+                    className={`btn ${slide.btnClass} text-white font-semibold px-6`}
+                  >
+                    {slide.cta}
+                  </Link>
+                </div>
+              </div>
+            </div>
+            <img
+              className="object-cover w-full h-full"
+              src={slide.image}
+              alt={slide.title}
+            />
+          </SwiperSlide>
+        ))}
       </Swiper>
-    </div>
+    </section>
   );
 };
 

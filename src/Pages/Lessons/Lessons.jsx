@@ -14,6 +14,7 @@ import {
 } from "lucide-react";
 import useAuth from "../../Hooks/useAuth";
 import Loading from "../../Components/Loading/Loading";
+import { Button } from "@heroui/react";
 
 const Lessons = () => {
   const axiosSecure = useAxiosSecure();
@@ -31,7 +32,6 @@ const Lessons = () => {
   // implement search
   const [searchText, setSearchText] = useState("");
   const [debouncedSearch, setDebouncedSearch] = useState("");
-  // console.log(searchText);
 
   // handle dely
   useEffect(() => {
@@ -220,18 +220,24 @@ const Lessons = () => {
                   {/* Footer - outside the overlay wrapper */}
                   <div className="mt-auto px-5 py-4 border-t border-gray-100 dark:border-slate-800 flex items-center justify-between">
                     <div className="flex items-center gap-4 text-slate-500 dark:text-slate-400">
-                      <button
+                      <Button
                         onClick={() => handleLike(lesson?._id)}
+                        variant="ghost"
+                        color="default"
                         className="flex items-center gap-1 hover:text-emerald-500 transition-colors"
                       >
                         <ThumbsUp size={18} />{" "}
                         <span className="text-xs font-bold">
                           {lesson.likes.length}
                         </span>
-                      </button>
-                      <button className="hover:text-rose-500 transition-colors">
+                      </Button>
+                      <Button
+                        variant="ghost"
+                        color="default"
+                        className="hover:text-rose-500 transition-colors"
+                      >
                         <ThumbsDown size={18} />
-                      </button>
+                      </Button>
                     </div>
                     <div className="flex items-center gap-2 text-slate-400">
                       <div className="">
@@ -256,31 +262,31 @@ const Lessons = () => {
       )}
       {/* bottom */}
       <div className="flex gap-2 my-6 mx-2 justify-end">
-        <button
+        <Button
           className="btn"
           disabled={currentPage === 1}
           onClick={() => setCurrentPage(currentPage - 1)}
         >
           Prev
-        </button>
+        </Button>
 
         {[...Array(totalPages).keys()].map((page) => (
-          <button
+          <Button
             key={page}
             className={`btn ${currentPage === page + 1 ? "btn-primary" : ""}`}
             onClick={() => setCurrentPage(page + 1)}
           >
             {page + 1}
-          </button>
+          </Button>
         ))}
 
-        <button
+        <Button
           className="btn"
           disabled={currentPage === totalPages}
           onClick={() => setCurrentPage(currentPage + 1)}
         >
           Next
-        </button>
+        </Button>
       </div>
     </div>
   );

@@ -19,10 +19,12 @@ https://life-ledger-client.vercel.app
 ## 🛠️ Tech Stack
 
 ### 🚀 Frontend
-- **React 18 + Vite**
+- **React 19 + Vite**
 - **Tailwind CSS + DaisyUI**
-- **React Router**
+- **React Router v7**
 - **TanStack Query (React Query)**
+- **Firebase Authentication**
+- **Recharts**
 - **React Hook Form**
 - **Axios**
 - **ESLint**
@@ -40,16 +42,16 @@ https://github.com/Owasiul/LifeLedger-server
 
 ## ✨ Features
 
-- 🔐 Secure user data handling via backend API
+- 🔐 Firebase authentication (email/password + Google)
+- 📊 User and admin analytics dashboards with charts
 - ⚡ Fast and responsive UI
-- 📊 Organized dashboard interface
+- 📚 Public lesson browsing with premium access tiers
 - 🔄 Optimized API calls with caching (TanStack Query)
 - 🧾 Form validation using React Hook Form
 - 📱 Fully responsive design
 - 🧩 Modular and scalable folder structure
+- 🚀 Environment-based API configuration
 - 🚀 Optimized production build with Vite
-
-> More advanced features (analytics, authentication, premium modules, etc.) are being added progressively.
 
 ---
 
@@ -105,8 +107,10 @@ npm install
 Create a `.env` file in the root directory:
 
 ```
-VITE_API_URL=http://localhost:5000
+VITE_API_URL=https://life-ledger-server.vercel.app
 ```
+
+Copy `.env.example` to `.env` and fill in your values.
 
 ### 4️⃣ Run development server
 
@@ -145,12 +149,12 @@ npm run preview
 
 ## 📌 Roadmap
 
-- [ ] User Authentication (JWT / Firebase)
-- [ ] Analytics dashboard
+- [x] User Authentication (Firebase)
+- [x] Analytics dashboard
 - [ ] Habit & Expense Tracking Modules
 - [ ] Dark/Light theme toggle
-- [ ] Premium feature access
-- [ ] Role-based authorization
+- [x] Premium feature access
+- [x] Role-based authorization
 
 ---
 

@@ -6,6 +6,7 @@ import useAuth from "../../Hooks/useAuth";
 import useAxiosSecure from "../../Hooks/useAxiosSecure";
 import Swal from "sweetalert2";
 import axios from "axios";
+import { Button } from "@heroui/react";
 
 const Register = () => {
   const { registerWithEmail_Password, googleSignIn, updateUserData } =
@@ -172,12 +173,13 @@ const Register = () => {
           </p>
         )}
 
-        <button
+        <Button
           type="submit"
-          className="btn w-full bg-secondary text-white py-3 rounded-lg"
+          color="secondary"
+          className="w-full py-3 rounded-lg"
         >
           Register
-        </button>
+        </Button>
       </form>
 
       <p className="text-center text-sm mt-4">
@@ -193,13 +195,15 @@ const Register = () => {
         <div className="flex-1 border-t"></div>
       </div>
 
-      <button
+      <Button
         type="button"
         onClick={handleGoogleSignIn}
-        className="w-full bg-gray-100 py-3 rounded-lg text-secondary"
+        variant="outline"
+        color="default"
+        className="w-full py-3 rounded-lg"
       >
         Register with Google
-      </button>
+      </Button>
     </div>
   );
 };

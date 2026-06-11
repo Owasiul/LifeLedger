@@ -14,6 +14,7 @@ import {
 } from "lucide-react";
 import Loading from "../../../Components/Loading/Loading";
 import { Menu, MenuButton, MenuItems, MenuItem } from "@headlessui/react";
+import { Button } from "@heroui/react";
 
 const LessonsManagement = () => {
   const axiosSecure = useAxiosSecure();
@@ -197,20 +198,24 @@ const LessonsManagement = () => {
                       <div className="flex items-center justify-end gap-2">
                         {/* Desktop buttons */}
                         <div className="hidden md:flex items-center gap-2">
-                          <button
+                          <Button
                             onClick={() =>
                               navigate(`/all-lessons/${lesson._id}`)
                             }
-                            className="flex items-center gap-1.5 rounded-lg border border-gray-200 dark:border-gray-600 px-3 py-1.5 text-xs font-medium text-gray-600 dark:text-gray-300 shadow-sm hover:border-indigo-300 hover:text-indigo-700 dark:hover:text-indigo-400 dark:hover:border-indigo-500 transition"
+                            variant="flat"
+                            color="default"
+                            size="sm"
                           >
                             <Eye size={13} /> View
-                          </button>
+                          </Button>
 
-                          <button
+                          <Button
                             onClick={() =>
                               MakeFeatured(lesson._id, lesson.isFeatured)
                             }
-                            className="flex items-center gap-1.5 rounded-lg border border-amber-200 dark:border-amber-700 bg-amber-50 dark:bg-amber-900/30 px-3 py-1.5 text-xs font-medium text-amber-700 dark:text-amber-400 shadow-sm hover:bg-amber-100 dark:hover:bg-amber-900/50 transition"
+                            variant="flat"
+                            color="warning"
+                            size="sm"
                           >
                             {lesson.isFeatured ? (
                               <>
@@ -221,14 +226,15 @@ const LessonsManagement = () => {
                                 <Star size={13} /> Make Feature
                               </>
                             )}
-                          </button>
+                          </Button>
 
-                          <button
+                          <Button
                             onClick={() => handleDeletePost(lesson._id)}
-                            className="flex items-center gap-1.5 rounded-lg border border-red-200 dark:border-red-700 bg-red-50 dark:bg-red-900/30 px-3 py-1.5 text-xs font-medium text-red-600 dark:text-red-400 shadow-sm hover:bg-red-100 dark:hover:bg-red-900/50 transition"
+                            color="danger"
+                            size="sm"
                           >
                             <Trash2 size={13} /> Delete
-                          </button>
+                          </Button>
                         </div>
 
                         {/* Mobile dropdown menu */}
@@ -243,22 +249,28 @@ const LessonsManagement = () => {
                               className="z-50 w-48 rounded-xl border border-gray-100 dark:border-gray-700 bg-white dark:bg-gray-800 shadow-lg focus:outline-none overflow-hidden"
                             >
                               <MenuItem>
-                                <button
+                                <Button
                                   onClick={() =>
                                     navigate(`/all-lessons/${lesson._id}`)
                                   }
-                                  className="flex w-full items-center gap-2 px-4 py-2.5 text-sm text-gray-700 dark:text-gray-200 data-[active]:bg-indigo-50 dark:data-[active]:bg-indigo-950/50 data-[active]:text-indigo-700 transition"
+                                  variant="flat"
+                                  color="default"
+                                  size="sm"
+                                  className="w-full justify-start"
                                 >
                                   <Eye size={14} /> View
-                                </button>
+                                </Button>
                               </MenuItem>
 
                               <MenuItem>
-                                <button
+                                <Button
                                   onClick={() =>
                                     MakeFeatured(lesson._id, lesson.isFeatured)
                                   }
-                                  className="flex w-full items-center gap-2 px-4 py-2.5 text-sm text-amber-700 dark:text-amber-400 data-[active]:bg-amber-50 dark:data-[active]:bg-amber-900/30 transition"
+                                  variant="flat"
+                                  color="warning"
+                                  size="sm"
+                                  className="w-full justify-start"
                                 >
                                   {lesson.isFeatured ? (
                                     <>
@@ -269,16 +281,18 @@ const LessonsManagement = () => {
                                       <Star size={14} /> Make Feature
                                     </>
                                   )}
-                                </button>
+                                </Button>
                               </MenuItem>
 
                               <MenuItem>
-                                <button
+                                <Button
                                   onClick={() => handleDeletePost(lesson._id)}
-                                  className="flex w-full items-center gap-2 px-4 py-2.5 text-sm text-red-600 dark:text-red-400 data-[active]:bg-red-50 dark:data-[active]:bg-red-900/30 transition"
+                                  color="danger"
+                                  size="sm"
+                                  className="w-full justify-start"
                                 >
                                   <Trash2 size={14} /> Delete
-                                </button>
+                                </Button>
                               </MenuItem>
                             </MenuItems>
                           </Menu>

@@ -1,25 +1,33 @@
 import { useForm } from "react-hook-form";
 import useUser from "../../../Hooks/useUser";
-import { Type, AlignLeft, Lock, Sparkles, Save, X } from "lucide-react";
-import { useQuery } from "@tanstack/react-query";
+import { Type, AlignLeft, Lock, Save, X } from "lucide-react";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
 import useAxiosSecure from "../../../Hooks/useAxiosSecure";
 import { useEffect } from "react";
 import Swal from "sweetalert2";
+import { Button, Card } from "@heroui/react";
+import { useNavigate, useParams } from "react-router";
+import Loading from "../../../Components/Loading/Loading";
 
 const UpdateLesson = () => {
+  const { id } = useParams();
+  const navigate = useNavigate();
+  const queryClient = useQueryClient();
   const { register, handleSubmit, reset } = useForm();
   const axiosSecure = useAxiosSecure();
   const { userData } = useUser();
-  const { data: userLesson = [] } = useQuery({
-    queryKey: ["userLesson"],
+
+  const { data: userLesson, isLoading } = useQuery({
+    queryKey: ["lesson", id],
     queryFn: async () => {
-      const res = await axiosSecure.get(`/lessons/${userData.email}`);
-      return res.data[0];
+      const res = await axiosSecure.get(`/all-lessons/${id}`);
+      return res.data;
     },
+    enabled: !!id,
   });
-  //   console.log(userLesson);
+
   useEffect(() => {
-    if (userLesson && userLesson.title) {
+    if (userLesson?.title) {
       reset({
         title: userLesson.title,
         visibility: userLesson.visibility,
@@ -30,18 +38,45 @@ const UpdateLesson = () => {
   }, [userLesson, reset]);
 
   const handleUpdateLesson = async (data) => {
-    console.log(data);
-    await axiosSecure.patch(`/update-lessons/${userLesson._id}`, data);
-    Swal.fire({
-      title: "Your Lesson has been updateed successfully!",
-      icon: "success",
-    });
+    try {
+      await axiosSecure.patch(`/update-lessons/${id}`, data);
+      queryClient.invalidateQueries({ queryKey: ["lessons"] });
+      queryClient.invalidateQueries({ queryKey: ["lesson", id] });
+      Swal.fire({
+        title: "Updated!",
+        text: "Your lesson has been updated successfully.",
+        icon: "success",
+      });
+      navigate("/dashboard/my-lessons");
+    } catch (error) {
+      Swal.fire({
+        title: "Error",
+        text: error.message || "Failed to update lesson",
+        icon: "error",
+      });
+    }
   };
+
+  if (isLoading) return <Loading />;
+
+  if (!userLesson) {
+    return (
+      <div className="text-center py-16 text-base-content/60">
+        <p className="text-lg font-medium">Lesson not found</p>
+        <Button
+          className="mt-4"
+          color="primary"
+          onClick={() => navigate("/dashboard/my-lessons")}
+        >
+          Back to My Lessons
+        </Button>
+      </div>
+    );
+  }
 
   return (
     <div>
       <form onSubmit={handleSubmit(handleUpdateLesson)} className="space-y-8">
-        {/* Sticky Header */}
         <div className="sticky top-0 z-20 bg-base-100/80 backdrop-blur border-b border-base-200">
           <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 py-5">
             <div>
@@ -49,80 +84,66 @@ const UpdateLesson = () => {
                 Update Your Lesson
               </h1>
               <p className="text-sm text-base-content/60">
-                Capture your insights and share them with the community.
+                Edit your lesson details and save changes.
               </p>
             </div>
 
             <div className="flex items-center gap-3">
-              <button
+              <Button
                 type="button"
-                className="btn btn-ghost btn-sm text-error hover:bg-error/10"
+                variant="ghost"
+                color="danger"
+                size="sm"
+                onClick={() => navigate("/dashboard/my-lessons")}
               >
                 <X size={16} /> Cancel
-              </button>
+              </Button>
 
-              <button
+              <Button
                 type="submit"
-                className="btn btn-primary btn-sm px-6 shadow-md shadow-primary/30"
+                color="primary"
+                size="sm"
+                className="px-6 shadow-md shadow-primary/30"
               >
                 <Save size={16} /> Update Lesson
-              </button>
+              </Button>
             </div>
           </div>
         </div>
 
-        {/* Layout */}
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-          {/* LEFT — Writing Area */}
           <div className="lg:col-span-2 space-y-6">
-            <div className="card bg-base-100 shadow-sm hover:shadow-md transition-shadow">
-              <div className="card-body p-8 space-y-8">
-                {/* Title */}
+            <Card className="bg-base-100 shadow-sm hover:shadow-md transition-shadow">
+              <Card.Body className="p-8 space-y-8">
                 <div className="form-control flex flex-col gap-5">
                   <label className="label font-medium text-base-content/70">
                     <Type size={16} /> Lesson Title
                   </label>
                   <input
                     type="text"
-                    name="title"
-                    {...register("title")}
+                    {...register("title", { required: true })}
                     placeholder="The one thing I wish I knew at 20…"
-                    className="
-                input input-bordered w-full
-                text-2xl font-semibold tracking-tight
-                focus:input-primary
-              "
+                    className="input input-bordered w-full text-2xl font-semibold tracking-tight focus:input-primary"
                   />
                 </div>
 
-                {/* Description */}
                 <div className="form-control flex flex-col gap-5">
                   <label className="label font-medium text-base-content/70">
                     <AlignLeft size={16} /> Full Description & Insight
                   </label>
                   <textarea
-                    name="description"
-                    {...register("description")}
+                    {...register("description", { required: true })}
                     placeholder="Tell the full story. What happened? What changed your perspective?"
-                    className="
-                textarea textarea-bordered
-                w-full
-                h-96
-                text-lg leading-8
-                resize-none
-                focus:textarea-primary
-              "
+                    className="textarea textarea-bordered w-full h-96 text-lg leading-8 resize-none focus:textarea-primary"
                   />
                 </div>
-              </div>
-            </div>
+              </Card.Body>
+            </Card>
           </div>
 
-          {/* RIGHT — Settings */}
           <div className="space-y-6">
-            {/* Visibility & Access */}
-            <div className="card bg-base-100 shadow-sm hover:shadow-md transition-shadow">
-              <div className="card-body p-6 space-y-5">
+            <Card className="bg-base-100 shadow-sm hover:shadow-md transition-shadow">
+              <Card.Body className="p-6 space-y-5">
                 <h3 className="text-sm font-semibold uppercase tracking-wide text-base-content/50 flex items-center gap-2">
                   <Lock size={16} className="text-info" />
                   Visibility & Access
@@ -133,7 +154,6 @@ const UpdateLesson = () => {
                     Privacy
                   </label>
                   <select
-                    name="privacy"
                     {...register("visibility")}
                     className="select select-bordered"
                   >
@@ -160,25 +180,21 @@ const UpdateLesson = () => {
                     }
                   >
                     <select
-                      name="access"
                       {...register("accessLevel")}
                       disabled={userData?.isPremium === false}
-                      className={`
-      select select-bordered w-full
-      ${
-        userData?.isPremium === false
-          ? "bg-base-200 text-base-content/40 cursor-not-allowed"
-          : "select-primary border-primary"
-      }
-    `}
+                      className={`select select-bordered w-full ${
+                        userData?.isPremium === false
+                          ? "bg-base-200 text-base-content/40 cursor-not-allowed"
+                          : "select-primary border-primary"
+                      }`}
                     >
                       <option value="free">Free Lesson</option>
                       <option value="premium">💎 Premium Lesson</option>
                     </select>
                   </div>
                 </div>
-              </div>
-            </div>
+              </Card.Body>
+            </Card>
           </div>
         </div>
       </form>

@@ -1,7 +1,7 @@
 import React, { useRef, useState } from "react";
 import useAxiosSecure from "../../Hooks/useAxiosSecure";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
-import { useParams } from "react-router";
+import { Link, useLocation, useNavigate, useParams } from "react-router";
 import {
   Heart,
   Bookmark,
@@ -26,10 +26,27 @@ const LessonsDetails = () => {
   const axiosSecure = useAxiosSecure();
   const { id } = useParams();
   const { user } = useAuth();
+  const navigate = useNavigate();
+  const location = useLocation();
   const queryClient = useQueryClient();
   const { register, handleSubmit, reset } = useForm();
   const [savedLesson, setSavedLesson] = useState(null);
   const shareModalRef = useRef();
+
+  const requireAuth = (message = "Please sign in to continue.") => {
+    if (user?.email) return true;
+    Swal.fire({
+      icon: "info",
+      title: "Sign in required",
+      text: message,
+      confirmButtonText: "Sign in",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        navigate("/auth/login", { state: { pathname: location.pathname } });
+      }
+    });
+    return false;
+  };
 
   // lessons details
   const { data: lessonsDetails } = useQuery({
@@ -83,6 +100,8 @@ const LessonsDetails = () => {
 
   // reports lessons
   const handleReportLesson = async (id) => {
+    if (!requireAuth("Sign in to report a lesson.")) return;
+
     try {
       const result = await Swal.fire({
         title: "Are you sure?",
@@ -119,6 +138,8 @@ const LessonsDetails = () => {
 
   // likes
   const handleLike = async (lessonID) => {
+    if (!requireAuth("Sign in to like this lesson.")) return;
+
     const alreadyLiked = lessonsDetails.likes.includes(user._id);
     if (!alreadyLiked) {
       const res = await axiosSecure.post(`/lessons/${lessonID}/likes`, {
@@ -131,6 +152,8 @@ const LessonsDetails = () => {
 
   // comments
   const handleComment = async (data, lessonID) => {
+    if (!requireAuth("Sign in to leave a comment.")) return;
+
     try {
       const res = await axiosSecure.post(`/comments/${lessonID}`, {
         comment: data.comment.trim(),
@@ -169,6 +192,8 @@ const LessonsDetails = () => {
 
   // saved lesson
   const handleSaveLesson = async (lessonID) => {
+    if (!requireAuth("Sign in to save lessons to your favorites.")) return;
+
     try {
       const res = await axiosSecure.post(`/lessons/${lessonID}/saved-lessons`, {
         lessonTitle: lessonsDetails?.title,
@@ -273,11 +298,6 @@ const LessonsDetails = () => {
                       {calculateReadingTime(lessonsDetails.description)}
                     </span>
                   </div>
-                  {lessonsDetails.accessLevel && (
-                    <div className="px-3 py-1 bg-amber-600/20 text-amber-400 rounded-full text-xs font-medium">
-                      {lessonsDetails.accessLevel}
-                    </div>
-                  )}
                 </div>
 
                 {/* Content Body */}
@@ -360,34 +380,50 @@ const LessonsDetails = () => {
                   </h3>
 
                   {/* Comment Input */}
-                  <div className="flex gap-2 sm:gap-3">
-                    <div className="w-8 h-8 sm:w-10 sm:h-10 rounded-full shrink-0">
-                      <img
-                        className="w-full h-full rounded-full object-cover"
-                        src={user.photoURL}
-                        alt=""
-                      />
-                    </div>
-                    <form
-                      onSubmit={handleSubmit((data) =>
-                        handleComment(data, lessonsDetails._id),
-                      )}
-                      className="flex-1 flex md:gap-2 gap-1"
-                    >
-                      <input
-                        type="text"
-                        {...register("comment")}
-                        placeholder="Add a comment..."
-                        className="flex-1 min-w-0 px-3 sm:px-4 py-2 bg-slate-800 border border-slate-700 rounded-lg text-white text-sm sm:text-base placeholder-slate-500 focus:outline-none focus:border-blue-500"
-                      />
-                      <button
-                        type="submit"
-                        className="px-2 md:px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg transition-colors shrink-0"
+                  {user?.email ? (
+                    <div className="flex gap-2 sm:gap-3">
+                      <div className="w-8 h-8 sm:w-10 sm:h-10 rounded-full shrink-0">
+                        <img
+                          className="w-full h-full rounded-full object-cover"
+                          src={user.photoURL}
+                          alt={user.displayName || "Your profile"}
+                        />
+                      </div>
+                      <form
+                        onSubmit={handleSubmit((data) =>
+                          handleComment(data, lessonsDetails._id),
+                        )}
+                        className="flex-1 flex md:gap-2 gap-1"
                       >
-                        <Send className="w-4 h-4" />
-                      </button>
-                    </form>
-                  </div>
+                        <input
+                          type="text"
+                          {...register("comment")}
+                          placeholder="Add a comment..."
+                          className="flex-1 min-w-0 px-3 sm:px-4 py-2 bg-slate-800 border border-slate-700 rounded-lg text-white text-sm sm:text-base placeholder-slate-500 focus:outline-none focus:border-blue-500"
+                        />
+                        <button
+                          type="submit"
+                          className="px-2 md:px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg transition-colors shrink-0"
+                        >
+                          <Send className="w-4 h-4" />
+                        </button>
+                      </form>
+                    </div>
+                  ) : (
+                    <div className="rounded-xl border border-slate-700 bg-slate-800/50 px-4 py-5 text-center">
+                      <MessageSquare className="w-8 h-8 text-slate-500 mx-auto mb-2" />
+                      <p className="text-slate-400 text-sm mb-3">
+                        Sign in to join the conversation
+                      </p>
+                      <Link
+                        to="/auth/login"
+                        state={{ pathname: location.pathname }}
+                        className="inline-flex items-center gap-2 px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg text-sm font-medium transition-colors"
+                      >
+                        Sign in to comment
+                      </Link>
+                    </div>
+                  )}
 
                   {/* Comments List */}
                   <div className="space-y-3 sm:space-y-4">
@@ -451,9 +487,10 @@ const LessonsDetails = () => {
                   </div>
                   <div className="space-y-3">
                     {filteredData.map((sameData) => (
-                      <div
+                      <Link
                         key={sameData?._id}
-                        className="bg-slate-700/50 rounded-lg p-3 hover:bg-slate-700 transition-colors cursor-pointer"
+                        to={`/all-lessons/${sameData._id}`}
+                        className="block bg-slate-700/50 rounded-lg p-3 hover:bg-slate-700 transition-colors"
                       >
                         <div className="flex gap-3">
                           <div className="w-14 h-16 sm:w-16 sm:h-20 shrink-0">
@@ -477,7 +514,7 @@ const LessonsDetails = () => {
                             </div>
                           </div>
                         </div>
-                      </div>
+                      </Link>
                     ))}
                   </div>
                 </div>

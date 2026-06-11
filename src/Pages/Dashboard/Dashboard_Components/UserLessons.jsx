@@ -5,6 +5,7 @@ import useAxiosSecure from "../../../Hooks/useAxiosSecure";
 import useUser from "../../../Hooks/useUser";
 import Swal from "sweetalert2";
 import { useNavigate } from "react-router";
+import { Button } from "@heroui/react";
 
 const UserLessons = () => {
   const { user } = useAuth();
@@ -17,6 +18,7 @@ const UserLessons = () => {
       const res = await axiosSecure.get(`/lessons/${user?.email}`);
       return res.data;
     },
+    enabled: !!user?.email,
   });
   // delete post
   const handleDeletePost = async (id) => {
@@ -159,26 +161,36 @@ const UserLessons = () => {
                   {/* Actions - Always visible but responsive */}
                   <td className="px-4 py-4">
                     <div className="flex flex-col sm:flex-row gap-2 min-w-25">
-                      <button
+                      <Button
                         onClick={() => navigate(`/all-lessons/${lesson._id}`)}
-                        className="px-3 py-1.5 text-xs sm:text-sm bg-blue-100 text-blue-700 rounded-lg hover:bg-blue-200 transition-colors whitespace-nowrap"
+                        variant="flat"
+                        color="primary"
+                        size="sm"
+                        className="whitespace-nowrap"
                       >
                         Details
-                      </button>
+                      </Button>
 
-                      <button
-                        onClick={() => navigate(`/dashboard/update-lessons`)}
-                        className="px-3 py-1.5 text-xs sm:text-sm bg-yellow-100 text-yellow-700 rounded-lg hover:bg-yellow-200 transition-colors whitespace-nowrap"
+                      <Button
+                        onClick={() =>
+                          navigate(`/dashboard/update-lessons/${lesson._id}`)
+                        }
+                        variant="flat"
+                        color="warning"
+                        size="sm"
+                        className="whitespace-nowrap"
                       >
                         Update
-                      </button>
+                      </Button>
 
-                      <button
+                      <Button
                         onClick={() => handleDeletePost(lesson._id)}
-                        className="px-3 py-1.5 text-xs sm:text-sm bg-red-100 text-red-700 rounded-lg hover:bg-red-200 transition-colors whitespace-nowrap"
+                        color="danger"
+                        size="sm"
+                        className="whitespace-nowrap"
                       >
                         Delete
-                      </button>
+                      </Button>
                     </div>
                   </td>
                 </tr>
