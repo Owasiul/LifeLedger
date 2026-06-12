@@ -15,7 +15,13 @@ export const ThemeProvider = ({ children }) => {
 
   useEffect(() => {
     if (theme) {
+      // Apply theme using both data-theme attribute and .dark class for Tailwind compatibility
       document.documentElement.setAttribute("data-theme", theme);
+      if (theme === "dark") {
+        document.documentElement.classList.add("dark");
+      } else {
+        document.documentElement.classList.remove("dark");
+      }
       localStorage.setItem("theme", theme);
     }
   }, [theme]);

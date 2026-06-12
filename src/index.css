@@ -21,48 +21,20 @@
   /* Vibrant Color Palette */
   --color-primary: hsl(262 83% 58%);
   --color-primary-foreground: hsl(0 0% 100%);
-  --color-primary-light: hsl(262 83% 70%);
-  --color-primary-dark: hsl(262 83% 45%);
   
   --color-secondary: hsl(315 85% 55%);
   --color-secondary-foreground: hsl(0 0% 100%);
-  --color-secondary-light: hsl(315 85% 70%);
-  --color-secondary-dark: hsl(315 85% 40%);
-  
-  --color-accent: hsl(199 89% 48%);
-  --color-accent-foreground: hsl(0 0% 100%);
-  --color-accent-light: hsl(199 89% 65%);
-  --color-accent-dark: hsl(199 89% 35%);
   
   --color-error: hsl(0 84% 60%);
   --color-error-foreground: hsl(0 0% 100%);
-  --color-error-light: hsl(0 84% 75%);
-  --color-error-dark: hsl(0 84% 45%);
   
   --color-success: hsl(142 76% 36%);
   --color-success-foreground: hsl(0 0% 100%);
-  --color-success-light: hsl(142 76% 50%);
-  --color-success-dark: hsl(142 76% 25%);
   
   --color-warning: hsl(38 92% 50%);
   --color-warning-foreground: hsl(0 0% 100%);
-  --color-warning-light: hsl(38 92% 65%);
-  --color-warning-dark: hsl(38 92% 35%);
   
-  --color-info: hsl(199 89% 48%);
-  --color-info-foreground: hsl(0 0% 100%);
-  --color-info-light: hsl(199 89% 65%);
-  --color-info-dark: hsl(199 89% 35%);
-  
-  /* Gradient Colors */
-  --gradient-primary: linear-gradient(135deg, hsl(262 83% 58%), hsl(315 85% 55%));
-  --gradient-secondary: linear-gradient(135deg, hsl(315 85% 55%), hsl(199 89% 48%));
-  --gradient-accent: linear-gradient(135deg, hsl(199 89% 48%), hsl(142 76% 36%));
-  --gradient-hero: linear-gradient(135deg, hsl(262 83% 58%) 0%, hsl(315 85% 55%) 50%, hsl(199 89% 48%) 100%);
-  --gradient-card: linear-gradient(145deg, hsl(0 0% 100%) 0%, hsl(220 14% 96%) 100%);
-  --gradient-card-hover: linear-gradient(145deg, hsl(262 83% 95%) 0%, hsl(315 85% 95%) 100%);
-  
-  /* Base colors */
+  /* Base colors - Light mode */
   --color-base-100: hsl(0 0% 100%);
   --color-base-200: hsl(220 14% 96%);
   --color-base-300: hsl(220 13% 91%);
@@ -73,7 +45,17 @@
   --color-base-800: hsl(220 9% 10%);
   --color-base-900: hsl(220 9% 4%);
   --color-base-content: hsl(220 9% 46%);
-  
+
+  /* Background and foreground for Tailwind v4 compatibility */
+  --background: hsl(0 0% 100%);
+  --foreground: hsl(220 9% 10%);
+  --card: hsl(0 0% 100%);
+  --card-foreground: hsl(220 9% 10%);
+  --muted: hsl(220 14% 96%);
+  --muted-foreground: hsl(220 9% 46%);
+  --border: hsl(220 13% 91%);
+  --ring: hsl(262 83% 58%);
+
   /* Glass morphism */
   --glass-bg: rgba(255, 255, 255, 0.7);
   --glass-border: rgba(255, 255, 255, 0.3);
@@ -93,46 +75,18 @@
   /* Vibrant Color Palette - Dark Mode */
   --color-primary: hsl(262 83% 65%);
   --color-primary-foreground: hsl(0 0% 100%);
-  --color-primary-light: hsl(262 83% 75%);
-  --color-primary-dark: hsl(262 83% 50%);
   
   --color-secondary: hsl(315 85% 60%);
   --color-secondary-foreground: hsl(0 0% 100%);
-  --color-secondary-light: hsl(315 85% 75%);
-  --color-secondary-dark: hsl(315 85% 45%);
-  
-  --color-accent: hsl(199 89% 55%);
-  --color-accent-foreground: hsl(0 0% 100%);
-  --color-accent-light: hsl(199 89% 70%);
-  --color-accent-dark: hsl(199 89% 40%);
   
   --color-error: hsl(0 84% 65%);
   --color-error-foreground: hsl(0 0% 100%);
-  --color-error-light: hsl(0 84% 80%);
-  --color-error-dark: hsl(0 84% 50%);
   
   --color-success: hsl(142 76% 42%);
   --color-success-foreground: hsl(0 0% 100%);
-  --color-success-light: hsl(142 76% 55%);
-  --color-success-dark: hsl(142 76% 30%);
   
   --color-warning: hsl(38 92% 55%);
   --color-warning-foreground: hsl(0 0% 100%);
-  --color-warning-light: hsl(38 92% 70%);
-  --color-warning-dark: hsl(38 92% 40%);
-  
-  --color-info: hsl(199 89% 55%);
-  --color-info-foreground: hsl(0 0% 100%);
-  --color-info-light: hsl(199 89% 70%);
-  --color-info-dark: hsl(199 89% 40%);
-  
-  /* Gradient Colors - Dark Mode */
-  --gradient-primary: linear-gradient(135deg, hsl(262 83% 65%), hsl(315 85% 60%));
-  --gradient-secondary: linear-gradient(135deg, hsl(315 85% 60%), hsl(199 89% 55%));
-  --gradient-accent: linear-gradient(135deg, hsl(199 89% 55%), hsl(142 76% 42%));
-  --gradient-hero: linear-gradient(135deg, hsl(262 83% 65%) 0%, hsl(315 85% 60%) 50%, hsl(199 89% 55%) 100%);
-  --gradient-card: linear-gradient(145deg, hsl(240 10% 8%) 0%, hsl(240 10% 12%) 100%);
-  --gradient-card-hover: linear-gradient(145deg, hsl(262 83% 15%) 0%, hsl(315 85% 15%) 100%);
   
   /* Base colors - dark mode */
   --color-base-100: hsl(240 10% 3.9%);
@@ -145,7 +99,17 @@
   --color-base-800: hsl(240 4.8% 76%);
   --color-base-900: hsl(240 4.8% 86%);
   --color-base-content: hsl(240 4.8% 95.9%);
-  
+
+  /* Background and foreground for Tailwind v4 compatibility */
+  --background: hsl(240 10% 3.9%);
+  --foreground: hsl(240 4.8% 95.9%);
+  --card: hsl(240 10% 5%);
+  --card-foreground: hsl(240 4.8% 95.9%);
+  --muted: hsl(240 3.7% 15.9%);
+  --muted-foreground: hsl(240 4.8% 66%);
+  --border: hsl(240 3.7% 15.9%);
+  --ring: hsl(262 83% 65%);
+
   /* Glass morphism - Dark Mode */
   --glass-bg: rgba(30, 30, 40, 0.7);
   --glass-border: rgba(255, 255, 255, 0.1);
@@ -153,63 +117,59 @@
 }
 
 @theme inline {
-  --color-sidebar: hsl(0 0% 98%);
-  --color-sidebar-foreground: hsl(240 5.3% 26.1%);
-  --color-sidebar-primary: hsl(240 5.9% 10%);
-  --color-sidebar-primary-foreground: hsl(0 0% 98%);
-  --color-sidebar-accent: hsl(240 4.8% 95.9%);
-  --color-sidebar-accent-foreground: hsl(240 5.9% 10%);
-  --color-sidebar-border: hsl(220 13% 91%);
-  --color-sidebar-ring: hsl(217.2 91.2% 59.8%);
+  --color-sidebar: var(--sidebar);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-sidebar-primary: var(--sidebar-primary);
+  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+  --color-sidebar-accent: var(--sidebar-accent);
+  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+  --color-sidebar-border: var(--sidebar-border);
+  --color-sidebar-ring: var(--sidebar-ring);
   
-  /* Custom colors */
-  --color-primary: hsl(262 83% 58%);
-  --color-primary-foreground: hsl(0 0% 100%);
-  --color-primary-light: hsl(262 83% 70%);
-  --color-primary-dark: hsl(262 83% 45%);
+  /* Custom colors using CSS variable references */
+  --color-primary: var(--color-primary);
+  --color-primary-foreground: var(--color-primary-foreground);
   
-  --color-secondary: hsl(315 85% 55%);
-  --color-secondary-foreground: hsl(0 0% 100%);
-  --color-secondary-light: hsl(315 85% 70%);
-  --color-secondary-dark: hsl(315 85% 40%);
+  --color-secondary: var(--color-secondary);
+  --color-secondary-foreground: var(--color-secondary-foreground);
   
   --color-accent: hsl(199 89% 48%);
   --color-accent-foreground: hsl(0 0% 100%);
-  --color-accent-light: hsl(199 89% 65%);
-  --color-accent-dark: hsl(199 89% 35%);
   
-  --color-error: hsl(0 84% 60%);
-  --color-error-foreground: hsl(0 0% 100%);
-  --color-error-light: hsl(0 84% 75%);
-  --color-error-dark: hsl(0 84% 45%);
+  --color-error: var(--color-error);
+  --color-error-foreground: var(--color-error-foreground);
   
-  --color-success: hsl(142 76% 36%);
-  --color-success-foreground: hsl(0 0% 100%);
-  --color-success-light: hsl(142 76% 50%);
-  --color-success-dark: hsl(142 76% 25%);
+  --color-success: var(--color-success);
+  --color-success-foreground: var(--color-success-foreground);
   
-  --color-warning: hsl(38 92% 50%);
-  --color-warning-foreground: hsl(0 0% 100%);
-  --color-warning-light: hsl(38 92% 65%);
-  --color-warning-dark: hsl(38 92% 35%);
+  --color-warning: var(--color-warning);
+  --color-warning-foreground: var(--color-warning-foreground);
   
   --color-info: hsl(199 89% 48%);
   --color-info-foreground: hsl(0 0% 100%);
-  --color-info-light: hsl(199 89% 65%);
-  --color-info-dark: hsl(199 89% 35%);
   
-  /* Base colors */
-  --color-base-100: hsl(0 0% 100%);
-  --color-base-200: hsl(220 14% 96%);
-  --color-base-300: hsl(220 13% 91%);
-  --color-base-400: hsl(220 9% 46%);
-  --color-base-500: hsl(220 9% 36%);
-  --color-base-600: hsl(220 9% 26%);
-  --color-base-700: hsl(220 9% 16%);
-  --color-base-800: hsl(220 9% 10%);
-  --color-base-900: hsl(220 9% 4%);
-  --color-base-content: hsl(220 9% 46%);
-  
+  /* Base colors using CSS variable references */
+  --color-base-100: var(--color-base-100);
+  --color-base-200: var(--color-base-200);
+  --color-base-300: var(--color-base-300);
+  --color-base-400: var(--color-base-400);
+  --color-base-500: var(--color-base-500);
+  --color-base-600: var(--color-base-600);
+  --color-base-700: var(--color-base-700);
+  --color-base-800: var(--color-base-800);
+  --color-base-900: var(--color-base-900);
+  --color-base-content: var(--color-base-content);
+
+  /* shadcn/ui style colors for Tailwind v4 */
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-border: var(--border);
+  --color-ring: var(--ring);
+
   /* Gradients */
   --gradient-primary: linear-gradient(135deg, hsl(262 83% 58%), hsl(315 85% 55%));
   --gradient-secondary: linear-gradient(135deg, hsl(315 85% 55%), hsl(199 89% 48%));
@@ -226,7 +186,7 @@
 
 /* Primary variant - Gradient */
 .btn-primary {
-  @apply bg-gradient-to-r from-primary to-secondary text-white shadow-lg hover:from-primary-dark hover:to-secondary-dark focus:ring-primary/50;
+  @apply bg-gradient-to-r from-primary to-secondary text-white shadow-lg hover:opacity-90 focus:ring-primary/50;
 }
 
 /* Secondary variant */
@@ -448,7 +408,7 @@
 
 /* Floating action button */
 .fab {
-  @apply fixed bottom-6 right-6 z-50 p-4 rounded-full shadow-xl bg-gradient-to-r from-primary to-secondary text-white hover:from-primary-dark hover:to-secondary-dark transition-all duration-300 hover:scale-110;
+  @apply fixed bottom-6 right-6 z-50 p-4 rounded-full shadow-xl bg-gradient-to-r from-primary to-secondary text-white hover:opacity-90 transition-all duration-300 hover:scale-110;
 }
 
 /* Page transitions */

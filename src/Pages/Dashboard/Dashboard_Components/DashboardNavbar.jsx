@@ -1,7 +1,7 @@
 import { LogOut, Menu, User, Settings, Moon, Sun } from "lucide-react";
 import React from "react";
 import { Link } from "react-router";
-import { SidebarTrigger, useSidebar } from "#/Components/ui/sidebar.jsx";
+import { SidebarTrigger } from "#/Components/ui/sidebar.jsx";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -19,15 +19,13 @@ import { Button } from "#/Components/ui/button.jsx";
 import { useTheme } from "#/Hooks/useTheme.jsx";
 
 const DashboardNavbar = ({ user, getPageTitle, handleLogOut }) => {
-  const { toggleSidebar } = useSidebar();
   const { theme, toggleTheme } = useTheme();
 
   return (
     <header className="sticky top-0 z-40 w-full border-b border-border bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
       <div className="container flex h-16 items-center gap-4 px-4">
         <SidebarTrigger
-          className="lg:hidden"
-          onClick={toggleSidebar}
+          className="flex md:hidden"
           aria-label="Toggle sidebar"
         >
           <Menu size={20} />

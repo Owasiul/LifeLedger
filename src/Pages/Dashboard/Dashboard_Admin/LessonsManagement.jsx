@@ -60,23 +60,22 @@ const LessonsManagement = () => {
     });
   };
 
-  const MakeFeatured = async (id, isFeatured) => {
+  const MakeFeatured = async (id) => {
     try {
       const result = await Swal.fire({
-        title: isFeatured ? "Remove featured status?" : "Feature this lesson?",
-        text: isFeatured
-          ? "It will no longer be highlighted."
-          : "It will be highlighted for all users.",
+        title: "Feature this lesson?",
+        text: "It will be highlighted for all users.",
         icon: "question",
         showCancelButton: true,
         confirmButtonColor: "#f59e0b",
         cancelButtonColor: "#6b7280",
-        confirmButtonText: isFeatured ? "Yes, remove it" : "Yes, feature it",
+        confirmButtonText: "Yes, feature it",
       });
 
       if (result.isConfirmed) {
         const res = await axiosSecure.patch(`/featured-lesson`, {
           lessonId: id,
+          // isFeatured not needed — backend always sets to true
         });
         Swal.fire({
           title: "Featured!",
@@ -152,7 +151,7 @@ const LessonsManagement = () => {
                     {/* Title + mobile meta */}
                     <td className="px-4 sm:px-5 py-4">
                       <span
-                        className="block truncate font-medium max-w-[160px] sm:max-w-[220px] dark:text-white"
+                        className="block truncate font-medium max-w-40 sm:max-w-55 dark:text-white"
                         title={lesson.title}
                       >
                         {lesson.title}
@@ -162,7 +161,7 @@ const LessonsManagement = () => {
                         <div className="h-5 w-5 rounded-full bg-indigo-100 dark:bg-indigo-900 text-indigo-600 dark:text-indigo-300 flex items-center justify-center text-xs font-bold shrink-0">
                           {lesson.creatorName?.[0]?.toUpperCase() ?? "?"}
                         </div>
-                        <span className="text-xs text-gray-500 dark:text-gray-400 truncate max-w-[120px]">
+                        <span className="text-xs text-gray-500 dark:text-gray-400 truncate max-w-30">
                           {lesson.creatorName}
                         </span>
                       </div>
@@ -180,7 +179,7 @@ const LessonsManagement = () => {
                         <div className="h-7 w-7 rounded-full bg-indigo-100 dark:bg-indigo-900 text-indigo-600 dark:text-indigo-300 flex items-center justify-center text-xs font-bold shrink-0">
                           {lesson.creatorName?.[0]?.toUpperCase() ?? "?"}
                         </div>
-                        <span className="text-gray-600 dark:text-gray-300 truncate max-w-[120px]">
+                        <span className="text-gray-600 dark:text-gray-300 truncate max-w-30">
                           {lesson.creatorName}
                         </span>
                       </div>

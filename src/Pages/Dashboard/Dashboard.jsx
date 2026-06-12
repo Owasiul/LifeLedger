@@ -212,9 +212,6 @@ const Dashboard = () => {
                 <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-primary">
                   <img className="w-6 h-6 object-contain" src={Logo} alt="Logo" />
                 </div>
-                <span className="text-lg font-bold bg-linear-to-r from-primary to-secondary bg-clip-text text-transparent">
-                  LearnHub
-                </span>
               </Link>
             </SidebarHeader>
 

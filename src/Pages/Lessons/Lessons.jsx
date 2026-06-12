@@ -14,8 +14,42 @@ import {
   Zap,
 } from "lucide-react";
 import useAuth from "../../Hooks/useAuth";
-import Loading from "../../Components/Loading/Loading";
 import { Button, Input } from "@heroui/react";
+
+const SkeletonLessonCard = () => (
+  <div className="group relative flex flex-col w-full max-w-100 mx-auto bg-white dark:bg-slate-900 rounded-3xl border border-gray-100 dark:border-slate-800 overflow-hidden animate-pulse">
+    {/* Skeleton Header */}
+    <div className="flex items-center justify-between px-5 py-4 bg-gray-50/50 dark:bg-slate-800/40">
+      <div className="flex items-center gap-3">
+        <div className="w-8 h-8 rounded-full bg-gray-200 dark:bg-slate-700" />
+        <div className="h-3 w-28 bg-gray-200 dark:bg-slate-700 rounded" />
+      </div>
+      <div className="h-5 w-16 bg-gray-200 dark:bg-slate-700 rounded-full" />
+    </div>
+
+    {/* Skeleton Image */}
+    <div className="aspect-video bg-gray-200 dark:bg-slate-700" />
+
+    {/* Skeleton Content */}
+    <div className="p-5 space-y-3">
+      <div className="h-5 w-full bg-gray-200 dark:bg-slate-700 rounded" />
+      <div className="h-5 w-2/3 bg-gray-200 dark:bg-slate-700 rounded" />
+      <div className="h-5 w-20 bg-gray-200 dark:bg-slate-700 rounded-md" />
+    </div>
+
+    {/* Skeleton Footer */}
+    <div className="mt-auto px-5 py-4 border-t border-gray-100 dark:border-slate-800 flex items-center justify-between">
+      <div className="flex items-center gap-4">
+        <div className="h-4 w-12 bg-gray-200 dark:bg-slate-700 rounded" />
+        <div className="h-4 w-8 bg-gray-200 dark:bg-slate-700 rounded" />
+      </div>
+      <div className="flex items-center gap-2">
+        <div className="h-4 w-4 bg-gray-200 dark:bg-slate-700 rounded" />
+        <div className="h-4 w-4 bg-gray-200 dark:bg-slate-700 rounded" />
+      </div>
+    </div>
+  </div>
+);
 
 const Lessons = () => {
   const axiosSecure = useAxiosSecure();
@@ -128,7 +162,16 @@ const Lessons = () => {
 
       {/* middle */}
       {isLoading ? (
-        <Loading />
+        <div className="grid lg:grid-cols-4 md:grid-cols-2 grid-cols-1 gap-5 w-[90%] mx-auto my-10">
+          <SkeletonLessonCard />
+          <SkeletonLessonCard />
+          <SkeletonLessonCard />
+          <SkeletonLessonCard />
+          <SkeletonLessonCard />
+          <SkeletonLessonCard />
+          <SkeletonLessonCard />
+          <SkeletonLessonCard />
+        </div>
       ) : lessons.length === 0 ? (
         <div className="text-center py-20 text-gray-500 dark:text-gray-400">
           No lessons found.
