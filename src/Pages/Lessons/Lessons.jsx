@@ -121,7 +121,7 @@ const Lessons = () => {
 
   // While user data is loading, show a loader to avoid flash of wrong premium state
   if (isUserLoading) {
-    return <Loading />;
+    return <isLoading />;
   }
 
   return (

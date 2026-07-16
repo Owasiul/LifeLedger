@@ -25,7 +25,6 @@ const AddLesson = () => {
   const axiosSecure = useAxiosSecure();
   const { register, handleSubmit, reset } = useForm();
 
-
   const handleSubmitPost = async (data) => {
     // Enforce premium restriction on backend side too
     const isPremiumUser = userData?.isPremium === true;
@@ -272,7 +271,10 @@ const AddLesson = () => {
                   htmlFor="image-upload"
                   className="border-2 border-dashed border-base-300 hover:border-primary hover:bg-base-200/50 rounded-2xl p-8 text-center cursor-pointer transition-all flex flex-col items-center justify-center"
                 >
-                  <ImageIcon size={40} className="mx-auto mb-3 text-base-content/40" />
+                  <ImageIcon
+                    size={40}
+                    className="mx-auto mb-3 text-base-content/40"
+                  />
                   <p className="font-medium text-base-content/70">
                     Click to upload cover image
                   </p>

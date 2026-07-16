@@ -26,16 +26,19 @@ const Navbar = () => {
   }, []);
 
   // Close mobile menu when clicking outside
-  const handleClickOutside = useCallback((event) => {
-    if (
-      isMobileMenuOpen &&
-      mobileMenuRef.current &&
-      !mobileMenuRef.current.contains(event.target) &&
-      !menuButtonRef.current.contains(event.target)
-    ) {
-      setIsMobileMenuOpen(false);
-    }
-  }, [isMobileMenuOpen]);
+  const handleClickOutside = useCallback(
+    (event) => {
+      if (
+        isMobileMenuOpen &&
+        mobileMenuRef.current &&
+        !mobileMenuRef.current.contains(event.target) &&
+        !menuButtonRef.current.contains(event.target)
+      ) {
+        setIsMobileMenuOpen(false);
+      }
+    },
+    [isMobileMenuOpen],
+  );
 
   useEffect(() => {
     if (isMobileMenuOpen) {
@@ -59,22 +62,22 @@ const Navbar = () => {
   const closeMobileMenu = useCallback(() => setIsMobileMenuOpen(false), []);
 
   const navItems = [
-    { 
-      to: user ? "/dashboard/add-lessons" : "/auth/login", 
+    {
+      to: user ? "/dashboard/add-lessons" : "/auth/login",
       label: "Add Lesson",
-      requiresAuth: false // redirects appropriately based on user
+      requiresAuth: false, // redirects appropriately based on user
     },
-    { 
-      to: user ? "/dashboard/my-lessons" : "/auth/login", 
+    {
+      to: user ? "/dashboard/my-lessons" : "/auth/login",
       label: "My Lessons",
-      requiresAuth: false
+      requiresAuth: false,
     },
-    { 
-      to: "/all-lessons", 
+    {
+      to: "/all-lessons",
       label: "Public Lessons",
-      requiresAuth: false
+      requiresAuth: false,
     },
-    ...(user ? [{ to: "/pricing", label: "Pricing", requiresAuth: true }] : [])
+    ...(user ? [{ to: "/pricing", label: "Pricing", requiresAuth: true }] : []),
   ];
 
   // Helper to get correct link based on user authentication
@@ -88,9 +91,10 @@ const Navbar = () => {
       <nav
         className={`
           fixed top-0 left-0 w-full z-50 transition-all duration-300
-          ${isScrolled 
-            ? "bg-base-100/90 backdrop-blur-md shadow-lg" 
-            : "bg-base-100 shadow-sm"
+          ${
+            isScrolled
+              ? "bg-base-100/90 backdrop-blur-md shadow-lg"
+              : "bg-base-100 shadow-sm"
           }
         `}
       >
@@ -98,8 +102,15 @@ const Navbar = () => {
           <div className="flex items-center justify-between h-16 md:h-20">
             {/* Logo Section */}
             <div className="flex items-center gap-2">
-              <NavLink to="/" className="shrink-0 transition-transform hover:scale-105">
-                <img className="object-contain w-10 sm:w-12 md:w-16" src={Logo} alt="logo" />
+              <NavLink
+                to="/"
+                className="shrink-0 transition-transform hover:scale-105"
+              >
+                <img
+                  className="object-contain w-10 sm:w-12 md:w-16"
+                  src={Logo}
+                  alt="logo"
+                />
               </NavLink>
             </div>
 
@@ -113,16 +124,19 @@ const Navbar = () => {
                       className={({ isActive }) => `
                         relative px-4 py-2 text-sm xl:text-base font-medium rounded-lg
                         transition-all duration-200 ease-in-out
-                        ${isActive 
-                          ? "text-violet-600 dark:text-violet-400 bg-violet-50 dark:bg-violet-950/50" 
-                          : "text-gray-700 dark:text-gray-200 hover:text-violet-600 dark:hover:text-violet-400 hover:bg-violet-50 dark:hover:bg-violet-950/30"
+                        ${
+                          isActive
+                            ? "text-violet-600 dark:text-violet-400 bg-violet-50 dark:bg-violet-950/50"
+                            : "text-gray-700 dark:text-gray-200 hover:text-violet-600 dark:hover:text-violet-400 hover:bg-violet-50 dark:hover:bg-violet-950/30"
                         }
                       `}
                     >
                       {item.label}
-                      {({ isActive }) => isActive && (
-                        <span className="absolute bottom-0 left-1/2 transform -translate-x-1/2 w-6 h-0.5 bg-violet-600 dark:bg-violet-400 rounded-full" />
-                      )}
+                      {({ isActive }) =>
+                        isActive && (
+                          <span className="absolute bottom-0 left-1/2 transform -translate-x-1/2 w-6 h-0.5 bg-violet-600 dark:bg-violet-400 rounded-full" />
+                        )
+                      }
                     </NavLink>
                   </li>
                 ))}
@@ -239,9 +253,10 @@ const Navbar = () => {
                       className={({ isActive }) => `
                         block px-4 py-3 rounded-xl text-base font-medium
                         transition-all duration-200
-                        ${isActive 
-                          ? "text-violet-600 dark:text-violet-400 bg-violet-50 dark:bg-violet-950/50" 
-                          : "text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-800"
+                        ${
+                          isActive
+                            ? "text-violet-600 dark:text-violet-400 bg-violet-50 dark:bg-violet-950/50"
+                            : "text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-800"
                         }
                       `}
                     >

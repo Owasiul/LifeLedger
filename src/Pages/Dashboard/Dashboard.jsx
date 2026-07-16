@@ -1,5 +1,11 @@
 import React, { useEffect, useState } from "react";
-import { Link, NavLink, Outlet, useLocation, useNavigate } from "react-router";
+import {
+  Link,
+  NavLink,
+  Outlet,
+  useLocation,
+  useNavigate,
+} from "react-router";
 import {
   PlusCircle,
   BookOpen,
@@ -135,14 +141,18 @@ const Dashboard = () => {
       "flex items-center gap-3 px-3 py-2 rounded-md transition-all duration-200 text-sm",
       isActive
         ? "bg-sidebar-accent text-sidebar-accent-foreground font-medium"
-        : "text-sidebar-foreground/70 hover:bg-sidebar-accent hover:text-sidebar-accent-foreground"
+        : "text-sidebar-foreground/70 hover:bg-sidebar-accent hover:text-sidebar-accent-foreground",
     );
 
   // Menu items configuration
   const mainMenuItems = [
     { to: "/dashboard/overview", icon: LayoutDashboard, label: "Overview" },
     { to: "/dashboard/my-lessons", icon: BookOpenText, label: "My Lessons" },
-    { to: "/dashboard/my-favorites", icon: BookmarkCheck, label: "Saved Lessons" },
+    {
+      to: "/dashboard/my-favorites",
+      icon: BookmarkCheck,
+      label: "Saved Lessons",
+    },
   ];
 
   const managementItems = [
@@ -210,7 +220,11 @@ const Dashboard = () => {
                 }}
               >
                 <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-primary">
-                  <img className="w-6 h-6 object-contain" src={Logo} alt="Logo" />
+                  <img
+                    className="w-6 h-6 object-contain"
+                    src={Logo}
+                    alt="Logo"
+                  />
                 </div>
               </Link>
             </SidebarHeader>
@@ -225,7 +239,9 @@ const Dashboard = () => {
                         <SidebarMenuItem key={item.to}>
                           <NavLink
                             to={item.to}
-                            className={({ isActive }) => navLinkClass({ isActive })}
+                            className={({ isActive }) =>
+                              navLinkClass({ isActive })
+                            }
                           >
                             <item.icon size={18} />
                             <span>{item.label}</span>
@@ -244,7 +260,9 @@ const Dashboard = () => {
                         <SidebarMenuItem key={item.to}>
                           <NavLink
                             to={item.to}
-                            className={({ isActive }) => navLinkClass({ isActive })}
+                            className={({ isActive }) =>
+                              navLinkClass({ isActive })
+                            }
                           >
                             <item.icon size={18} />
                             <span>{item.label}</span>
@@ -265,7 +283,9 @@ const Dashboard = () => {
                             <SidebarMenuItem key={item.to}>
                               <NavLink
                                 to={item.to}
-                                className={({ isActive }) => navLinkClass({ isActive })}
+                                className={({ isActive }) =>
+                                  navLinkClass({ isActive })
+                                }
                               >
                                 <item.icon size={18} />
                                 <span>{item.label}</span>
@@ -284,7 +304,10 @@ const Dashboard = () => {
               <SidebarSeparator />
               <div className="flex items-center gap-3 px-2 py-2">
                 <Avatar className="h-8 w-8">
-                  <AvatarImage src={user?.photoURL} alt={user?.displayName || "User avatar"} />
+                  <AvatarImage
+                    src={user?.photoURL}
+                    alt={user?.displayName || "User avatar"}
+                  />
                   <AvatarFallback className="text-xs font-semibold text-primary">
                     {user?.email?.[0]?.toUpperCase() || "U"}
                   </AvatarFallback>
@@ -318,7 +341,11 @@ const Dashboard = () => {
           <SidebarRail />
 
           <SidebarInset>
-            <DashboardNavbar user={user} getPageTitle={getPageTitle} handleLogOut={handleLogOut} />
+            <DashboardNavbar
+              user={user}
+              getPageTitle={getPageTitle}
+              handleLogOut={handleLogOut}
+            />
 
             <main className="flex-1 overflow-y-auto bg-background p-4 md:p-6 lg:p-8">
               <div className="mx-auto w-full max-w-7xl">
@@ -359,7 +386,9 @@ const Dashboard = () => {
                             <h2 className="text-xl font-bold text-foreground">
                               {user?.displayName || "User"}
                             </h2>
-                            <p className="text-muted-foreground">{user?.email}</p>
+                            <p className="text-muted-foreground">
+                              {user?.email}
+                            </p>
                           </div>
                         </div>
                         <Link
@@ -377,7 +406,9 @@ const Dashboard = () => {
                       <div className="rounded-2xl border border-border bg-card p-5 transition-all hover:border-primary/30 hover:shadow-sm">
                         <div className="flex items-center justify-between">
                           <div>
-                            <p className="text-sm font-medium text-muted-foreground">Lessons Created</p>
+                            <p className="text-sm font-medium text-muted-foreground">
+                              Lessons Created
+                            </p>
                             <p className="text-3xl font-bold text-foreground mt-1">
                               {statsLoading ? (
                                 <span className="loading loading-dots loading-sm"></span>
@@ -394,7 +425,9 @@ const Dashboard = () => {
                       <div className="rounded-2xl border border-border bg-card p-5 transition-all hover:border-primary/30 hover:shadow-sm">
                         <div className="flex items-center justify-between">
                           <div>
-                            <p className="text-sm font-medium text-muted-foreground">Lessons Saved</p>
+                            <p className="text-sm font-medium text-muted-foreground">
+                              Lessons Saved
+                            </p>
                             <p className="text-3xl font-bold text-foreground mt-1">
                               {statsLoading ? (
                                 <span className="loading loading-dots loading-sm"></span>
@@ -411,7 +444,9 @@ const Dashboard = () => {
                       <div className="rounded-2xl border border-border bg-card p-5 transition-all hover:border-primary/30 hover:shadow-sm">
                         <div className="flex items-center justify-between">
                           <div>
-                            <p className="text-sm font-medium text-muted-foreground">Public Lessons</p>
+                            <p className="text-sm font-medium text-muted-foreground">
+                              Public Lessons
+                            </p>
                             <p className="text-3xl font-bold text-foreground mt-1">
                               {lessonStats.publicLessons?.length || 0}
                             </p>
@@ -424,7 +459,9 @@ const Dashboard = () => {
                       <div className="rounded-2xl border border-border bg-card p-5 transition-all hover:border-primary/30 hover:shadow-sm">
                         <div className="flex items-center justify-between">
                           <div>
-                            <p className="text-sm font-medium text-muted-foreground">Total Views</p>
+                            <p className="text-sm font-medium text-muted-foreground">
+                              Total Views
+                            </p>
                             <p className="text-3xl font-bold text-foreground mt-1">
                               {lessonStats.totalViews || 0}
                             </p>
@@ -439,8 +476,13 @@ const Dashboard = () => {
                     {/* Activity Chart */}
                     <div className="rounded-2xl border border-border bg-card p-6 shadow-sm">
                       <div className="mb-4">
-                        <h3 className="text-lg font-semibold text-foreground">Activity Overview</h3>
-                        <p className="text-sm text-muted-foreground">Your lesson creation and view trends over the last 6 months</p>
+                        <h3 className="text-lg font-semibold text-foreground">
+                          Activity Overview
+                        </h3>
+                        <p className="text-sm text-muted-foreground">
+                          Your lesson creation and view trends over the last 6
+                          months
+                        </p>
                       </div>
                       <StatsChart type="area" />
                     </div>
@@ -449,18 +491,22 @@ const Dashboard = () => {
                     <div className="rounded-2xl border border-border bg-card shadow-sm">
                       <div className="border-b border-border bg-card px-6 py-4">
                         <h3 className="text-lg font-semibold text-foreground">
-                          My Public Lessons ({lessonStats.publicLessons?.length || 0})
+                          My Public Lessons (
+                          {lessonStats.publicLessons?.length || 0})
                         </h3>
                       </div>
                       <div className="p-6">
                         {lessonStats.publicLessons?.length === 0 && (
                           <div className="py-12 text-center">
                             <div className="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-muted">
-                              <BookOpen size={28} className="text-muted-foreground/40" />
+                              <BookOpen
+                                size={28}
+                                className="text-muted-foreground/40"
+                              />
                             </div>
                             <p className="text-muted-foreground">
-                              You have no public lessons yet. Create one and set its
-                              visibility to public.
+                              You have no public lessons yet. Create one and set
+                              its visibility to public.
                             </p>
                             <Link
                               to="/dashboard/add-lessons"
@@ -480,12 +526,17 @@ const Dashboard = () => {
                                 className="flex items-center justify-between rounded-lg p-3 transition-colors hover:bg-muted"
                               >
                                 <div>
-                                  <h4 className="font-medium text-foreground">{lesson.title}</h4>
+                                  <h4 className="font-medium text-foreground">
+                                    {lesson.title}
+                                  </h4>
                                   <p className="text-sm text-muted-foreground">
                                     {lesson.description?.slice(0, 100)}
                                   </p>
                                 </div>
-                                <ChevronRightIcon size={18} className="text-muted-foreground/40" />
+                                <ChevronRightIcon
+                                  size={18}
+                                  className="text-muted-foreground/40"
+                                />
                               </div>
                             ))}
                           </div>

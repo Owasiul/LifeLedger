@@ -9,7 +9,7 @@ const WhyLearn = ({ whylearn }) => {
   };
 
   return (
-    <section className="py-14 sm:py-16 bg-base-200/40">
+    <section className="py-14 sm:py-16 bg-base-200/40 dark:bg-base-200/20">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-10">
           <p className="text-xs uppercase tracking-[0.25em] text-primary/70 font-semibold mb-2">
@@ -24,31 +24,33 @@ const WhyLearn = ({ whylearn }) => {
         </div>
 
         <div className="grid lg:grid-cols-4 md:grid-cols-2 grid-cols-1 gap-6">
-        {whylearn.map((learn) => {
-          const Icon = iconMap[learn.icon];
+          {whylearn.map((learn) => {
+            const Icon = iconMap[learn.icon];
 
-          return (
-            <div
-              key={learn.id}
-              className="bg-base-100 border border-base-200 rounded-2xl p-6 text-center shadow-sm hover:shadow-md transition-all duration-300"
-            >
-              {/* Icon */}
-              {Icon && (
-                <div className="flex justify-center mb-4">
-                  <div className="p-3 rounded-full bg-indigo-50 text-indigo-600">
-                    <Icon size={28} />
+            return (
+              <div
+                key={learn.id}
+                className="bg-card border border-border rounded-2xl p-6 text-center shadow-sm hover:shadow-md transition-shadow transition-transform duration-300"
+              >
+                {/* Icon */}
+                {Icon && (
+                  <div className="flex justify-center mb-4">
+                    <div className="p-3 rounded-full bg-indigo-50 text-indigo-600 dark:bg-indigo-900/20 dark:text-indigo-300">
+                      <Icon size={28} />
+                    </div>
                   </div>
-                </div>
-              )}
+                )}
 
-              {/* Content */}
-              <h3 className="text-lg font-semibold text-neutral-800 mb-2">
-                {learn.title}
-              </h3>
-              <p className="text-gray-600 text-sm">{learn.description}</p>
-            </div>
-          );
-        })}
+                {/* Content */}
+                <h3 className="text-lg font-semibold text-foreground dark:text-foreground mb-2">
+                  {learn.title}
+                </h3>
+                <p className="text-sm text-muted-foreground">
+                  {learn.description}
+                </p>
+              </div>
+            );
+          })}
         </div>
       </div>
     </section>

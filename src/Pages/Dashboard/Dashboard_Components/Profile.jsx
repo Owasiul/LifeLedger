@@ -1,4 +1,4 @@
-import React, { useMemo } from "react";
+import React, { useMemo, useState, useEffect } from "react";
 import useUser from "../../../Hooks/useUser";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import useAxiosSecure from "../../../Hooks/useAxiosSecure";
@@ -26,6 +26,18 @@ const Profile = () => {
   const navigate = useNavigate();
   const queryClient = useQueryClient();
   const { register, handleSubmit } = useForm();
+
+  // Preview selected image in Edit Profile dropdown to avoid black/blank preview issues
+  const [previewImage, setPreviewImage] = useState(null);
+
+  useEffect(() => {
+    // Clean up object URL when component unmounts or previewImage changes
+    return () => {
+      if (previewImage && previewImage.startsWith("blob:")) {
+        URL.revokeObjectURL(previewImage);
+      }
+    };
+  }, [previewImage]);
 
   const { data: lessons = [] } = useQuery({
     queryKey: ["lessons", user?.email],
@@ -202,16 +214,36 @@ const Profile = () => {
                       />
                     </div>
 
-                    <div className="flex flex-col gap-1">
+                    <div className="flex flex-col gap-2">
                       <label className="text-xs font-medium text-gray-500 uppercase tracking-wide">
                         Profile Photo
                       </label>
-                      <input
-                        type="file"
-                        accept="image/*"
-                        {...register("photoURL")}
-                        className="w-full px-3 py-2 text-sm rounded-lg border border-gray-200 focus:outline-none focus:ring-2 focus:ring-gray-700 focus:border-transparent transition-all placeholder:text-gray-600"
-                      />
+
+                      {/* Preview area to show selected image before upload */}
+                      <div className="flex items-center gap-3">
+                        <div className="w-14 h-14 rounded-full overflow-hidden bg-gray-100">
+                          <img
+                            src={previewImage || user?.photoURL}
+                            alt="Preview"
+                            className="w-full h-full object-cover"
+                            referrerPolicy="no-referrer"
+                          />
+                        </div>
+
+                        <input
+                          type="file"
+                          accept="image/*"
+                          {...register("photoURL")}
+                          onChange={(e) => {
+                            const file = e.target.files?.[0];
+                            if (file) {
+                              const url = URL.createObjectURL(file);
+                              setPreviewImage(url);
+                            }
+                          }}
+                          className="w-full px-3 py-2 text-sm rounded-lg border border-gray-200 focus:outline-none focus:ring-2 focus:ring-gray-700 focus:border-transparent placeholder:text-gray-600"
+                        />
+                      </div>
                     </div>
 
                     <Button
@@ -249,16 +281,16 @@ const Profile = () => {
         {publicLessons.map((data) => (
           <Card
             key={data._id}
-            className="md:w-96 w-fit group bg-white border border-gray-100 rounded-3xl shadow-sm hover:shadow-2xl hover:-translate-y-1 transition-all duration-500 overflow-hidden"
+                      className="md:w-96 w-fit group bg-white border border-gray-100 rounded-3xl shadow-sm hover:shadow-2xl hover:-translate-y-1 transition-transform transition-shadow duration-300 overflow-hidden"
           >
             {/* Image Container */}
             <div className="relative aspect-16/10 overflow-hidden">
               <img
                 src={data.image}
                 alt={data.title}
-                className="w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-700"
+                          className="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-300"
               />
-              <div className="absolute inset-0 bg-black/5 group-hover:bg-transparent transition-colors duration-500" />
+                        <div className="absolute inset-0 bg-black/5 group-hover:bg-transparent transition-colors duration-300 pointer-events-none" />
             </div>
 
             {/* Content */}

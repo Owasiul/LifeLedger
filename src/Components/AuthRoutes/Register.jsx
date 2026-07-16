@@ -118,10 +118,7 @@ const Register = () => {
                 className="h-16 w-16 object-cover rounded-full"
               />
             ) : (
-              <CircleUserRound
-                size={64}
-                className="dark:text-white"
-              />
+              <CircleUserRound size={64} className="dark:text-white" />
             )}
           </div>
 

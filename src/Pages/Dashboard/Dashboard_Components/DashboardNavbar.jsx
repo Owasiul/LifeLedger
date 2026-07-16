@@ -17,6 +17,7 @@ import {
 } from "#/Components/ui/avatar.jsx";
 import { Button } from "#/Components/ui/button.jsx";
 import { useTheme } from "#/Hooks/useTheme.jsx";
+import { useIsMobile } from "#/Hooks/use-mobile.jsx";
 
 const DashboardNavbar = ({ user, getPageTitle, handleLogOut }) => {
   const { theme, toggleTheme } = useTheme();
@@ -24,12 +25,12 @@ const DashboardNavbar = ({ user, getPageTitle, handleLogOut }) => {
   return (
     <header className="sticky top-0 z-40 w-full border-b border-border bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
       <div className="container flex h-16 items-center gap-4 px-4">
-        <SidebarTrigger
-          className="flex md:hidden"
-          aria-label="Toggle sidebar"
-        >
-          <Menu size={20} />
-        </SidebarTrigger>
+        {/* Show the sidebar trigger when the device is considered mobile/tablet by useIsMobile */}
+        {useIsMobile() ? (
+          <SidebarTrigger className="flex" aria-label="Toggle sidebar">
+            <Menu size={20} />
+          </SidebarTrigger>
+        ) : null}
 
         <nav className="flex-1 flex items-center gap-2" aria-label="Breadcrumb">
           <ol className="flex items-center gap-1 text-sm">
@@ -57,13 +58,17 @@ const DashboardNavbar = ({ user, getPageTitle, handleLogOut }) => {
             <div className="relative w-5 h-5">
               <Sun
                 className={`absolute inset-0 transition-all duration-300 rotate-0 scale-100 ${
-                  theme === "dark" ? "opacity-0 rotate-90 scale-0" : "opacity-100 rotate-0 scale-100"
+                  theme === "dark"
+                    ? "opacity-0 rotate-90 scale-0"
+                    : "opacity-100 rotate-0 scale-100"
                 }`}
                 size={20}
               />
               <Moon
                 className={`absolute inset-0 transition-all duration-300 ${
-                  theme === "dark" ? "opacity-100 rotate-0 scale-100" : "opacity-0 -rotate-90 scale-0"
+                  theme === "dark"
+                    ? "opacity-100 rotate-0 scale-100"
+                    : "opacity-0 -rotate-90 scale-0"
                 }`}
                 size={20}
               />
@@ -72,9 +77,16 @@ const DashboardNavbar = ({ user, getPageTitle, handleLogOut }) => {
 
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
-              <Button variant="ghost" className="relative h-9 w-9 rounded-full" aria-label="User menu">
+              <Button
+                variant="ghost"
+                className="relative h-9 w-9 rounded-full"
+                aria-label="User menu"
+              >
                 <Avatar className="h-9 w-9">
-                  <AvatarImage src={user?.photoURL} alt={user?.displayName || "User avatar"} />
+                  <AvatarImage
+                    src={user?.photoURL}
+                    alt={user?.displayName || "User avatar"}
+                  />
                   <AvatarFallback className="text-sm font-semibold text-primary">
                     {user?.email?.[0]?.toUpperCase() || "U"}
                   </AvatarFallback>

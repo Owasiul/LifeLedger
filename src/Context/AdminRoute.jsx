@@ -20,7 +20,8 @@ const AdminRoute = ({ children }) => {
         <ShieldAlert className="text-error mb-4" size={48} />
         <h2 className="text-2xl font-bold mb-2">Access Denied</h2>
         <p className="text-base-content/70 mb-6 max-w-md">
-          You do not have permission to view this page. Admin access is required.
+          You do not have permission to view this page. Admin access is
+          required.
         </p>
         <Link to="/dashboard/overview" className="btn btn-primary">
           Back to Dashboard

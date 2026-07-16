@@ -36,11 +36,21 @@ const Home = () => {
             personal library of wisdom that grows with you.
           </p>
           <div className="flex flex-col sm:flex-row items-center justify-center gap-3">
-            <Button as={Link} to="/auth/register" color="primary" className="gap-2">
+            <Button
+              as={Link}
+              to="/auth/register"
+              color="primary"
+              className="gap-2"
+            >
               Get Started Free
               <ArrowRight size={18} />
             </Button>
-            <Button as={Link} to="/all-lessons" variant="outline" color="default">
+            <Button
+              as={Link}
+              to="/all-lessons"
+              variant="outline"
+              color="default"
+            >
               Browse Lessons
             </Button>
           </div>

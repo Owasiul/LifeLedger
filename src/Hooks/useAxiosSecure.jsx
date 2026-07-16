@@ -9,15 +9,13 @@ const instance = axios.create({
 });
 
 // Module-level response interceptor — always active, no timing issues
-instance.interceptors.response.use(
-  async (response) => {
-    // Auto-unwrap the standard { success, message, data } response envelope
-    if (response.data?.success === true && response.data?.data !== undefined) {
-      response.data = response.data.data;
-    }
-    return response;
-  },
-);
+instance.interceptors.response.use(async (response) => {
+  // Auto-unwrap the standard { success, message, data } response envelope
+  if (response.data?.success === true && response.data?.data !== undefined) {
+    response.data = response.data.data;
+  }
+  return response;
+});
 
 const useAxiosSecure = () => {
   const { user, LogOut } = useAuth();
