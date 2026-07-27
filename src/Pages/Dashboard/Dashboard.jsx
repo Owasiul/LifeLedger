@@ -209,13 +209,10 @@ const Dashboard = () => {
               <Link
                 to="/"
                 className="flex items-center gap-2 px-2 py-3"
-                onClick={() => {
-                  // Close sidebar on mobile if needed
-                }}
               >
-                <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-primary">
+                <div className="flex h-20 w-20 items-center justify-center rounded-lg">
                   <img
-                    className="w-6 h-6 object-contain"
+                    className="object-contain"
                     src={Logo}
                     alt="Logo"
                   />
