@@ -6,13 +6,15 @@ import {
   Zap,
   ThumbsUp,
   ThumbsDown,
+  Heart,
 } from "lucide-react";
-import { Link } from "react-router";
+import { Link, useNavigate, useLocation } from "react-router";
 import useAxiosSecure from "../../../../Hooks/useAxiosSecure";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import useUser from "../../../../Hooks/useUser";
 import useAuth from "../../../../Hooks/useAuth";
 import { Button, Card } from "@heroui/react";
+import Swal from "sweetalert2";
 
 const SkeletonCard = () => (
   <div className="group relative flex flex-col w-full overflow-hidden border border-gray-100 dark:border-slate-800 bg-white dark:bg-slate-900 rounded-2xl animate-pulse">
@@ -53,6 +55,8 @@ const FeaturedLessons = () => {
   const axiosSecure = useAxiosSecure();
   const queryClient = useQueryClient();
   const { user } = useAuth();
+  const navigate = useNavigate();
+  const location = useLocation();
   const { data: lessons = [], isLoading } = useQuery({
     queryKey: ["featured-lesson"],
     queryFn: async () => {
@@ -64,13 +68,37 @@ const FeaturedLessons = () => {
     retry: 1,
   });
 
+  // Require auth before performing privileged actions
+  const requireAuth = (message = "Please sign in to continue.") => {
+    if (user?.email) return true;
+    Swal.fire({
+      icon: "info",
+      title: "Sign in required",
+      text: message,
+      confirmButtonText: "Sign in",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        navigate("/auth/login", { state: { pathname: location.pathname } });
+      }
+    });
+    return false;
+  };
+
   // handleLike
   const handleLike = async (lessonID) => {
+    if (!requireAuth("Please sign in to like this lesson.")) return;
     const res = await axiosSecure.post(`/lessons/${lessonID}/likes`, {
-      user: user._id,
+      user: user?.uid || user?.email,
     });
     queryClient.invalidateQueries({ queryKey: ["lessons"] });
+    queryClient.invalidateQueries({ queryKey: ["featured-lesson"] });
     return res.data;
+  };
+
+  // Navigate to pricing only after auth check
+  const handlePremiumUpgrade = () => {
+    if (!requireAuth("Please sign in to upgrade to premium.")) return;
+    navigate("/pricing");
   };
 
   const { userData } = useUser();
@@ -100,8 +128,6 @@ const FeaturedLessons = () => {
               <SkeletonCard />
               <SkeletonCard />
               <SkeletonCard />
-              <SkeletonCard />
-              <SkeletonCard />
             </>
           ) : (
             lessons.map((lesson) => {
@@ -122,13 +148,14 @@ const FeaturedLessons = () => {
                       <p className="text-sm text-slate-300 dark:text-slate-400 mb-6">
                         Upgrade to unlock.
                       </p>
-                      <Link
-                        to="/pricing"
+                      <button
+                        type="button"
+                        onClick={handlePremiumUpgrade}
                         className="flex items-center gap-2 px-6 py-2.5 rounded-full bg-purple-600 hover:bg-purple-500 text-sm font-bold shadow-lg transition-colors"
                       >
                         <Zap size={16} fill="currentColor" />
                         Upgrade
-                      </Link>
+                      </button>
                     </div>
                   )}
 
@@ -205,9 +232,10 @@ const FeaturedLessons = () => {
                         size="sm"
                         isIconOnly={false}
                         onPress={() => handleLike(lesson._id)}
-                        startContent={<ThumbsUp size={15} />}
-                        className="min-w-0 px-2 gap-1 text-slate-500 hover:text-emerald-500 dark:text-slate-400"
+                        startContent={<Heart size={15} />}
+                        className="min-w-0 px-2 gap-2 text-slate-500 hover:text-rose-500 dark:text-slate-400"
                       >
+                        <ThumbsUp/>
                         <span className="text-xs font-bold">
                           {lesson.likes.length}
                         </span>

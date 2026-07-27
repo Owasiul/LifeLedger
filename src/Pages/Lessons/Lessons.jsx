@@ -5,6 +5,7 @@ import useUser from "../../Hooks/useUser";
 import { Link } from "react-router";
 import {
   Bookmark,
+  Heart,
   Lock,
   LogIn,
   Search,
@@ -15,6 +16,7 @@ import {
 } from "lucide-react";
 import useAuth from "../../Hooks/useAuth";
 import { Button, Input } from "@heroui/react";
+import Loading from "../../Components/Loading/Loading";
 
 const SkeletonLessonCard = () => (
   <div className="group relative flex flex-col w-full max-w-100 mx-auto bg-white dark:bg-slate-900 rounded-3xl border border-gray-100 dark:border-slate-800 overflow-hidden animate-pulse">
@@ -99,9 +101,10 @@ const Lessons = () => {
 
   // Handle like – invalidate query so the like count updates
   const handleLike = async (lessonID) => {
+    if (!user?.email) return;
     try {
       await axiosSecure.post(`/lessons/${lessonID}/likes`, {
-        user: user._id,
+        user: user?.uid || user?.email,
       });
       // Refetch lessons to show updated counts
       queryClient.invalidateQueries({ queryKey: ["lessons"] });
@@ -121,7 +124,7 @@ const Lessons = () => {
 
   // While user data is loading, show a loader to avoid flash of wrong premium state
   if (isUserLoading) {
-    return <isLoading />;
+    return <Loading />;
   }
 
   return (
@@ -140,15 +143,19 @@ const Lessons = () => {
             type="search"
             placeholder="Search"
             onChange={(e) => setSearchText(e.target.value)}
-            startcontent={<Search className="text-default-400" />}
-            classnames={{
+            startContent={<Search className="text-default-400" />}
+            classNames={{
               base: "max-w-75 lg:w-75 w-44",
               input: "placeholder:text-default-400",
             }}
           />
         </div>
         {/* select */}
-        <select className="select" onChange={handleSort} defaultValue="">
+        <select
+          className="select bg-base-100 text-base-content border border-base-300 dark:bg-slate-800 dark:text-white dark:border-slate-600 focus:outline-none focus:ring-2 focus:ring-primary"
+          onChange={handleSort}
+          defaultValue=""
+        >
           <option value="" disabled>
             Sort by
           </option>

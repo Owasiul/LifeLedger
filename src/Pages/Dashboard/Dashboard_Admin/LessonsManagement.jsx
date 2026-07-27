@@ -12,7 +12,7 @@ import {
   StarOff,
   EllipsisVertical,
 } from "lucide-react";
-import Loading from "../../../Components/Loading/Loading";
+import { Riple } from "react-loading-indicators";
 import { Menu, MenuButton, MenuItems, MenuItem } from "@headlessui/react";
 import { Button } from "@heroui/react";
 
@@ -96,28 +96,30 @@ const LessonsManagement = () => {
     <div className="min-h-screen p-4 sm:p-6 font-sans">
       {/* Header */}
       <div className="mb-6 flex items-center gap-3">
-        <div className="flex h-10 w-10 items-center justify-center rounded-xl shadow shrink-0">
+        <div className="flex h-10 w-10 items-center justify-center rounded-xl shadow shrink-0 bg-primary/10 text-primary">
           <BookOpen size={20} />
         </div>
         <div>
           <h1 className="text-lg sm:text-xl font-bold tracking-tight text-primary">
             Lessons Management
           </h1>
-          <p className="text-sm text-gray-500 dark:text-gray-400">
+          <p className="text-sm text-base-content/60">
             {lessons.length} lesson{lessons.length !== 1 ? "s" : ""} total
           </p>
         </div>
       </div>
 
       {/* Card */}
-      <div className="rounded-2xl border border-white shadow-sm bg-gray-800 overflow-hidden">
+      <div className="rounded-2xl border border-base-300 shadow-sm bg-base-100 overflow-hidden">
         {isLoading ? (
-          <Loading />
+          <div className="flex justify-center items-center py-20">
+            <Riple color="#419641" size="medium" text="" textColor="" />
+          </div>
         ) : lessons.length === 0 ? (
           <div className="flex flex-col items-center justify-center py-20 text-center text-gray-500 dark:text-gray-400">
-            <BookOpen size={40} className="mb-3 text-indigo-400" />
-            <p className="font-medium">No lessons found</p>
-            <p className="text-sm mt-1">
+            <BookOpen size={40} className="mb-3 text-primary" />
+            <p className="font-medium text-base-content">No lessons found</p>
+            <p className="text-sm mt-1 text-base-content/60">
               Lessons will appear here once created.
             </p>
           </div>
@@ -125,7 +127,7 @@ const LessonsManagement = () => {
           <div className="overflow-x-auto">
             <table className="w-full text-sm">
               <thead>
-                <tr className="border-b text-xs uppercase tracking-wider text-accent">
+                <tr className="border-b border-base-300 text-xs uppercase tracking-wider text-base-content/60">
                   <th className="px-4 sm:px-5 py-3 text-left w-10">#</th>
                   <th className="px-4 sm:px-5 py-3 text-left">Lesson</th>
                   <th className="px-4 sm:px-5 py-3 text-left hidden sm:table-cell">
@@ -137,11 +139,11 @@ const LessonsManagement = () => {
                   <th className="px-4 sm:px-5 py-3 text-right">Actions</th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-gray-100 dark:divide-gray-700">
+              <tbody className="divide-y divide-base-200 dark:divide-base-300">
                 {lessons.map((lesson, idx) => (
                   <tr
                     key={lesson._id}
-                    className="hover:bg-indigo-50 dark:hover:bg-indigo-950/40 transition-colors"
+                    className="hover:bg-primary/5 dark:hover:bg-primary/10 transition-colors"
                   >
                     {/* Index */}
                     <td className="px-4 sm:px-5 py-4 text-gray-400 dark:text-gray-500 font-mono text-xs">
@@ -239,13 +241,13 @@ const LessonsManagement = () => {
                         {/* Mobile dropdown menu */}
                         <div className="md:hidden">
                           <Menu as="div" className="relative">
-                            <MenuButton className="flex items-center justify-center rounded-md p-1.5 text-gray-500 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-700 transition">
+                            <MenuButton className="flex items-center justify-center rounded-md p-1.5 text-base-content/60 hover:bg-base-200 dark:hover:bg-base-300 transition">
                               <EllipsisVertical size={18} />
                             </MenuButton>
 
                             <MenuItems
                               anchor="bottom end"
-                              className="z-50 w-48 rounded-xl border border-gray-100 dark:border-gray-700 bg-white dark:bg-gray-800 shadow-lg focus:outline-none overflow-hidden"
+                              className="z-50 w-48 rounded-xl border border-base-300 bg-base-100 shadow-lg focus:outline-none overflow-hidden"
                             >
                               <MenuItem>
                                 <Button

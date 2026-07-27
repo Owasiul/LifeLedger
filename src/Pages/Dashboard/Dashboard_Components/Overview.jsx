@@ -33,11 +33,11 @@ const MONTH_LABELS = [
 const ChartTooltip = ({ active, payload, label }) => {
   if (!active || !payload?.length) return null;
   return (
-    <div className="rounded-xl border border-slate-200 bg-white px-4 py-3 shadow-lg">
-      <p className="text-xs uppercase tracking-wide text-slate-500 mb-1">
+    <div className="rounded-xl border border-base-300 bg-base-100 px-4 py-3 shadow-lg">
+      <p className="text-xs uppercase tracking-wide text-base-content/60 mb-1">
         {label}
       </p>
-      <p className="text-sm font-semibold text-slate-900">
+      <p className="text-sm font-semibold text-base-content">
         {payload[0].value} lesson{payload[0].value === 1 ? "" : "s"}
       </p>
     </div>
@@ -113,9 +113,7 @@ const Overview = () => {
         <p className="text-xs uppercase tracking-[0.2em] text-primary/70 mb-1">
           Dashboard
         </p>
-        <h2 className="text-3xl font-bold text-base-content">
-          Overview
-        </h2>
+        <h2 className="text-3xl font-bold text-base-content">Overview</h2>
         <p className="text-sm text-base-content/70 mt-1">
           Your activity summary and contribution insights
         </p>
@@ -162,20 +160,33 @@ const Overview = () => {
           {categoryChartData.length > 0 ? (
             <ResponsiveContainer width="100%" height={280}>
               <BarChart data={categoryChartData} barSize={36}>
-                <CartesianGrid strokeDasharray="4 4" vertical={false} />
+                <CartesianGrid
+                  strokeDasharray="4 4"
+                  vertical={false}
+                  stroke="hsl(var(--color-base-300))"
+                />
                 <XAxis
                   dataKey="name"
-                  tick={{ fontSize: 12 }}
+                  tick={{
+                    fontSize: 12,
+                    fill: "hsl(var(--color-base-content))",
+                  }}
                   axisLine={false}
                   tickLine={false}
                 />
                 <YAxis
                   allowDecimals={false}
-                  tick={{ fontSize: 12 }}
+                  tick={{
+                    fontSize: 12,
+                    fill: "hsl(var(--color-base-content))",
+                  }}
                   axisLine={false}
                   tickLine={false}
                 />
-                <Tooltip content={<ChartTooltip />} cursor={{ fill: "rgba(0,0,0,0.04)" }} />
+                <Tooltip
+                  content={<ChartTooltip />}
+                  cursor={{ fill: "rgba(0,0,0,0.04)" }}
+                />
                 <Bar dataKey="count" fill="#0ea5e9" radius={[8, 8, 0, 0]} />
               </BarChart>
             </ResponsiveContainer>
@@ -196,20 +207,33 @@ const Overview = () => {
           {lessons.length > 0 ? (
             <ResponsiveContainer width="100%" height={280}>
               <BarChart data={monthlyChartData} barSize={32}>
-                <CartesianGrid strokeDasharray="4 4" vertical={false} />
+                <CartesianGrid
+                  strokeDasharray="4 4"
+                  vertical={false}
+                  stroke="hsl(var(--color-base-300))"
+                />
                 <XAxis
                   dataKey="name"
-                  tick={{ fontSize: 12 }}
+                  tick={{
+                    fontSize: 12,
+                    fill: "hsl(var(--color-base-content))",
+                  }}
                   axisLine={false}
                   tickLine={false}
                 />
                 <YAxis
                   allowDecimals={false}
-                  tick={{ fontSize: 12 }}
+                  tick={{
+                    fontSize: 12,
+                    fill: "hsl(var(--color-base-content))",
+                  }}
                   axisLine={false}
                   tickLine={false}
                 />
-                <Tooltip content={<ChartTooltip />} cursor={{ fill: "rgba(0,0,0,0.04)" }} />
+                <Tooltip
+                  content={<ChartTooltip />}
+                  cursor={{ fill: "rgba(0,0,0,0.04)" }}
+                />
                 <Bar dataKey="count" fill="#10b981" radius={[8, 8, 0, 0]} />
               </BarChart>
             </ResponsiveContainer>

@@ -1,11 +1,5 @@
 import React, { useEffect, useState } from "react";
-import {
-  Link,
-  NavLink,
-  Outlet,
-  useLocation,
-  useNavigate,
-} from "react-router";
+import { Link, NavLink, Outlet, useLocation, useNavigate } from "react-router";
 import {
   PlusCircle,
   BookOpen,
@@ -327,6 +321,13 @@ const Dashboard = () => {
               >
                 <Settings size={16} />
                 <span>Edit Profile</span>
+              </Link>
+              <Link
+                to="/"
+                className="flex items-center gap-2 px-2 py-2 text-sm text-sidebar-foreground/70 hover:bg-sidebar-accent hover:text-sidebar-accent-foreground rounded-md transition-colors mx-2"
+              >
+                <House size={16} />
+                <span>Back to Home</span>
               </Link>
               <button
                 onClick={handleLogOut}
