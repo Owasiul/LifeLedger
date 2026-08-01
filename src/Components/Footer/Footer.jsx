@@ -36,11 +36,12 @@ function Footer() {
                 <div>
                   <p className="text-sm font-medium">Email</p>
                   <a
-                    href="mailto:sanisuper0@gmail.com"
+                    href="mailto:info@life_ledger.com"
                     className="text-sm text-base-content/70 hover:text-primary transition"
                   >
-                    sanisuper0@gmail.com
+                    info@life_ledger.com
                   </a>
+
                 </div>
               </div>
 
@@ -165,7 +166,7 @@ function Footer() {
                   href="https://facebook.com"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="btn btn-circle btn-sm btn-ghost hover:bg-primary hover:text-primary-content transition"
+                  className="footer-social-link"
                   aria-label="Facebook"
                 >
                   <Facebook className="w-5 h-5" />
@@ -176,7 +177,7 @@ function Footer() {
                   href="https://twitter.com"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="btn btn-circle btn-sm btn-ghost hover:bg-primary hover:text-primary-content transition"
+                  className="footer-social-link"
                   aria-label="Twitter"
                 >
                   <Twitter className="w-5 h-5" />
@@ -187,7 +188,7 @@ function Footer() {
                   href="https://instagram.com"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="btn btn-circle btn-sm btn-ghost hover:bg-primary hover:text-primary-content transition"
+                  className="footer-social-link"
                   aria-label="Instagram"
                 >
                   <Instagram className="w-5 h-5" />
@@ -198,7 +199,7 @@ function Footer() {
                   href="https://linkedin.com"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="btn btn-circle btn-sm btn-ghost hover:bg-primary hover:text-primary-content transition"
+                  className="footer-social-link"
                   aria-label="LinkedIn"
                 >
                   <Linkedin className="w-5 h-5" />
@@ -209,7 +210,7 @@ function Footer() {
                   href="https://youtube.com"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="btn btn-circle btn-sm btn-ghost hover:bg-primary hover:text-primary-content transition"
+                  className="footer-social-link"
                   aria-label="YouTube"
                 >
                   <Youtube className="w-5 h-5" />
