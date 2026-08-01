@@ -288,7 +288,7 @@ const Navbar = () => {
                     }}
                     color="secondary"
                     fullWidth
-                    className="rounded-xl font-medium"
+                    className="rounded-xl font-medium "
                   >
                     Sign Up
                   </Button>

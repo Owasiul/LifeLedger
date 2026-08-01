@@ -3,6 +3,7 @@ import Root from "../Layout/Root";
 import AuthLayout from "../Layout/Auth/AuthLayout";
 import Login from "../Components/AuthRoutes/Login";
 import Register from "../Components/AuthRoutes/Register";
+import ResetPassword from "../Components/AuthRoutes/ResetPassword";
 import Home from "../Pages/Home/Home";
 import PaymentSuccess from "../Pages/Payment/PaymentSuccess/PaymentSuccess";
 import Pricing from "../Pages/Payment/Pricing";
@@ -77,6 +78,10 @@ export const router = createBrowserRouter([
       {
         path: "/auth/register",
         element: <Register></Register>,
+      },
+      {
+        path: "/auth/resetpassword",
+        element: <ResetPassword></ResetPassword>,
       },
     ],
   },
