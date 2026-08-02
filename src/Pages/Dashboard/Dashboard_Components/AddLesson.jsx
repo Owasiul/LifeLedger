@@ -132,7 +132,7 @@ const AddLesson = () => {
                     {...register("title")}
                     required
                     placeholder="The one thing I wish I knew at 20…"
-                    className="input input-bordered w-full text-2xl font-semibold tracking-tight focus:input-primary transition-all"
+                    className="input input-bordered w-full text-base-content dark:text-white text-2xl font-semibold tracking-tight px-4 py-3 border border-base-300 dark:border-base-700 placeholder:text-slate-700 dark:placeholder:text-slate-400 focus:ring-2 focus:ring-blue-500 dark:focus:ring-violet-500 focus:ring-offset-2 focus:ring-offset-base-100 dark:focus:ring-offset-base-900 transition-all"
                   />
                 </div>
 
@@ -146,7 +146,7 @@ const AddLesson = () => {
                     {...register("description")}
                     required
                     placeholder="Tell the full story. What happened? What changed your perspective?"
-                    className="textarea textarea-bordered w-full h-96 text-lg leading-8 resize-y focus:textarea-primary transition-all"
+                    className="textarea textarea-bordered w-full h-96 text-base-content dark:text-white text-lg leading-8 resize-y border border-base-300 dark:border-base-700 placeholder:text-slate-700 dark:placeholder:text-slate-400 px-4 py-3 focus:ring-2 focus:ring-blue-500 dark:focus:ring-violet-500 focus:ring-offset-2 focus:ring-offset-base-100 dark:focus:ring-offset-base-900 transition-all"
                   />
                 </div>
               </div>
@@ -164,41 +164,43 @@ const AddLesson = () => {
                 </h3>
 
                 <div className="form-control">
-                  <label className="label text-xs font-semibold text-base-content/60 uppercase pb-1">
+                  <label className="label text-xs font-semibold text-base-content uppercase pb-1">
                     Category
                   </label>
                   <select
                     {...register("category")}
                     required
-                    className="select select-bordered w-full focus:select-primary text-gray-800"
+                    defaultValue=""
+                    className="select select-bordered w-full px-4 py-3 text-base-content dark:text-white border border-base-300 dark:border-base-700 focus:ring-2 focus:ring-blue-500 dark:focus:ring-violet-500 focus:ring-offset-2 focus:ring-offset-base-100 dark:focus:ring-offset-base-900"
                   >
-                    <option disabled value="">
+                    <option disabled value="" className="text-base-content dark:text-white dark:bg-base-800">
                       Select category
                     </option>
-                    <option value="growth">Personal Growth</option>
-                    <option value="career">Career</option>
-                    <option value="relationships">Relationships</option>
-                    <option value="mindset">Mindset</option>
-                    <option value="mistakes">Mistakes Learned</option>
+                    <option value="growth" className="text-base-content dark:text-white dark:bg-base-800">Personal Growth</option>
+                    <option value="career" className="text-base-content dark:text-white dark:bg-base-800">Career</option>
+                    <option value="relationships" className="text-base-content dark:text-white dark:bg-base-800">Relationships</option>
+                    <option value="mindset" className="text-base-content dark:text-white dark:bg-base-800">Mindset</option>
+                    <option value="mistakes" className="text-base-content dark:text-white dark:bg-base-800">Mistakes Learned</option>
                   </select>
                 </div>
 
                 <div className="form-control">
-                  <label className="label text-xs font-semibold text-base-content/60 uppercase pb-1">
+                  <label className="label text-xs font-semibold text-base-content uppercase pb-1">
                     Emotional Tone
                   </label>
                   <select
                     {...register("emotionalTone")}
                     required
-                    className="select select-bordered w-full focus:select-primary text-gray-800"
+                    defaultValue=""
+                    className="select select-bordered w-full px-4 py-3 text-base-content dark:text-white border border-base-300 dark:border-base-700 focus:ring-2 focus:ring-blue-500 dark:focus:ring-violet-500 focus:ring-offset-2 focus:ring-offset-base-100 dark:focus:ring-offset-base-900"
                   >
-                    <option disabled value="">
+                    <option disabled value="" className="text-base-content dark:text-white dark:bg-base-800">
                       Select tone
                     </option>
-                    <option value="motivational">Motivational</option>
-                    <option value="sad">Sad / Reflective</option>
-                    <option value="realization">Sudden Realization</option>
-                    <option value="gratitude">Gratitude</option>
+                    <option value="motivational" className="text-base-content dark:text-white dark:bg-base-800">Motivational</option>
+                    <option value="sad" className="text-base-content dark:text-white dark:bg-base-800">Sad / Reflective</option>
+                    <option value="realization" className="text-base-content dark:text-white dark:bg-base-800">Sudden Realization</option>
+                    <option value="gratitude" className="text-base-content dark:text-white dark:bg-base-800">Gratitude</option>
                   </select>
                 </div>
               </div>
@@ -213,46 +215,46 @@ const AddLesson = () => {
                 </h3>
 
                 <div className="form-control">
-                  <label className="label text-xs font-semibold text-base-content/60 uppercase pb-1">
+                  <label className="label text-xs font-semibold text-base-content uppercase pb-1">
                     Privacy
                   </label>
                   <select
                     {...register("visibility")}
-                    className="select select-bordered w-full text-gray-800"
+                    className="select select-bordered w-full px-4 py-3 text-base-content dark:text-white border border-base-300 dark:border-base-700 focus:ring-2 focus:ring-blue-500 dark:focus:ring-violet-500 focus:ring-offset-2 focus:ring-offset-base-100 dark:focus:ring-offset-base-900"
                   >
-                    <option value="public">Public (Everyone)</option>
-                    <option value="private">Private (Only Me)</option>
+                    <option value="public" className="text-base-content dark:text-white dark:bg-base-800">Public (Everyone)</option>
+                    <option value="private" className="text-base-content dark:text-white dark:bg-base-800">Private (Only Me)</option>
                   </select>
                 </div>
 
                 <div className="form-control">
-                  <label className="label text-xs font-semibold text-base-content/60 uppercase pb-1">
+                  <label className="label text-xs font-semibold text-base-content uppercase pb-1">
                     Access Level
                   </label>
 
                   {!userData?.isPremium ? (
                     <div
-                      className="tooltip tooltip-top w-full text-gray-800 "
+                      className="tooltip tooltip-top w-full text-base-content"
                       data-tip="Upgrade to Premium to create premium lessons"
                     >
                       <select
                         {...register("accessLevel")}
                         defaultValue="free"
                         disabled
-                        className="select select-bordered w-full bg-base-200 text-gray-800 cursor-not-allowed border-base-300"
+                        className="select select-bordered w-full px-4 py-3 bg-base-200 dark:bg-base-800 text-base-content/60 dark:text-white/50 cursor-not-allowed border border-base-300 dark:border-base-700"
                       >
-                        <option value="free">Free Lesson</option>
-                        <option value="premium">💎 Premium Lesson</option>
+                        <option value="free" className="text-base-content dark:text-white dark:bg-base-800">Free Lesson</option>
+                        <option value="premium" className="text-base-content dark:text-white dark:bg-base-800">💎 Premium Lesson</option>
                       </select>
                     </div>
                   ) : (
                     <select
                       {...register("accessLevel")}
                       defaultValue="free"
-                      className="select select-bordered w-full focus:select-primary border-primary/70 text-gray-800"
+                      className="select select-bordered w-full px-4 py-3 border border-base-300 dark:border-base-700 text-base-content dark:text-white focus:ring-2 focus:ring-blue-500 dark:focus:ring-violet-500 focus:ring-offset-2 focus:ring-offset-base-100 dark:focus:ring-offset-base-900"
                     >
-                      <option value="free">Free Lesson</option>
-                      <option value="premium">💎 Premium Lesson</option>
+                      <option value="free" className="text-base-content dark:text-white dark:bg-base-800">Free Lesson</option>
+                      <option value="premium" className="text-base-content dark:text-white dark:bg-base-800">💎 Premium Lesson</option>
                     </select>
                   )}
                 </div>
